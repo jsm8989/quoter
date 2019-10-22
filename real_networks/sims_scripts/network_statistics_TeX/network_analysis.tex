@@ -1,0 +1,92 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,amsfonts, tabu, multirow, multicol,comment,
+	graphicx,float,caption, subcaption,booktabs,multirow,array}
+\usepackage{tabularx,ragged2e, textcomp, hyperref}
+\usepackage{mathtools}
+
+\captionsetup{labelfont=bf,
+	justification=raggedright,
+	singlelinecheck=false}
+\renewcommand{\arraystretch}{1}
+\setlength{\tabcolsep}{8pt}
+
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+
+
+
+
+\title{/Quoter\_model/more\_real\_networks/network\_analysis}
+\author{Tyson Pond}
+\date{September 16, 2019}
+
+\begin{document}
+	\maketitle
+	
+	All networks can be found through the \href{https://icon.colorado.edu/#!/networks}{Index of Complex Networks}. The query we used was``Social networks, min number of edges: 1,000, max number of edges: 100,000''. 
+	
+	\begin{table}[H]
+		\centering
+		\caption{Descriptive statistics for (22) social networks}\label{tab:desc1}
+		\scalebox{0.8}{ 
+			\begin{tabular}{l|lll|llll|ll}
+				\toprule[1.5pt]
+				& \multicolumn{3}{c|}{Size} & \multicolumn{4}{c|}{Degree} &  \multicolumn{2}{c}{Clustering} \\ 
+				Network  & $|V|$ & $|E|$ & Density & $\langle k \rangle$ & $\max k_i$ & $\min k_i$ & $r$ & $C_\triangle$ & $\langle C_i \rangle $    \\
+				\hline
+				Web of Trust & 10680 & 24316 & 0.0004 & 4.6 & 205 & 1 & 0.24 & 0.38 & 0.27\\
+				Arxiv CondMat & 13861 & 44619 & 0.0005 & 6.4 & 107 & 1 & 0.16 & 0.35 & 0.65\\
+				Marvel & 19365 & 96616 & 0.0005 & 10.0 & 1625 & 1 & -0.19 & 0.0 & 0.0\\
+				Email Enron & 10486 & 54466 & 0.001 & 10.4 & 603 & 1 & -0.16 & 0.09 & 0.21\\
+				Arxiv GrQc & 4158 & 13428 & 0.0016 & 6.5 & 81 & 1 & 0.64 & 0.63 & 0.56\\
+				Adolescent health & 2539 & 10455 & 0.0032 & 8.2 & 27 & 1 & 0.25 & 0.14 & 0.15\\
+				UC Irvine & 1893 & 13835 & 0.0077 & 14.6 & 255 & 1 & -0.19 & 0.06 & 0.11\\
+				Email Spain & 1133 & 5452 & 0.0085 & 9.6 & 71 & 1 & 0.08 & 0.17 & 0.22\\
+				Network science & 379 & 914 & 0.0128 & 4.8 & 34 & 1 & -0.08 & 0.43 & 0.74\\
+				CKM physicians & 110 & 193 & 0.0322 & 3.5 & 9 & 1 & 0.11 & 0.16 & 0.15\\
+				Email Eu Core & 986 & 16687 & 0.0344 & 33.8 & 347 & 1 & -0.01 & 0.27 & 0.41\\
+				Terrorist & 62 & 152 & 0.0804 & 4.9 & 22 & 1 & -0.08 & 0.36 & 0.49\\
+				Dolphins & 62 & 159 & 0.0841 & 5.1 & 12 & 1 & -0.04 & 0.31 & 0.26\\
+				Les Miserables & 77 & 254 & 0.0868 & 6.6 & 36 & 1 & -0.17 & 0.5 & 0.57\\
+				Kapferer tailor & 39 & 158 & 0.2132 & 8.1 & 24 & 1 & -0.18 & 0.39 & 0.46\\
+				Hollywood music & 39 & 219 & 0.2955 & 11.2 & 26 & 2 & -0.08 & 0.56 & 0.66\\
+				Sampson's monastery & 25 & 94 & 0.3133 & 7.5 & 14 & 3 & -0.11 & 0.45 & 0.51\\
+				Hypertext & 113 & 2196 & 0.347 & 38.9 & 98 & 1 & -0.12 & 0.5 & 0.53\\
+				Golden Age & 55 & 614 & 0.4135 & 22.3 & 43 & 4 & -0.07 & 0.53 & 0.57\\
+				NFL & 32 & 212 & 0.4274 & 13.2 & 15 & 13 & 0.0 & 0.54 & 0.54\\
+				Intra-organizational & 77 & 1341 & 0.4583 & 34.8 & 76 & 18 & -0.14 & 0.67 & 0.78\\
+				Freeman's EIES & 34 & 415 & 0.7398 & 24.4 & 33 & 9 & -0.15 & 0.82 & 0.84\\
+				\bottomrule[1.5pt]
+		\end{tabular}}
+	\end{table}
+	
+	\textbf{Only the networks we are using:}
+	\begin{table}[H]
+		\centering
+		\caption{Descriptive statistics for social networks}\label{tab:desc2}
+		\scalebox{0.8}{ 
+			\begin{tabular}{l|lll|llll|ll}
+				\toprule[1.5pt]
+				& \multicolumn{3}{c|}{Size} & \multicolumn{4}{c|}{Degree} &  \multicolumn{2}{c}{Clustering} \\ 
+				Network  & $|V|$ & $|E|$ & Density & $\langle k \rangle$ & $\max k_i$ & $\min k_i$ & $r$ & $C_\triangle$ & $\langle C_i \rangle $    \\
+				\hline
+				Arxiv CondMat & 13861 & 44619 & 0.0005 & 6.4 & 107 & 1 & 0.16 & 0.35 & 0.65\\
+				Email Enron & 10486 & 54466 & 0.001 & 10.4 & 603 & 1 & -0.16 & 0.09 & 0.21\\
+				Adolescent health & 2539 & 10455 & 0.0032 & 8.2 & 27 & 1 & 0.25 & 0.14 & 0.15\\
+				Email Spain & 1133 & 5452 & 0.0085 & 9.6 & 71 & 1 & 0.08 & 0.17 & 0.22\\
+				CKM physicians & 110 & 193 & 0.0322 & 3.5 & 9 & 1 & 0.11 & 0.16 & 0.15\\
+				Terrorist & 62 & 152 & 0.0804 & 4.9 & 22 & 1 & -0.08 & 0.36 & 0.49\\
+				Dolphins & 62 & 159 & 0.0841 & 5.1 & 12 & 1 & -0.04 & 0.31 & 0.26\\
+				Les Miserables & 77 & 254 & 0.0868 & 6.6 & 36 & 1 & -0.17 & 0.5 & 0.57\\
+				Kapferer tailor & 39 & 158 & 0.2132 & 8.1 & 24 & 1 & -0.18 & 0.39 & 0.46\\
+				Hollywood music & 39 & 219 & 0.2955 & 11.2 & 26 & 2 & -0.08 & 0.56 & 0.66\\
+				Sampson's monastery & 25 & 94 & 0.3133 & 7.5 & 14 & 3 & -0.11 & 0.45 & 0.51\\
+				Golden Age & 55 & 614 & 0.4135 & 22.3 & 43 & 4 & -0.07 & 0.53 & 0.57\\
+				Freeman's EIES & 34 & 415 & 0.7398 & 24.4 & 33 & 9 & -0.15 & 0.82 & 0.84\\
+				\bottomrule[1.5pt]
+		\end{tabular}}
+	\end{table}
+	
+
+\end{document}
