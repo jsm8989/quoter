@@ -4,10 +4,10 @@
 #PBS -q workq
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
-#PBS -l walltime=10:00:00 
+#PBS -l walltime=12:00:00 
 #PBS -l pmem=2gb,pvmem=2500mb
-#PBS -N jobfile_SBM
+#PBS -N job_addTriangle
 
-cd $HOME/quoter-model-NEW/SBM_seed/sims_scripts
-python SBM_sims.py "$PBS_ARRAYID" "${n}"
+cd $HOME/quoter-model-NEW/real_networks/sims_scripts
+python add_triangle_sims.py "$PBS_ARRAYID" "${n}"
 

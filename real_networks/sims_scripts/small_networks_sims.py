@@ -11,6 +11,12 @@ import numpy as np
 import networkx as nx
 
 def create_data_subdirs(datadir, subdirs):
+    """ Create a directory for each real world network in which
+        simulation data is stored.
+
+        datadir (string) = name for root folder of real-world networks data
+        subdirs (list of strings) = list of folder names of each real-world network
+    """
     if not os.path.isdir(datadir):
         os.mkdir(datadir)
         
@@ -19,6 +25,30 @@ def create_data_subdirs(datadir, subdirs):
         if not os.path.isdir(path):
             os.mkdir(path)
 
+def create_edge_sample(G,outdir,outfile):
+    """ Create a random sample of edges/nonedges for which the cross-entropy, etc. will
+        be computed. IMPORTANT: we use the same edge samples for our clustering
+        experiments.
+
+        G = networkx graph
+        outdir (string) = path to where edge-sample file should be saved
+        outfile (string) = filename for edge-sample file
+    """
+    
+    edges = G.edges()
+    nonedges = list(nx.non_edges(G))
+    n_edges_to_sample = min(len(edges),      1000)
+    n_nonedges_to_sample = min(len(nonedges),1000)
+    edges_to_sample = np.array(edges)[np.random.choice(range(len(edges)),
+                                                       size=n_edges_to_sample,
+                                                       replace=False)]
+    nonedges_to_sample = np.array(nonedges)[np.random.choice(range(len(nonedges)),
+                                                       size=n_nonedges_to_sample,
+                                                       replace=False)]
+    with open(os.path.join(outdir,outfile),"w") as f:
+        for e in np.concatenate((edges_to_sample,nonedges_to_sample)):
+            f.write("%i %i\n" % (e[0], e[1]))
+        
 def write_data(G,outdir,outfile):
     """
         Compute and write data from quoter model simulations.
@@ -93,34 +123,44 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
 
 
 if __name__ == '__main__':
-##    create_data_subdirs("../data", small_networks)
-    
-    try:
-        JOBNUM, NUMJOBS = map(int, sys.argv[1:])
-    except IndexError:
-        sys.exit("Usage: %s JOBNUM NUMJOBS" % sys.argv[0] )
-
-##    JOBNUM = 0
-##    NUMJOBS = 1
-
-    
+    create_data_subdirs("../data_separate_link-nonlink/edge_sample", small_networks)
     q = 0.5
     T = 1000
-
-    trials_list = list(range(500))
-
-    params = []
+    trials_list = list(range(300))
     for name in small_networks:
         for trial in trials_list:
-            params.append((name,trial))
+            outdir = os.path.join("../data_separate_link-nonlink/edge_sample/", name)
+            outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
+            G = read_any(name).to_directed()
+            create_edge_sample(G,outdir,outfile)
             
-    #parameters to keep for this job
-    params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
-
-    for name,trial in params:
-        outdir = os.path.join("../data/", name)
-        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
-        G0 = read_any(name)
-        G = G0.to_directed()
-        quoter_model_sim(G, q, T, outdir, outfile, write_data)
-         
+            
+##    try:
+##        JOBNUM, NUMJOBS = map(int, sys.argv[1:])
+##    except IndexError:
+##        sys.exit("Usage: %s JOBNUM NUMJOBS" % sys.argv[0] )
+##
+####    JOBNUM = 0
+####    NUMJOBS = 1
+##
+##    
+##    q = 0.5
+##    T = 1000
+##
+##    trials_list = list(range(500))
+##
+##    params = []
+##    for name in small_networks:
+##        for trial in trials_list:
+##            params.append((name,trial))
+##            
+##    #parameters to keep for this job
+##    params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
+##
+##    for name,trial in params:
+##        outdir = os.path.join("../data/", name)
+##        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
+##        if not os.path.isfile(os.path.join(outdir,outfile)):
+##            G = read_any(name).to_directed()
+##            quoter_model_sim(G, q, T, outdir, outfile, write_data)
+##             

@@ -28,8 +28,7 @@ if __name__ == "__main__":
     for mu,trial in params:
         outdir = "../data/"
         outfile = "N%i_mu%0.2f_q%0.1f_T%i_sim%i.txt" % (N,mu,q,T,trial)
-        G0 = make_SBM_simple(N,mu)
-        G = G0.to_directed()
+        G = make_SBM_simple(N,mu).to_directed()
         quoter_model_sim(G, q, T, outdir, outfile)
 
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# configMod_sims_small.py
+# add_triangle_sims.py
 # Tyson Pond
-# Last Modified: 2019-10-21
+# Last Modified: 2019-10-24
 
 from quoter_model import *
 from read_networks import *
@@ -97,7 +97,7 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
 
 
 if __name__ == '__main__':
-##    create_data_subdirs("../data_configuration", small_networks)
+##    create_data_subdirs("../data_clustering", small_networks)
     
     try:
         JOBNUM, NUMJOBS = map(int, sys.argv[1:])
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     q = 0.5
     T = 1000
 
-    trials_list = list(range(500))
+    trials_list = list(range(300))
 
     params = []
     for name in small_networks:
@@ -122,9 +122,14 @@ if __name__ == '__main__':
     params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for name,trial in params:
-        outdir = os.path.join("../data_configuration/", name)
-        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
+        outdir = os.path.join("../data_clustering/", name)
+        outfile = "TRIANGLE3_%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
         if not os.path.isfile(os.path.join(outdir,outfile)):
-            G = make_configMod(read_any(name)).to_directed()
+            G0 = read_any(name)
+            nnodes = nx.number_of_nodes(G0)
+            nedges = nx.number_of_edges(G0)
+            n = min(int(nedges*0.25),len(list(nx.non_edges(G0))))
+##            G = add_triangles(G0,n,1000*n).to_directed()
+            G = add_triangles3(G0,n).to_directed()
             quoter_model_sim(G, q, T, outdir, outfile, write_data)
          

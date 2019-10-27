@@ -100,57 +100,56 @@ def quoter_model_sim(G,q,T,outdir,outfile,write_data=write_all_data,dunbar=None)
         dunbar (int or None) -- If int, limit in-degree to dunbar's number
     """
         
-    if not os.path.isfile(outdir + "edge/" + outfile): # avoid re-doing & overwriting
-        # vocabulary distribution
-        alpha = 1.5
-        z = 1000
-        vocab = np.arange(1,z+1)
-        weights = vocab**(-alpha)
-        weights /= weights.sum()
+    # vocabulary distribution
+    alpha = 1.5
+    z = 1000
+    vocab = np.arange(1,z+1)
+    weights = vocab**(-alpha)
+    weights /= weights.sum()
 
-        # limit IN-DEGREE to just dunbar's number
-        if dunbar:
-            for node in G.nodes():
-                nbrs = G.predecessors(node) 
-                if len(nbrs) > dunbar:
-                        nbrs_rmv = random.sample(nbrs, len(nbrs) - dunbar)
-                        G.remove_edges_from( [(nbr,node) for nbr in nbrs_rmv] )
-        
-        # create initial tweet for each user
-        startWords = 20
+    # limit IN-DEGREE to just dunbar's number
+    if dunbar:
         for node in G.nodes():
-            newWords = np.random.choice(vocab, size=startWords, replace=True, p=weights).tolist()
-            G.node[node]["words"] = newWords
-            G.node[node]["times"] = [0]*len(newWords)
-
-        # simulate quoter model
-        for t in range(1,T*nx.number_of_nodes(G)):
-            node = random.choice(G.nodes())
-
-            # length of tweet
-            tweetLength = np.random.poisson(lam=3)
-
-            # quote with probability q, provided ego has alters to quote from
             nbrs = G.predecessors(node) 
-            if random.random() < q and len(nbrs) > 0:
-                # pick a neighbor to quote from (simplifying assumption: uniformly at random from all neighbors)
-                user_copied = random.choice(nbrs)
-
-                # find a valid position in the neighbor's text to quote from
-                words_friend = G.node[user_copied]["words"]
-                numWords_friend = len(words_friend)
-                copy_pos_start = random.choice( list(range(max( 0, numWords_friend-tweetLength))) )
-                copy_pos_end = min( numWords_friend-1, copy_pos_start + tweetLength)
-                newWords = words_friend[copy_pos_start: copy_pos_end]
-                
-            else: # new content
-                newWords = np.random.choice(vocab, size=tweetLength, replace=True, p=weights).tolist()
+            if len(nbrs) > dunbar:
+                    nbrs_rmv = random.sample(nbrs, len(nbrs) - dunbar)
+                    G.remove_edges_from( [(nbr,node) for nbr in nbrs_rmv] )
     
-            G.node[node]["words"].extend(newWords)
-            G.node[node]["times"].extend([t]*len(newWords))
+    # create initial tweet for each user
+    startWords = 20
+    for node in G.nodes():
+        newWords = np.random.choice(vocab, size=startWords, replace=True, p=weights).tolist()
+        G.node[node]["words"] = newWords
+        G.node[node]["times"] = [0]*len(newWords)
 
-        # save data
-        write_data(G,outdir,outfile)
+    # simulate quoter model
+    for t in range(1,T*nx.number_of_nodes(G)):
+        node = random.choice(G.nodes())
+
+        # length of tweet
+        tweetLength = np.random.poisson(lam=3)
+
+        # quote with probability q, provided ego has alters to quote from
+        nbrs = G.predecessors(node) 
+        if random.random() < q and len(nbrs) > 0:
+            # pick a neighbor to quote from (simplifying assumption: uniformly at random from all neighbors)
+            user_copied = random.choice(nbrs)
+
+            # find a valid position in the neighbor's text to quote from
+            words_friend = G.node[user_copied]["words"]
+            numWords_friend = len(words_friend)
+            copy_pos_start = random.choice( list(range(max( 0, numWords_friend-tweetLength))) )
+            copy_pos_end = min( numWords_friend-1, copy_pos_start + tweetLength)
+            newWords = words_friend[copy_pos_start: copy_pos_end]
+            
+        else: # new content
+            newWords = np.random.choice(vocab, size=tweetLength, replace=True, p=weights).tolist()
+
+        G.node[node]["words"].extend(newWords)
+        G.node[node]["times"].extend([t]*len(newWords))
+
+    # save data
+    write_data(G,outdir,outfile)
 
         
 

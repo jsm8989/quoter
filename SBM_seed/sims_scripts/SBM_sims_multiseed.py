@@ -8,7 +8,7 @@ def write_data(G,outdir,outfile):
     """
 
     # compute edge data
-    seeds = [0]
+    seeds = range(10)
     
     sources = []
     targets = []
@@ -60,11 +60,10 @@ if __name__ == "__main__":
 ##    JOBNUM = 0
 ##    NUMJOBS = 1
 
-    N = 600
-##    q_list = np.arange(0,0.21, 0.05)
-    q_list = [0.05]
+    N = 100
+    q_list = np.arange(0,0.21, 0.05)
     T = 1000
-    trials_list = list(range(300,2100))
+    trials_list = list(range(300))
     mu_list = np.arange(0.05,0.51,0.05)
     
     params = []
@@ -76,7 +75,7 @@ if __name__ == "__main__":
     params = [(q,mu,trial) for i,(q,mu,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for q,mu,trial in params:
-        outdir = "../data_vary_q-1800/"
+        outdir = "../data_vary_q-multiseed/"
         outfile = "N%i_mu%0.2f_q%0.2f_T%i_sim%i.txt" % (N,mu,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, outfile)):
             G = make_SBM_simple(N,mu).to_directed()

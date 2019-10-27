@@ -117,7 +117,7 @@ if __name__ == '__main__':
     for name,trial in params:
         outdir = os.path.join("../data/", name)
         outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
-        G0 = read_any(name)
-        G = G0.to_directed()
-        quoter_model_sim(G, q, T, outdir, outfile, write_data)   
+        if not os.path.isfile(os.path.join(outdir,outfile)):
+            G = read_any(name).to_directed()
+            quoter_model_sim(G, q, T, outdir, outfile, write_data)   
 
