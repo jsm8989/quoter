@@ -81,7 +81,8 @@ def write_all_data(G,outdir,outfile):
             C = nx.clustering(H, node)
             f.write("%i %i %i %0.8f\n" % (node,indeg,outdeg,C))
 
-def quoter_model_sim(G,q,T,outdir,outfile,write_data=write_all_data,dunbar=None):
+def quoter_model_sim(G,q,T,outdir,outfile,write_data=write_all_data,dunbar=None,
+                     edge_sample_file=None):
     """ Simulate the quoter model on a graph G. Nodes take turns generating content according to two
         mechanisms: (i) creating new content from a specified vocabulary distribution (ii) quoting
         from a neighbor's past text.
@@ -150,7 +151,10 @@ def quoter_model_sim(G,q,T,outdir,outfile,write_data=write_all_data,dunbar=None)
             G.node[node]["times"].extend([t]*len(newWords))
 
         # save data
-        write_data(G,outdir,outfile)
+        if edge_sample_file:
+            write_data(G,outdir,outfile,edge_sample_file)
+        else:
+            write_data(G,outdir,outfile)
 
         
 

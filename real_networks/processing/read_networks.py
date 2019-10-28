@@ -145,6 +145,7 @@ def read_golden():
     file = "../NETWORKS/GoldenAge/HollywoodGoldenAge_matrix_s0.txt"
     A=np.loadtxt(file)
     G = nx.from_numpy_matrix(A)
+    G.remove_edges_from(G.selfloop_edges())
     return G
 
 

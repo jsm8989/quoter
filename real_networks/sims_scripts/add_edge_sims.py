@@ -7,61 +7,83 @@
 from quoter_model import *
 from read_networks import *
 from make_configMod import *
+from edge_clustering_coeff import *
 import os, sys
 import numpy as np
 import networkx as nx
 
 def create_data_subdirs(datadir, subdirs):
+    """ Create a directory for each real world network in which
+        simulation data is stored.
+
+        datadir (string) = name for root folder of real-world networks data
+        subdirs (list of strings) = list of folder names of each real-world network
+    """
     if not os.path.isdir(datadir):
         os.mkdir(datadir)
-
+        
     for f in subdirs:
         path = os.path.join(datadir,f)
         if not os.path.isdir(path):
             os.mkdir(path)
 
             
-def write_data(G,outdir,outfile):
+def write_data(G,outdir,outfile,edge_sample_file):
     """
         Compute and write data from quoter model simulations.
     """
     # compute edge data
     edges = []
-    for node1 in G.nodes():
-        for node2 in G.nodes():
-            if node1 != node2:
-                edges.append((node1,node2))
-
-    np.random.shuffle(edges)
-    nnodes = nx.number_of_nodes(G)
-    edges = edges[:min(len(edges), 2000)] # 2000 RANDOM EDGES
+    with open(edge_sample_file, "r") as f:
+        for line in f:
+            line = line.rstrip().split()
+            edges.append((int(line[0]), int(line[1])))
     
     quoteProba_list = []
     hx_list = []
     dist_list = []
-    for e in edges: 
-        # compute all cross entropies. e[0] = alter, e[1] = ego 
+    triangles_list = []
+    deg_u_list = []
+    deg_v_list = []
+    ECC_list = []
+
+    H = G.to_undirected()
+    for e in edges:
+        # compute all cross entropies. e[0] = alter, e[1] = ego
+        
         time_tweets_target = words_to_tweets(G.node[e[1]]["words"],G.node[e[1]]["times"])
         time_tweets_source = words_to_tweets(G.node[e[0]]["words"],G.node[e[0]]["times"])
         hx = timeseries_cross_entropy(time_tweets_target, time_tweets_source, please_sanitize=False)
         hx_list.append(hx)
+        
         
         # also record quote probability
         quoteProba = 1/len(G.predecessors(e[1]))
         quoteProba_list.append(quoteProba)
         
         # also record distance between nodes
+        
         try:
             dist = nx.shortest_path_length(G,source=e[0],target=e[1])
         except:
             dist = -1
         dist_list.append(dist)
+        
 
+        # also record edge clustering info
+        triangles, deg_u, deg_v, ECC = edge_clustering_coeff(H,e[0],e[1],return_info=True)
+        triangles_list.append(triangles)
+        deg_u_list.append(deg_u)
+        deg_v_list.append(deg_v)
+        ECC_list.append(ECC) 
+        
     # write edge data
     with open(os.path.join(outdir,outfile), "w") as f:
-        f.write("alter ego quoteProb hx distance\n") # header
+        f.write("alter ego quoteProb hx distance triangles d_u d_v ECC\n") # header
         for i,e in enumerate(edges):
-            f.write("%i %i %0.8f %0.8f %i\n" % (e[0], e[1], quoteProba_list[i], hx_list[i], dist_list[i]))
+            f.write("%i %i %0.8f %0.8f %i %i %i %i %0.4f\n" % (e[0], e[1], quoteProba_list[i], hx_list[i], dist_list[i],
+                                                triangles_list[i], deg_u_list[i], deg_v_list[i], ECC_list[i]))
+
 
     # write edgelist for configuration model
     nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
@@ -122,13 +144,17 @@ if __name__ == '__main__':
     params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for name,trial in params:
-        outdir = os.path.join("../data_clustering/", name)
+        outdir = os.path.join("../data_separate_link-nonlink/data_clustering", name)
         outfile = "EDGE_%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
+        efile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
+        edge_sample_file = os.path.join("../data_separate_link-nonlink/edge_sample", name, efile)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G0 = read_any(name)
             nnodes = nx.number_of_nodes(G0)
             nedges = nx.number_of_edges(G0)
             n = min(int(nedges*0.25),len(list(nx.non_edges(G0))))
             G = add_edges(G0,n).to_directed()
-            quoter_model_sim(G, q, T, outdir, outfile, write_data)
+            quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
+
+
          

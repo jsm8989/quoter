@@ -95,50 +95,53 @@ def SNR(m1,m2,n):
     sample_s = np.sqrt(np.multiply(np.divide(n,n-1),var)) #sqrt( (n/(n-1)) * var)
     return np.divide(m1,sample_s)
     
-data1 = pd.read_csv("sbm_seed_N600_q0.05_tri2100.csv")
-data1_w_SNR = SNR(data1["hx_w"],data1["hx_w2"],data1["n_w"])
-data1_b_SNR = SNR(data1["hx_b"],data1["hx_b2"],data1["n_b"])
-plt.plot(data1["mu"],data1_w_SNR,label=r"$h_x(A|i)$")
-plt.plot(data1["mu"],data1_b_SNR,label=r"$h_x(B|i)$")
-plt.xlabel(r"$\mu$")
-plt.ylabel("SNR")
-plt.legend()
-plt.show()
-
-##data1 = pd.read_csv("sbm_seed_N600_q0.05_tri300.csv")
-##data2 = pd.read_csv("sbm_seed_N600_q0.05_tri600.csv")
-##data3 = pd.read_csv("sbm_seed_N600_q0.05_tri1200.csv")
-##
-##fig = plt.figure(figsize=(10,3))
-##
-##plt.subplot(1,3,1)
-##data1_w_SNR = data1["hx_w"].values
-##plt.plot(data1["mu"],data1["hx_w"],label=r"$h_x(A|i)$")
-##plt.plot(data1["mu"],data1["hx_b"],label=r"$h_x(B|i)$")
+##data1 = pd.read_csv("sbm_seed_N600_q0.05_tri2100.csv")
+##data1_w_SNR = SNR(data1["hx_w"],data1["hx_w2"],data1["n_w"])
+##data1_b_SNR = SNR(data1["hx_b"],data1["hx_b2"],data1["n_b"])
+##plt.plot(data1["mu"],data1_w_SNR,label=r"$h_x(A|i)$")
+##plt.plot(data1["mu"],data1_b_SNR,label=r"$h_x(B|i)$")
 ##plt.xlabel(r"$\mu$")
-##plt.ylabel("Mean cross-entropy")
+##plt.ylabel("SNR")
 ##plt.legend()
-##plt.title(r"300 trials")
-##
-##plt.subplot(1,3,2)
-##plt.plot(data2["mu"],data2["hx_w"],label=r"$h_x(A|i)$")
-##plt.plot(data2["mu"],data2["hx_b"],label=r"$h_x(B|i)$")
-##plt.xlabel(r"$\mu$")
-##plt.ylabel("Mean cross-entropy")
-##plt.legend()
-##plt.title(r"600 trials")
-##
-##plt.subplot(1,3,3)
-##plt.plot(data3["mu"],data3["hx_w"],label=r"$h_x(A|i)$")
-##plt.plot(data3["mu"],data3["hx_b"],label=r"$h_x(B|i)$")
-##plt.xlabel(r"$\mu$")
-##plt.ylabel("Mean cross-entropy")
-##plt.legend()
-##plt.title(r"1200 trials")
-##
-##
-##plt.tight_layout()
 ##plt.show()
+
+data1 = pd.read_csv("../sbm_seed_N600_q0.05_tri300.csv")
+data2 = pd.read_csv("../sbm_seed_N600_q0.05_tri600.csv")
+data3 = pd.read_csv("../sbm_seed_N600_q0.05_tri1200.csv")
+
+fig = plt.figure(figsize=(10,3))
+
+plt.subplot(1,3,1)
+data1_w_SNR = data1["hx_w"].values
+plt.plot(data1["mu"],data1["hx_w"],label=r"$h_x(A|i)$")
+plt.plot(data1["mu"],data1["hx_b"],label=r"$h_x(B|i)$")
+plt.xlabel(r"$\mu$")
+plt.ylabel("Mean cross-entropy")
+plt.ylim([3.3758,3.3786])
+plt.legend()
+plt.title(r"300 trials")
+
+plt.subplot(1,3,2)
+plt.plot(data2["mu"],data2["hx_w"],label=r"$h_x(A|i)$")
+plt.plot(data2["mu"],data2["hx_b"],label=r"$h_x(B|i)$")
+plt.xlabel(r"$\mu$")
+plt.ylabel("Mean cross-entropy")
+plt.ylim([3.3758,3.3786])
+plt.legend()
+plt.title(r"600 trials")
+
+plt.subplot(1,3,3)
+plt.plot(data3["mu"],data3["hx_w"],label=r"$h_x(A|i)$")
+plt.plot(data3["mu"],data3["hx_b"],label=r"$h_x(B|i)$")
+plt.xlabel(r"$\mu$")
+plt.ylabel("Mean cross-entropy")
+plt.ylim([3.3758,3.3786])
+plt.legend()
+plt.title(r"1200 trials")
+
+
+plt.tight_layout()
+plt.show()
 
 
 

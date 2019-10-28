@@ -145,6 +145,7 @@ def read_golden():
     file = "../NETWORKS/GoldenAge/HollywoodGoldenAge_matrix_s0.txt"
     A=np.loadtxt(file)
     G = nx.from_numpy_matrix(A)
+    G.remove_edges_from(G.selfloop_edges())
     return G
 
 
@@ -373,8 +374,6 @@ def read_any(name):
 
     
 if __name__ == "__main__":
-
-
     titles = []
     num_nodes = []
     num_edges = []
@@ -390,7 +389,6 @@ if __name__ == "__main__":
     
     for name in networks_dict:
         print(name)
-        
         G = read_any(name)
         n = nx.number_of_nodes(G)
         e = nx.number_of_edges(G)
