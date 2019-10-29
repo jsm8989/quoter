@@ -1,6 +1,7 @@
 import os, sys
 from make_SBM import *
 from quoter_model import *
+import random
 
 def write_data(G,outdir,outfile):
     """
@@ -8,7 +9,7 @@ def write_data(G,outdir,outfile):
     """
 
     # compute edge data
-    seeds = range(10)
+    seeds = [0] 
     
     sources = []
     targets = []
@@ -16,7 +17,10 @@ def write_data(G,outdir,outfile):
     hx_list = []
     dist_list = []
     for n1 in seeds:
-        for n2 in G.nodes():
+        nA = list(range(1,251))
+        nB = list(range(int(N/2),250+int(N/2)))
+##        for n2 in G.nodes():
+        for n2 in nA + nB:
             if n1 != n2:
                 sources.append(n1)
                 targets.append(n2)
@@ -60,8 +64,9 @@ if __name__ == "__main__":
 ##    JOBNUM = 0
 ##    NUMJOBS = 1
 
-    N = 100
-    q_list = np.arange(0,0.21, 0.05)
+    N = 2000
+    M = 10000
+    q_list = [0.5,0.1,0.9]
     T = 1000
     trials_list = list(range(300))
     mu_list = np.arange(0.05,0.51,0.05)
@@ -75,10 +80,10 @@ if __name__ == "__main__":
     params = [(q,mu,trial) for i,(q,mu,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for q,mu,trial in params:
-        outdir = "../data_vary_q-multiseed/"
-        outfile = "N%i_mu%0.2f_q%0.2f_T%i_sim%i.txt" % (N,mu,q,T,trial)
+        outdir = "../data/"
+        outfile = "N%i_mu%0.2f_M%i_q%0.2f_T%i_sim%i.txt" % (N,mu,M,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, outfile)):
-            G = make_SBM_simple(N,mu).to_directed()
+            G = make_SBM_simple(N,mu,M).to_directed()
             quoter_model_sim(G, q, T, outdir, outfile, write_data)
 
 
