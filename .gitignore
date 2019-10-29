@@ -1,4 +1,5 @@
 data*
 edge_sample
+fileshare(
 __pycache__
 .Rhistory
