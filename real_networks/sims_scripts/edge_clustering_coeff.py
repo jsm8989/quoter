@@ -12,8 +12,8 @@ def edge_clustering_coeff(G,u,v,return_info=False):
     deg_u = len(u_nbrs)
     deg_v = len(v_nbrs)
     
-    if min(deg_u-1,deg_v-1) == 0: # undefined
-        ECC = 2
+    if min(deg_u-1,deg_v-1) == 0: # undefined?
+        ECC = 0
     else:
         ECC = triangles/min(deg_u-1,deg_v-1)
     

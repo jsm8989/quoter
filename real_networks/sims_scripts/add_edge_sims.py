@@ -132,27 +132,30 @@ if __name__ == '__main__':
     
     q = 0.5
     T = 1000
-
     trials_list = list(range(300))
 
+    small_networks = ["CKM physicians"] ## 1 network -- how does number of edges change?
+    epsilon_list = np.arange(0.05,0.41,0.05)
+    
     params = []
     for name in small_networks:
-        for trial in trials_list:
-            params.append((name,trial))
+        for eps in epsilon_list:
+            for trial in trials_list:
+                params.append((name,eps,trial))
             
     #parameters to keep for this job
-    params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
+    params = [(name,eps,trial) for i,(name,eps,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
-    for name,trial in params:
-        outdir = os.path.join("../data_separate_link-nonlink/data_clustering", name)
-        outfile = "EDGE_%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
-        efile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
+    for name,eps,trial in params:
+        outdir = os.path.join("../data_separate_link-nonlink/data_CKM_vary_n-edges", name)
+        outfile = "EDGE_%s_eps%0.2f_q%0.1f_T%i_sim%i.txt" % (name,eps,q,T,trial)
+        efile = "%s_q%0.1f_T%i_sim%i.txt" % (name,0.5,1000,trial)
         edge_sample_file = os.path.join("../data_separate_link-nonlink/edge_sample", name, efile)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G0 = read_any(name)
             nnodes = nx.number_of_nodes(G0)
             nedges = nx.number_of_edges(G0)
-            n = min(int(nedges*0.25),len(list(nx.non_edges(G0))))
+            n = min(int( nedges*eps ),len(list(nx.non_edges(G0))))
             G = add_edges(G0,n).to_directed()
             quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
 

@@ -5,7 +5,7 @@
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
 #PBS -l walltime=12:00:00 
-#PBS -l pmem=2gb,pvmem=2500mb
+#PBS -l pmem=1500mb,pvmem=2gb
 #PBS -N job_addTriangle
 
 cd $HOME/quoter-model-NEW/real_networks/sims_scripts

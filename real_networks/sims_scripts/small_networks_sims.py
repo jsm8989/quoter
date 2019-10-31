@@ -176,7 +176,7 @@ if __name__ == '__main__':
 
     for name,trial in params:
         outdir = os.path.join("../data_separate_link-nonlink/data", name)
-        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
+        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,0.5,1000,trial)
         edge_sample_file = os.path.join("../data_separate_link-nonlink/edge_sample", name, outfile)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G = read_any(name).to_directed()

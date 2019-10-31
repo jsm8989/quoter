@@ -4,10 +4,10 @@
 #PBS -q workq
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
-#PBS -l walltime=12:00:00 
-#PBS -l pmem=1500mb,pvmem=2gb
-#PBS -N job_addEdge
+#PBS -l walltime=14:00:00 
+#PBS -l pmem=3500mb,pvmem=4gb
+#PBS -N jobfile_SBM-conv
 
-cd $HOME/quoter-model-NEW/real_networks/sims_scripts
-python add_edge_sims.py "$PBS_ARRAYID" "${n}"
+cd $HOME/quoter-model-NEW/SBM/sims_scripts
+python SBM_sims-convergence.py "$PBS_ARRAYID" "${n}"
 
