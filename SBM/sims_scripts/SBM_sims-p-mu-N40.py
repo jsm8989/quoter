@@ -81,18 +81,25 @@ if __name__ == "__main__":
 ##    JOBNUM = 0
 ##    NUMJOBS = 1
 
-    N = 2000
-    q_list = [0.5,0.1,0.9]
+##    N = 2000
+##    q_list = [0.5,0.1,0.9]
+##    T = 1000
+##    trials_list = list(range(300))
+##    p = 0.01
+##    mu_list = np.linspace(p/10, p, 10)
+
+    N = 40
+    q = 0.5
     T = 1000
-    trials_list = list(range(300))
-    p = 0.01
-    mu_list = np.linspace(p/10, p, 10) 
+    trials_list = list(range(200))
+    p_list = [0.2,0.4,0.6,0.8]
+    mu_list = [0.2,0.4,0.6,0.8]
     
-    params = itertools.product(q_list,mu_list,trials_list)
+    params = itertools.product(p_list,mu_list,trials_list)
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
-    for q,mu,trial in params:
-        outdir = "../data_sbm-p-mu/"
+    for p,mu,trial in params:
+        outdir = "../data_sbm-p-mu-N40/"
         outfile = "N%i_p%0.3f_mu%0.4f_q%0.2f_T%i_sim%i.txt" % (N,p,mu,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, outfile)):
             G = make_SBM3(N,p,mu).to_directed()

@@ -69,6 +69,7 @@ if __name__ == '__main__':
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for graph,k,trial in params:
+        k = int(k)
         outdir = "../data/"
         outfile = "%s_k%i_q%0.1f_T%i_sim%i.txt" % (graph,k,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, "edge", outfile)): # avoid re-doing & overwriting

@@ -6,8 +6,8 @@
 # (Jobs run more quickly the less resources they require)
 #PBS -l walltime=12:00:00 
 #PBS -l pmem=1500mb,pvmem=2gb
-#PBS -N jobfile_SBM
+#PBS -N job_SBM2000
 
 cd $HOME/quoter-model-NEW/SBM-NEW/sims_scripts
-python SBM_sims-p-mu.py "$PBS_ARRAYID" "${n}"
+python SBM_sims-p-mu-N2000.py "$PBS_ARRAYID" "${n}"
 
