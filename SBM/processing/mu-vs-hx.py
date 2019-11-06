@@ -54,9 +54,9 @@ def SNR(m1,m2,n):
     return np.divide(m1,sample_s)
     
 
-##data1 = pd.read_csv("sbm_q0.1.csv")
-##data2 = pd.read_csv("sbm_q0.5.csv")
-##data3 = pd.read_csv("sbm_q0.9.csv")
+##data1 = pd.read_csv("sbm_q0.10.csv")
+##data2 = pd.read_csv("sbm_q0.50.csv")
+##data3 = pd.read_csv("sbm_q0.90.csv")
 ##
 ##fig = plt.figure(figsize=(10,3))
 ##

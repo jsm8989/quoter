@@ -28,7 +28,7 @@ if __name__ == "__main__":
     G = nx.Graph()
     G.add_edges_from([(1,2),(1,4),(1,5),(1,6),(2,3),(3,4),(3,5),(3,6),
                       (4,5),(4,6),(5,6)])
-    print(ECC(G,1,4))
+    print(edge_clustering_coeff(G,1,4))
     pos = nx.spring_layout(G)
     labels=nx.draw_networkx_labels(G,pos)
     nx.draw(G,pos)

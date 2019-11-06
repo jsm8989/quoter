@@ -190,9 +190,9 @@ trials_list = list(range(300))
 
 
 ### ADDING EDGES VS TRIANGLES
-##df1 = pd.read_csv("real_networks-links_only.csv")
-##df2 = pd.read_csv("real_networks-links_only-EDGE.csv")
-##df3 = pd.read_csv("real_networks-links_only-TRIANGLE.csv")
+df1 = pd.read_csv("real_networks-links_only.csv")
+df2 = pd.read_csv("real_networks-links_only-EDGE.csv")
+df3 = pd.read_csv("real_networks-links_only-TRIANGLE.csv")
 
 ### just EDGE vs TRIANGLE
 ##for i in range(len(df1["network"].values)):
@@ -217,41 +217,41 @@ trials_list = list(range(300))
 
 
 ### EDGE vs TRIANGLE vs original real network
-##c1 = "ko"
-##c2 = "co"
-##c3 = "ro"
-##for i in range(len(df1["network"].values)):
-##    t1 = df1["transitivity"].values[i]
-##    t2 = df2["transitivity"].values[i]
-##    t3 = df3["transitivity"].values[i]
-##    h1 = df1["average_hx"].values[i]
-##    h2 = df2["average_hx"].values[i]
-##    h3 = df3["average_hx"].values[i]
-##    plt.plot(t1,h1,c1)
-##    plt.plot(t2,h2,c2)
-##    plt.plot(t3,h3,c3)
-##
-##    plt.plot([t2,t1,t3],[h2,h1,h3],"k-")
+c1 = "ko"
+c2 = "co"
+c3 = "ro"
+for i in range(len(df1["network"].values)):
+    t1 = df1["transitivity"].values[i]
+    t2 = df2["transitivity"].values[i]
+    t3 = df3["transitivity"].values[i]
+    h1 = df1["average_hx"].values[i]
+    h2 = df2["average_hx"].values[i]
+    h3 = df3["average_hx"].values[i]
+    plt.plot(t1,h1,c1)
+    plt.plot(t2,h2,c2)
+    plt.plot(t3,h3,c3)
+
+    plt.plot([t2,t1,t3],[h2,h1,h3],"k-")
+    
+##    z = sorted(zip([t1,t2,t3],[h1,h2,h3],[c1,c2,c3]), key = lambda x: x[0])
+##    z = list(zip(*z))
+    
+##    plt.plot(z[0][0],z[1][0],z[2][0])
+##    plt.plot(z[0][1],z[1][1],z[2][1])
+##    plt.plot(z[0][2],z[1][2],z[2][2])
 ##    
-####    z = sorted(zip([t1,t2,t3],[h1,h2,h3],[c1,c2,c3]), key = lambda x: x[0])
-####    z = list(zip(*z))
-##    
-####    plt.plot(z[0][0],z[1][0],z[2][0])
-####    plt.plot(z[0][1],z[1][1],z[2][1])
-####    plt.plot(z[0][2],z[1][2],z[2][2])
-####    
-####    plt.plot([z[0][0],z[0][1],z[0][2]],[z[1][0],z[1][1],z[1][2]],"k--")
-##    
-##label1 = mlines.Line2D([], [], color='black', marker='o', linestyle='None',
-##                          markersize=6, label='Real network')
-##label2 = mlines.Line2D([], [], color='cyan', marker='o', linestyle='None',
-##                          markersize=6, label='Edge added randomly')
-##label3 = mlines.Line2D([], [], color='red', marker='o', linestyle='None',
-##                          markersize=6, label='Triangle completion')
-##plt.legend(handles=[label1,label2,label3])
-##plt.xlabel("Transitivity")
-##plt.ylabel("Cross-entropy")
-##plt.show()
+##    plt.plot([z[0][0],z[0][1],z[0][2]],[z[1][0],z[1][1],z[1][2]],"k--")
+    
+label1 = mlines.Line2D([], [], color='black', marker='o', linestyle='None',
+                          markersize=6, label='Real network')
+label2 = mlines.Line2D([], [], color='cyan', marker='o', linestyle='None',
+                          markersize=6, label='Edge added randomly')
+label3 = mlines.Line2D([], [], color='red', marker='o', linestyle='None',
+                          markersize=6, label='Triangle completion')
+plt.legend(handles=[label1,label2,label3])
+plt.xlabel("Transitivity")
+plt.ylabel("Cross-entropy")
+plt.show()
 
 
 

@@ -84,6 +84,31 @@ def make_SBM_simple(N,mu,M):
     return G
 
 
+def make_SBM3(N,p,mu):
+    """
+        Another version of SBM. This is a special case of the general SBM,
+        in which there are two blocks of equal size and only two unique
+        connection probabilities: p (within block) and mu (between block).
+    """
+    m = int(N/2)
+    A = range(0,m)
+    B = range(m,N)
+    
+    # edges between
+    eb = itertools.product(A,B)
+    eb = [e for e in eb if random.random() < mu]
+
+    # edges within
+    ew = list(itertools.combinations(A,2)) + list(itertools.combinations(B,2))
+    ew = [e for e in ew if random.random() < p]
+
+    G = nx.Graph()
+    G.add_nodes_from(range(N))
+    G.add_edges_from(eb + ew)
+
+    return G
+
+
 if __name__ == "__main__":
     pass
 ##    N=100
@@ -117,10 +142,32 @@ if __name__ == "__main__":
 ##    nx.draw(G)
 ##    plt.show()
 
+    N = 2000
+    m = int(N/2)
+    A = range(0,m)
+    B = range(m,N)
+    p = .01
+    mu = .01/10
+    print(nx.density(make_SBM3(N,p,mu)))
+##    mu_list = np.linspace(p/10, p, 10)
+##    cc = []
+##    for mu in mu_list:
+##        cc_trial = []
+##        for trial in range(5):
+##            print(mu,trial)
+##            G = make_SBM3(N,p,mu)
+##            cc_trial.append(nx.number_connected_components(G))
+##        cc.append(np.mean(cc_trial))
+##    print(cc)
+##    G = make_SBM_simple(N,0.1,10000)
+##    print(sum(list(nx.triangles(G).values()))/3)
 
+    # the expected number of triangles contained entirely within either block is
+    # 2*nCr(m,3)*(dW*(1-mu))^3       where dW = M/(m*(m-1))
 
-
-
+    # the expected number of triangles which cross the 'cut' is
+    # 2*nCr(m,2)*m*(dW*(1-mu))*(dB*mu)^2        where dB = M/m^2
+    
 
 
 
