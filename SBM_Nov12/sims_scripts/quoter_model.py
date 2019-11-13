@@ -37,7 +37,7 @@ def write_all_data(G,outdir,outfile):
         G[e[0]][e[1]]["quoteProb"] = 1/len(G.predecessors(e[1]))
         
     # graph skeleton for calculating clustering, transitivity, ASPL, etc.
-    H = G.to_undirected()
+    H = G.to_undirected(as_view=True)
 
     # compute graph data
     nnodes = nx.number_of_nodes(H)
@@ -47,24 +47,24 @@ def write_all_data(G,outdir,outfile):
     outdegs = list(G.out_degree(G.nodes()).values())
     ccs = sorted(nx.connected_components(H), key=len, reverse=True)
 
-    try: # error is raised if graph is disconnected
-        avg_shortest_path = nx.average_shortest_path_length(H)
-    except:
-        avg_shortest_path = 0
+##    try: # error is raised if graph is disconnected
+##        avg_shortest_path = nx.average_shortest_path_length(H)
+##    except:
+##        avg_shortest_path = 0
     
     data_tuple = (nnodes,nedges,dens,np.mean(indegs), np.min(indegs), np.max(indegs),
                       np.min(outdegs), np.max(outdegs), nx.transitivity(H), nx.average_clustering(H),
-                      avg_shortest_path, nx.degree_assortativity_coefficient(H), 
+                    nx.degree_assortativity_coefficient(H), 
                     len(ccs), len(ccs[0])) # note avg_in == avg_out, so we only need to record one
 
     # write graph data
     with open(outdir + "graph/" + outfile, "w") as f:
         f.write("nodes edges density average_degree min_indegree max_indegree " +
                 "min_outdegree max_outdegree transitivity average_clustering " +
-                "average_shortest_path_length assortativity " +
+                "length assortativity " +
                 "number_of_components largest_component\n") # header
         
-        f.write("%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %0.8f %i %i" % data_tuple)
+        f.write("%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i" % data_tuple)
 
     # write edge data
     with open(outdir + "edge/" + outfile, "w") as f:

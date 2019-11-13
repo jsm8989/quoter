@@ -4,8 +4,8 @@
 #PBS -q workq
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
-#PBS -l walltime=12:00:00 
-#PBS -l pmem=1gb,pvmem=1700mb
+#PBS -l walltime=18:00:00 
+#PBS -l pmem=2500mb,pvmem=3gb
 #PBS -N job_SBM
 
 cd $HOME/quoter-model-NEW/SBM_Nov12/sims_scripts

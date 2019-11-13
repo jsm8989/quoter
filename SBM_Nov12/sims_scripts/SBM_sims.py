@@ -83,7 +83,7 @@ def write_data(G,outdir,outfile):
         
     # write edge data
     with open(outdir + "edge/" + outfile, "w") as f:
-        f.write("alter ego quoteProb triangles alter_deg ego_deg\n") # header
+        f.write("alter ego quoteProb hx triangles alter_deg ego_deg\n") # header
         for i in range(len(targets)):
             f.write("%i %i %0.8f %0.8f %i %i %i\n" % (sources[i],targets[i],quoteProba_list[i], hx_list[i],
                                              triangles_list[i], deg0_list[i], deg1_list[i]))
@@ -153,7 +153,8 @@ if __name__ == "__main__":
         outdir = "../data/"
         outfile = "N%i_p%0.3f_mu%0.4f_q%0.2f_T%i_sim%i.txt" % (N,p,mu,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, "edge/", outfile)):
-            G = make_SBM3(N,p,mu).to_directed()
+            G0 = make_SBM3(N,p,mu)
+            G = nx.DiGraph(G0) # convert to directed
             quoter_model_sim(G, q, T, outdir, outfile, write_data)
 
 

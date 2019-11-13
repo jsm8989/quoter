@@ -115,7 +115,7 @@ def make_SBM3(N,p,mu):
     eb = [e for e in eb if random.random() < mu]
 
     # edges within
-    ew = list(itertools.combinations(A,2)) + list(itertools.combinations(B,2))
+    ew = itertools.chain(itertools.combinations(A,2),itertools.combinations(B,2))
     ew = [e for e in ew if random.random() < p]
 
     G = nx.Graph()

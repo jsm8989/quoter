@@ -7,7 +7,7 @@ from itertools import product
 # Code is not my own
 #Source: https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py
 
-def get_modularity(network, community_dict):
+def get_modularity(G, community_dict):
     '''
     Calculate the modularity. Edge weights are ignored.
     Undirected:
@@ -28,8 +28,6 @@ def get_modularity(network, community_dict):
     '''
 
     Q = 0
-    G = network.copy()
-##    nx.set_edge_attributes(G, {e:1 for e in G.edges}, 'weight')
     A = nx.to_scipy_sparse_matrix(G).astype(float)
 
     if type(G) == nx.Graph:

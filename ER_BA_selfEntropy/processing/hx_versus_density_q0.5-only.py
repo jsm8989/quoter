@@ -3,16 +3,16 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-N = 1000
+N = 100
 q_list = [0.5]
 T = 1000
 trials_list = list(range(200))
 
-##param_list = np.arange(10,51,10) # for ER
-param_list = [5,10,15,20,26] # for BA
+param_list = np.arange(5,51,5) # for ER
+##param_list = [ 3,  5,  8, 11, 15, 18, 23, 28, 34, 50] # for BA
 
-ERparam = np.arange(10,51,10) # for ER
-BAparam = [5,10,15,20,26] # for BA
+ERparam =  np.arange(5,51,5) # for ER
+BAparam = [ 3,  5,  8, 11, 15, 18, 23, 28, 34, 50] # for BA
 BAparam = [2*m - 2*m**2/N for m in BAparam]
 
 
@@ -126,7 +126,6 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ##plt.tight_layout()
 ##plt.show()
 
-
 # PLOT: AVERAGE NODE ENTROPY VS AVERAGE CROSS-ENTROPY
 ##plt.plot(ERH["h_avg"],ER["hx_avg"],'ko',label="ER")
 ##plt.plot(BAH["h_avg"],BA["hx_avg"],'ro',label="BA")
@@ -134,7 +133,6 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ##plt.ylabel("Average cross-entropy")
 ##plt.legend()
 ##plt.show()
-
 
 # PLOT: Stdev (or variance) of entropy vs density
 ER = pd.read_csv("hx_ER_q0.5.csv")
@@ -146,5 +144,4 @@ plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel("Cross-entropy standard deviation")
 plt.legend()
 plt.show()
-
 
