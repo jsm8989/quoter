@@ -15,13 +15,22 @@ import collections
 
 def make_star(k):
     """ important: 0 is the center, k neighbors (k+1 vertices in total) """
-    G = nx.Graph()
-    G.add_edges_from([(0,i) for i in range(1,k+1)])
+    G = nx.DiGraph()
+    G.add_edges_from([(i,0) for i in range(1,k+1)])
     return G
 
 def make_clique(k):
     """ k neighbors (k+1 vertices in total) """
-    G = nx.complete_graph(k+1)
+    G = nx.DiGraph()
+
+    # star part, edges only in 1 direction
+    G.add_edges_from([(i,0) for i in range(1,k+1)])
+
+    # clique part (bidirectional)
+    edges1 = set(itertools.combinations(range(1,k+1),2))
+    edges2 = set(e[::-1] for e in edges1)
+    G.add_edges_from(edges1 | edges2)
+    
     return G
 
 def write_data(G,outdir,outfile):
@@ -39,8 +48,6 @@ def write_data(G,outdir,outfile):
             total_matches += sum(matches)
         data.append([t,len(quote),total_matches])
 
-    print(target["quote_times"],data)
-
     with open(os.path.join(outdir,outfile),"w") as f:
         f.write("time quote_length total_matches\n")
         for line in data:
@@ -57,11 +64,12 @@ if __name__ == '__main__':
 ##    NUMJOBS = 1
 ##    k_list = [2,3,4]
     
-    k_list = np.round(np.logspace(0,3,21)[1:])
+##    k_list = np.round(np.logspace(0,3,21)[1:])
+    k_list = list(range(90,101))
     graph_dict = {"star": make_star, "clique": make_clique}
     q = 0.5
     T = 1000
-    trials_list = list(range(200))
+    trials_list = list(range(2000))
 
     params = itertools.product( list(graph_dict.keys()), k_list, trials_list )
 
@@ -70,10 +78,11 @@ if __name__ == '__main__':
 
     for graph,k,trial in params:
         k = int(k)
-        outdir = "../data/"
+        outdir = "../data-largek/"
         outfile = "%s_k%i_q%0.1f_T%i_sim%i.txt" % (graph,k,q,T,trial)
-        if not os.path.isfile(os.path.join(outdir, "edge", outfile)): # avoid re-doing & overwriting
-            G = graph_dict[graph](k).to_directed()
+        if not os.path.isfile(os.path.join(outdir, outfile)): # avoid re-doing & overwriting
+##            G = graph_dict[graph](k).to_directed()
+            G = graph_dict[graph](k)
             quoter_model_sim(G, q, T, outdir, outfile, write_data)
 
 

@@ -45,7 +45,6 @@ def make_SBM_general(sizes,p,return_blocks=False):
                             A[node1,node2] = A[node2,node1] = 1
                             G.add_edge(node1,node2)
 
-    print(nx.number_of_nodes(G))
     if return_blocks:
         return G, blocks
     else:
@@ -124,6 +123,30 @@ def make_SBM3(N,p,mu):
 
     return G
 
+def make_SBM3_oldDens(N,p,mu):
+    """
+        Another version of SBM. This is a special case of the general SBM,
+        in which there are two blocks of equal size and only two unique
+        connection probabilities: p (within block) and mu (between block).
+    """
+    m = int(N/2)
+    A = range(0,m)
+    B = range(m,N)
+    
+    # edges between
+    eb = itertools.product(A,B)
+    eb = [e for e in eb if random.random() < mu]
+
+    # edges within
+    p = 2*p-p**2
+    ew = list(itertools.combinations(A,2)) + list(itertools.combinations(B,2))
+    ew = [e for e in ew if random.random() < p]
+
+    G = nx.Graph()
+    G.add_nodes_from(range(N))
+    G.add_edges_from(eb + ew)
+
+    return G
 
 if __name__ == "__main__":
     pass

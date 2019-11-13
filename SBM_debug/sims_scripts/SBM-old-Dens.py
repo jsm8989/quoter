@@ -20,16 +20,14 @@ def write_data(G,outdir,outfile):
     W_edges = W_all & edges
     W_nonedges = W_all - W_edges
     W_edges_sample = random.sample(W_edges,min(250,len(W_edges)))
-    W_nonedges_sample = random.sample(W_nonedges,min(250,len(W_nonedges)))
 
     # edges between
     B_all = set(itertools.product(A,B))
     B_edges = B_all & edges
     B_nonedges = B_all - B_edges
     B_edges_sample = random.sample(B_edges,min(250,len(B_edges)))
-    B_nonedges_sample = random.sample(B_nonedges,min(250,len(B_nonedges)))
 
-    full_sample = W_edges_sample + W_nonedges_sample + B_edges_sample + B_nonedges_sample
+    full_sample = W_edges_sample + B_edges_sample 
     
     sources = []
     targets = []
@@ -91,7 +89,7 @@ if __name__ == "__main__":
     N = 40
     q = 0.5
     T = 1000
-    trials_list = list(range(200))
+    trials_list = list(range(50))
     p_list = [0.2,0.4,0.6,0.8]
     mu_list = [0.2,0.4,0.6,0.8]
     
@@ -99,10 +97,10 @@ if __name__ == "__main__":
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for p,mu,trial in params:
-        outdir = "../data_sbm-p-mu-N40-fixed/"
+        outdir = "../data-old-Dens/"
         outfile = "N%i_p%0.3f_mu%0.4f_q%0.2f_T%i_sim%i.txt" % (N,p,mu,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, outfile)):
-            G = make_SBM3(N,p,mu).to_directed()
+            G = make_SBM3_oldDens(N,p,mu).to_directed()
             quoter_model_sim(G, q, T, outdir, outfile, write_data)
 
 
