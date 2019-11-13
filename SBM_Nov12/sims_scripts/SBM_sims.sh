@@ -5,8 +5,9 @@
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
 #PBS -l walltime=12:00:00 
-#PBS -l pmem=800mb,pvmem=1500mb
-#PBS -N job_scaling
+#PBS -l pmem=1gb,pvmem=1700mb
+#PBS -N job_SBM
 
-cd $HOME/quoter-model-NEW/scaling_complex/sims_scripts
-python scaling_sims.py "$PBS_ARRAYID" "${n}"
+cd $HOME/quoter-model-NEW/SBM_Nov12/sims_scripts
+python SBM_sims.py "$PBS_ARRAYID" "${n}"
+

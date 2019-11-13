@@ -65,7 +65,7 @@ if __name__ == '__main__':
 ##    k_list = [2,3,4]
     
 ##    k_list = np.round(np.logspace(0,3,21)[1:])
-    k_list = list(range(90,101))
+    k_list = [1000]
     graph_dict = {"star": make_star, "clique": make_clique}
     q = 0.5
     T = 1000
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 
     for graph,k,trial in params:
         k = int(k)
-        outdir = "../data-largek/"
+        outdir = "../data-k1000/"
         outfile = "%s_k%i_q%0.1f_T%i_sim%i.txt" % (graph,k,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, outfile)): # avoid re-doing & overwriting
 ##            G = graph_dict[graph](k).to_directed()
