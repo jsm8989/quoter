@@ -62,43 +62,49 @@ data = pd.read_csv("scaling-smallk.csv") # get k=1,10
 data2 = pd.read_csv("scaling-largek.csv") # get k=100
 data3 = pd.read_csv("scaling-k1000.csv") # get k=1000
 
-ql = 5
-star1 = data.loc[(data["ego_degree"] == 1) & (data["graph"]=="star") & (data["quote_length"]==ql)]
-clique1 = data.loc[(data["ego_degree"] == 1) & (data["graph"]=="clique") & (data["quote_length"]==ql)]
-star10 = data.loc[(data["ego_degree"] == 10) & (data["graph"]=="star") & (data["quote_length"]==ql)]
-clique10 = data.loc[(data["ego_degree"] == 10) & (data["graph"]=="clique") & (data["quote_length"]==ql)]
-star100 = data2.loc[(data2["ego_degree"] == 100) & (data2["graph"]=="star") & (data2["quote_length"]==ql)]
-clique100 = data2.loc[(data2["ego_degree"] == 100) & (data2["graph"]=="clique") & (data2["quote_length"]==ql)]
-star1000 = data3.loc[(data3["ego_degree"] == 1000) & (data3["graph"]=="star") & (data3["quote_length"]==ql)]
-clique1000 = data3.loc[(data3["ego_degree"] == 1000) & (data3["graph"]=="clique") & (data3["quote_length"]==ql)]
+fig, ax = plt.subplots(1,5,figsize=(11,4))
+for i,ql in enumerate([2,4,6,8,10]):
+    star1 = data.loc[(data["ego_degree"] == 1) & (data["graph"]=="star") & (data["quote_length"]==ql)]
+    clique1 = data.loc[(data["ego_degree"] == 1) & (data["graph"]=="clique") & (data["quote_length"]==ql)]
+    star10 = data.loc[(data["ego_degree"] == 10) & (data["graph"]=="star") & (data["quote_length"]==ql)]
+    clique10 = data.loc[(data["ego_degree"] == 10) & (data["graph"]=="clique") & (data["quote_length"]==ql)]
+    star100 = data2.loc[(data2["ego_degree"] == 100) & (data2["graph"]=="star") & (data2["quote_length"]==ql)]
+    clique100 = data2.loc[(data2["ego_degree"] == 100) & (data2["graph"]=="clique") & (data2["quote_length"]==ql)]
+    star1000 = data3.loc[(data3["ego_degree"] == 1000) & (data3["graph"]=="star") & (data3["quote_length"]==ql)]
+    clique1000 = data3.loc[(data3["ego_degree"] == 1000) & (data3["graph"]=="clique") & (data3["quote_length"]==ql)]
 
-stardeg = np.concatenate([star1["ego_degree"].values,
-                          star10["ego_degree"].values,
-                          star100["ego_degree"].values,
-                          star1000["ego_degree"].values])
-starmat = np.concatenate([star1["total_matches"].values,
-                          star10["total_matches"].values,
-                          star100["total_matches"].values,
-                          star1000["total_matches"].values])
-cliquedeg = np.concatenate([star1["ego_degree"].values,
-                          star10["ego_degree"].values,
-                          star100["ego_degree"].values,
-                          star1000["ego_degree"].values])
-cliquemat = np.concatenate([clique1["total_matches"].values,
-                          clique10["total_matches"].values,
-                          clique100["total_matches"].values,
-                          clique1000["total_matches"].values])
-starmat = np.divide(starmat,[1,10,100,1000])
-cliquemat = np.divide(cliquemat,[1,10,100,1000])
-##plt.plot(star1["ego_degree"],star1["total_matches"],'o-',label="star")
-##plt.plot(clique["ego_degree"],clique["total_matches"],'o-',label="clique")
-plt.plot(stardeg,starmat,'o-',label="star")
-plt.plot(cliquedeg,cliquemat,'o-',label="clique")
-plt.legend()
-plt.xlabel("ego degree")
-plt.ylabel("total matches (average per trial)")
-plt.xscale('log')
-##plt.yscale('log')
+    stardeg = np.concatenate([star1["ego_degree"].values,
+                              star10["ego_degree"].values,
+                              star100["ego_degree"].values,
+                              star1000["ego_degree"].values])
+    starmat = np.concatenate([star1["total_matches"].values,
+                              star10["total_matches"].values,
+                              star100["total_matches"].values,
+                              star1000["total_matches"].values])
+    cliquedeg = np.concatenate([star1["ego_degree"].values,
+                              star10["ego_degree"].values,
+                              star100["ego_degree"].values,
+                              star1000["ego_degree"].values])
+    cliquemat = np.concatenate([clique1["total_matches"].values,
+                              clique10["total_matches"].values,
+                              clique100["total_matches"].values,
+                              clique1000["total_matches"].values])
+##    starmat = np.divide(starmat,[1,10,100,1000])
+##    cliquemat = np.divide(cliquemat,[1,10,100,1000])
+    ##plt.plot(star1["ego_degree"],star1["total_matches"],'o-',label="star")
+    ##plt.plot(clique["ego_degree"],clique["total_matches"],'o-',label="clique")
+    plt.sca(ax[i])
+    plt.plot(stardeg,starmat,'o-',label="star")
+    plt.plot(cliquedeg,cliquemat,'o-',label="clique")
+    if i == 0:
+        plt.legend()
+        plt.ylabel("total matches (average per trial)")
+    plt.xlabel("ego degree")
+##    plt.xscale('log')
+##    plt.yscale('log')
+    plt.title("QL = %i" % ql)
+
+plt.tight_layout()
 plt.show()
 
 

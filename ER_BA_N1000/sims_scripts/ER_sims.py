@@ -26,7 +26,7 @@ if __name__ == '__main__':
     q = 0.5
     T = 1000
 
-    k_list = np.arange(10,51,10)
+    k_list = np.arange(2,51,2)
     trials_list = list(range(200))
     
     params = itertools.product(k_list,trials_list)

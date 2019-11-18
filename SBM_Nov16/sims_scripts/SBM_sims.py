@@ -19,38 +19,14 @@ def write_data(G,outdir,outfile):
     A = range(0,m)
     B = range(m,N)
     
-    edges = list(G.edges())
-    random.shuffle(edges)
-
-    w_sample = list()
-    i = 0
-    while len(w_sample) < 250:
-        e = edges[i]
-        if (e[0] in A and e[1] in A) or (e[0] in B and e[1] in B):
-            w_sample.append(e)
-        i += 1
-
-    b_sample = list()
-    i = 0
-    while len(b_sample) < 250:
-        e = edges[i]
-        if (e[0] in A and e[1] in A) or (e[0] in B and e[1] in B):
-            pass
-        else:
-            b_sample.append(e)
-        i += 1
-
-    full_sample = w_sample + b_sample
-    
     sources = []
     targets = []
     quoteProba_list = []
     hx_list = []
-##    dist_list = []
     triangles_list = []
     deg0_list = []
     deg1_list = []
-    for e in full_sample:
+    for e in [(0,1),(0,m)]:
         s = e[0]
         t = e[1]
         sources.append(s)
@@ -67,13 +43,6 @@ def write_data(G,outdir,outfile):
         else:
             quoteProba = 0
         quoteProba_list.append(quoteProba)
-
-##        # also record distance between nodes
-##        try:
-##            dist = nx.shortest_path_length(G,source=s,target=t)
-##        except:
-##            dist = 0
-##        dist_list.append(dist)
         
         # also record edge embeddeness & edge clustering coefficient
         triangles, deg0, deg1, _ = edge_clustering_coeff(H,e[0],e[1],return_info=True)
@@ -114,19 +83,13 @@ def write_data(G,outdir,outfile):
 
     # write node data
     with open(outdir + "node/" + outfile, "w") as f:
-        f.write("node indegree outdegree C h\n") # header
+        f.write("node indegree outdegree C\n") # header
         for node in G.nodes():
-            time_tweets_target = words_to_tweets(G.node[node]["words"],G.node[node]["times"])
-            time_tweets_source = words_to_tweets(G.node[node]["words"],G.node[node]["times"])
-            h = timeseries_cross_entropy(time_tweets_target, time_tweets_source, please_sanitize=False)
             indeg = G.in_degree(node)
             outdeg = G.out_degree(node)
             C = nx.clustering(H, node)
-            f.write("%i %i %i %0.8f %0.8f\n" % (node,indeg,outdeg,C,h))
+            f.write("%i %i %i %0.8f\n" % (node,indeg,outdeg,C))
             
-##    # write edgelist for SBM
-##    nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
-
 
 
 if __name__ == "__main__":
@@ -142,18 +105,25 @@ if __name__ == "__main__":
     N = 1000
     q = 0.5
     T = 1000
+    p = 0.4
+    # Mathematica code to generate this sequence:
+    # Reverse[Table[\[Mu] /. NSolve[q[0.4, \[Mu], 1000] == K, \[Mu]], {K, 
+    # 0.00, 0.40, 0.025}]]
+    mu_seq = [0.0444, 0.0570857, 0.0705176, 0.0847636, 0.0999,
+              0.116013, 0.1332, 0.151572, 0.171257, 0.1924, 0.215169,
+              0.23976, 0.2664, 0.295357, 0.326945, 0.361543, 0.3996]
     trials_list = list(range(1000))
-    p_list = np.arange(0.1,0.71,0.1)
-    mu_list = [0.15,0.3,0.45,0.6]
     
-    params = itertools.product(p_list,mu_list,trials_list)
+    params = itertools.product(mu_seq,trials_list)
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
-    for p,mu,trial in params:
-        outdir = "../data-Nov13/"
-        outfile = "N%i_p%0.3f_mu%0.4f_q%0.2f_T%i_sim%i.txt" % (N,p,mu,q,T,trial)
+    for mu,trial in params:
+        outdir = "../data-Nov16/"
+        outfile = "N%i_p%0.2f_mu%0.4f_q%0.2f_T%i_sim%i.txt" % (N,p,mu,q,T,trial)
+
+        elist = "edgelist/N%i_p%0.2f_mu%0.4f_trial%i.txt" % (N,p,mu,trial)
         if not os.path.isfile(os.path.join(outdir, "edge/", outfile)):
-            G0 = make_SBM3(N,p,mu)
+            G0 = nx.read_edgelist(elist, delimiter=" ", nodetype=int, data=False)
             G = nx.DiGraph(G0) # convert to directed
             quoter_model_sim(G, q, T, outdir, outfile, write_data)
 

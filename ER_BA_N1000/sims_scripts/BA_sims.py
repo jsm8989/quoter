@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # this whole block here is just to find 'm' such that the ACTUAL average
     # degree (2m-2m^2/N) is actually close to the DESIRED average degree. 
     # We could just loop over all 'actual k', but that would take longer
-    desired_k = np.arange(10,51,10)
+    desired_k = np.arange(2,51,2)
     m_list = np.arange(1,50.1,1) # candidate 'm's
     actual_k = [2*m-2*m**2/N for m in m_list] # actual degree for each candidate 'm'
     # for each desired k, find index of 'm' in m_list which has closest actual k
