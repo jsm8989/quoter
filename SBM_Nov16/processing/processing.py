@@ -6,16 +6,19 @@ import sys
 
 N = 1000
 m = N//2 
-q=0.5
+q=0.9
 T=1000
 p = 0.4
 mu_seq = [0.0444, 0.0570857, 0.0705176, 0.0847636, 0.0999,
               0.116013, 0.1332, 0.151572, 0.171257, 0.1924, 0.215169,
               0.23976, 0.2664, 0.295357, 0.326945, 0.361543, 0.3996]
-trials_list = list(range(1000))
+##trials_list = list(range(1000))
+trials_list = list(range(500))
 
-##W = np.zeros(len(mu_seq))
-##B = np.zeros(len(mu_seq))
+##W_avg = np.zeros(len(mu_seq))
+##B_avg = np.zeros(len(mu_seq))
+##W_var = np.zeros(len(mu_seq))
+##B_var = np.zeros(len(mu_seq))
 ##for i,mu in enumerate(mu_seq):
 ##    hx_w = []
 ##    hx_b = []
@@ -40,10 +43,13 @@ trials_list = list(range(1000))
 ####            hx_b.extend(edata["hx"].loc[(edata["ego"].isin(block1)) & (edata["alter"].isin(block2))].values)
 ####            hx_b.extend(edata["hx"].loc[(edata["ego"].isin(block2)) & (edata["alter"].isin(block1))].values)
 ##
-##    W[i] = np.mean(hx_w)
-##    B[i] = np.mean(hx_b)
-##
-##df = pd.DataFrame({"mu":mu_seq,"hx_w":W,"hx_b":B})
+##    W_avg[i] = np.mean(hx_w)
+##    B_avg[i] = np.mean(hx_b)
+##    W_var[i] = np.var(hx_w)
+##    B_var[i] = np.var(hx_b)
+##    
+##df = pd.DataFrame({"mu":mu_seq,"hx_w_avg":W_avg,"hx_b_avg":B_avg,
+##                   "hx_w_var":W_var,"hx_b_var":B_var})
 ##df = df.to_csv("sbm_q%0.2f.csv" % q, index=False)
 
 
@@ -52,11 +58,14 @@ trials_list = list(range(1000))
 ## PLOT
 data =  pd.read_csv("sbm_q%0.2f.csv" % q)
 print(data)
-plt.plot(data["mu"],data["hx_w"],label="within")
-plt.plot(data["mu"],data["hx_b"],label="between")
+mod_list = np.arange(0,0.41,0.025)
+##plt.plot(data["mu"],data["hx_w_var"],label="within")
+##plt.plot(data["mu"],data["hx_b_var"],label="between")
+plt.plot(mod_list,data["hx_w_var"],label="within")
+plt.plot(mod_list,data["hx_b_var"],label="between")
 plt.legend()
-plt.xlabel(r"$\mu$")
-plt.ylabel("Average cross-entropy")
+plt.xlabel(r"Modularity, $Q$")
+plt.ylabel("Variance of cross-entropy")
 plt.show()
 
 
