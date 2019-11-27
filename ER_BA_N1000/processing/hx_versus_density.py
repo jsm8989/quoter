@@ -183,5 +183,3 @@ plt.ylabel("Cross-entropy standard deviation")
 plt.xlabel(r"$\langle k \rangle$")
 plt.legend()
 plt.show()
-
-
