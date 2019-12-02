@@ -26,7 +26,8 @@ if __name__ == '__main__':
     q = 0.5
     T = 1000
 
-    alpha_list = [(1.5,2.5),(2.5,1.5)]
+##    alpha_list = [(1.5,2.5),(2.5,1.5)]
+    alpha_list = [(2.5,2.5)]
 
     k_list = np.arange(2,51,2)
     trials_list = list(range(200))

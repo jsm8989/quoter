@@ -35,8 +35,10 @@ if __name__ == '__main__':
     N = 1000
     q = 0.5
     T = 1000
-
-    alpha_list = [(1.5,2.5),(2.5,1.5)]
+    
+##    alpha_list = [(1.5,2.5),(2.5,1.5)]
+    alpha_list = [(2.5,2.5)]
+    
     trials_list = list(range(200))
 
     # this whole block here is just to find 'm' such that the ACTUAL average

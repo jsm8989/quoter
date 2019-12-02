@@ -8,9 +8,9 @@ T = 1000
 q=0.5
 trials_list = list(range(200))
 
-##param_list = np.arange(2,51,2) # for ER
+param_list = np.arange(2,51,2) # for ER
 ##param_list = list(range(1,21+1)) + list(range(23,26+1)) # for BA
-alpha_list = [(1.5,2.5),(2.5,1.5)]
+alpha_list = [(1.5,2.5),(2.5,1.5),(2.5,2.5)]
 
 ERparam = np.arange(2,51,2) # for ER
 BAparam = list(range(1,21+1)) + list(range(23,26+1)) # for BA
@@ -29,8 +29,8 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ##        clus = 0
 ##        count = 0
 ##        for trial in trials_list:
-##            efile = "../data_BA/edge/N%i_m%i_A%0.1f_HA%0.1f_q%0.1f_T%i_sim%i.txt" % (N,x,alpha,hub_alpha,q,T,trial)
-##            gfile = "../data_BA/graph/N%i_m%i_A%0.1f_HA%0.1f_q%0.1f_T%i_sim%i.txt" % (N,x,alpha,hub_alpha,q,T,trial)
+##            efile = "../data_ER/edge/N%i_k%i_A%0.1f_HA%0.1f_q%0.1f_T%i_sim%i.txt" % (N,x,alpha,hub_alpha,q,T,trial)
+##            gfile = "../data_ER/graph/N%i_k%i_A%0.1f_HA%0.1f_q%0.1f_T%i_sim%i.txt" % (N,x,alpha,hub_alpha,q,T,trial)
 ##            if os.path.isfile(efile):
 ##                edata = pd.read_csv(efile, sep = " ")
 ##                gdata = pd.read_csv(gfile, sep = " ")
@@ -52,10 +52,10 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ##    df = pd.DataFrame({"hx_avg":data[0,:],"hx_std":data[1,:],
 ##                       "density":data[2,:],"transitivity":data[3,:],
 ##                       "average_degree":data[4,:]})
-##    df = df.to_csv("hx_BA_A%0.1f_HA%0.1F_q%0.1f.csv" % (alpha,hub_alpha,q),index=False)
-##
-##
-##
+##    df = df.to_csv("hx_ER_A%0.1f_HA%0.1F_q%0.1f.csv" % (alpha,hub_alpha,q),index=False)
+
+
+
 # DENSITY VERSUS AVERAGE NODE ENTROPY
 ##data = np.zeros((2,len(param_list)))
 ##for alphas in alpha_list:
@@ -64,7 +64,7 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ##    for i,x in enumerate(param_list):
 ##        h_list = []
 ##        for trial in trials_list:
-##            nfile = "../data_BA/node/N%i_m%i_A%0.1f_HA%0.1f_q%0.1f_T%i_sim%i.txt" % (N,x,alpha,hub_alpha,q,T,trial)
+##            nfile = "../data_ER/node/N%i_k%i_A%0.1f_HA%0.1f_q%0.1f_T%i_sim%i.txt" % (N,x,alpha,hub_alpha,q,T,trial)
 ##            if os.path.isfile(nfile):
 ##                try:
 ##                    ndata = pd.read_csv(nfile, sep = " ")
@@ -78,7 +78,7 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ##        print(x, "done")
 ##
 ##    df = pd.DataFrame({"h_avg":data[0,:],"h_std":data[1,:]})
-##    df = df.to_csv("h_BA_A%0.1f_HA%0.1F_q%0.1f.csv" % (alpha,hub_alpha,q),index=False)
+##    df = df.to_csv("h_ER_A%0.1f_HA%0.1F_q%0.1f.csv" % (alpha,hub_alpha,q),index=False)
 
 
 
@@ -87,8 +87,8 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ERparam =  np.arange(2,51,2) # for ER
 BAparam = list(range(1,21+1)) + list(range(22,25+1)) # for BA
 BAparam = [2*m - 2*m**2/N for m in BAparam]
-style = ['-','x','o']
-alpha_list = [(1.5,1.5),(1.5,2.5),(2.5,1.5)]
+style = ['-','x','o','--']
+alpha_list = [(1.5,1.5),(1.5,2.5),(2.5,1.5),(2.5,2.5)]
 
 fig, ax = plt.subplots(1,2,figsize=(8,3),sharey=False)
 for i,alphas in enumerate(alpha_list):
