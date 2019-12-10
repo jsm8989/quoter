@@ -24,7 +24,7 @@ def write_data(G,outdir,outfile):
 
     w_sample = list()
     i = 0
-    while len(w_sample) < 250:
+    while len(w_sample) < 250 and i < len(edges):
         e = edges[i]
         if (e[0] in A and e[1] in A) or (e[0] in B and e[1] in B):
             w_sample.append(e)
@@ -32,7 +32,7 @@ def write_data(G,outdir,outfile):
 
     b_sample = list()
     i = 0
-    while len(b_sample) < 250:
+    while len(b_sample) < 250 and i < len(edges):
         e = edges[i]
         if (e[0] in A and e[1] in A) or (e[0] in B and e[1] in B):
             pass
@@ -126,7 +126,6 @@ def write_data(G,outdir,outfile):
             
 ##    # write edgelist for SBM
 ##    nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
-
             
 
 
@@ -140,24 +139,24 @@ if __name__ == "__main__":
 ##    JOBNUM = 0
 ##    NUMJOBS = 1
 
-    N = 2000
-    M = 10000
-    q = 0.9
+    N = 200
+    M = 1000
+    q = 0.5
     T = 1000
-    trials_list = list(range(150))
     mu_list = np.arange(0.05,0.51,0.05)
-    alpha_list = [(2.0,1.5),(2.0,2.0),(2.0,2.5),(1.5,2.0),(2.5,2.0)]
+    trials_list = range(200)
     
-    params = itertools.product(mu_list,alpha_list,trials_list)
+    params = itertools.product(mu_list,trials_list)
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
-    for mu,(alpha_A,alpha_B),trial in params:
-        outdir = "../data-Dec2/"
-        outfile = "N%i_mu%0.2f_M%iaA%0.1f_aB_%0.1f_q%0.1f_T%i_sim%i.txt" % (N,mu,M,alpha_A,alpha_B,q,T,trial)
+    for mu,trial in params:
+        outdir = "../data_SBM/"
+        outfile = "N%i_mu%0.4f_M%i_q%0.2f_T%i_sim%i.txt" % (N,mu,M,q,T,trial)
+
         if not os.path.isfile(os.path.join(outdir, "edge/", outfile)):
             G0 = make_SBM_simple(N,mu,M)
             G = nx.DiGraph(G0) # convert to directed
-            quoter_model_sim(G, q, T,outdir, outfile,  alpha_A, alpha_B, write_data)
+            quoter_model_sim(G, q, T, outdir, outfile, write_data)
 
 
 

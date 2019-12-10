@@ -22,21 +22,18 @@ if __name__ == '__main__':
 ##    JOBNUM = 0
 ##    NUMJOBS = 1
 
-    N = 1000
-    q = 0.5
+    N = 200
     T = 1000
-
-##    alpha_list = [(1.5,2.5),(2.5,1.5)]
-    alpha_list = [(2.0,1.5),(2.0,2.0),(2.0,2.5),(1.5,2.0),(2.5,2.0)]
-
-    k_list = np.arange(2,51,2)
-    trials_list = list(range(200))
+    alpha_list = [(1.5,1.5)]
+    k = 8
+    q_list = np.arange(0,1.01,0.1)
+    trials_list = list(range(100))
     
-    params = itertools.product(k_list,alpha_list,trials_list)
+    params = itertools.product(q_list,alpha_list,trials_list)
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
-    for k,(alpha,hub_alpha),trial in params:
-        outdir = "../data_ER-Dec2/"
+    for q,(alpha,hub_alpha),trial in params:
+        outdir = "../data_ER/"
         outfile = "N%i_k%i_A%0.1f_HA%0.1f_q%0.1f_T%i_sim%i.txt" % (N,k,alpha,hub_alpha,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, "edge", outfile)): # avoid re-doing & overwriting
             G0 = nx.erdos_renyi_graph(N, k/(N-1))
