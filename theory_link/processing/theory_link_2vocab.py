@@ -30,7 +30,7 @@ trials_list = list(range(100))
 
 
 
-alpha_alter_style = ['o','s']*3
+alpha_alter_style = ['o','o','s','s','x','x']
 alpha_ego_color= ['C0','C1']*3
 alpha_list = [(1.5,2.0),(2.0,2.0),(2.5,2.0),(2.0,1.5),(2.0,2.0),(2.0,2.5)]
 d_list = [0.635779, 0.704073, 0.7472, 0.635779, 0.704073, 0.7472]

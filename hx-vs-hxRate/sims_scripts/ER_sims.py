@@ -27,7 +27,7 @@ if __name__ == '__main__':
     alpha_list = [(1.5,1.5)]
     k = 8
     q_list = np.arange(0,1.01,0.1)
-    trials_list = list(range(100))
+    trials_list = list(range(200))
     
     params = itertools.product(q_list,alpha_list,trials_list)
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]

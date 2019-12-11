@@ -5,7 +5,7 @@
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
 #PBS -l walltime=12:00:00 
-#PBS -l pmem=1gb,pvmem=1800mb
+#PBS -l pmem=1500mb,pvmem=2000mb
 #PBS -N jobfile_ER
 
 cd $HOME/quoter-model-NEW/hx-vs-hxRate/sims_scripts
