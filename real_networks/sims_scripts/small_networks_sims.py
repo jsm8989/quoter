@@ -39,14 +39,15 @@ def create_edge_sample(G,outdir,outfile):
     
     edges = G.edges()
     nonedges = list(nx.non_edges(G))
-    n_edges_to_sample = min(len(edges),      1000)
-    n_nonedges_to_sample = min(len(nonedges),1000)
+    n_edges_to_sample = min(len(edges),      500)
+##    n_nonedges_to_sample = min(len(nonedges),500)
     edges_to_sample = np.array(edges)[np.random.choice(range(len(edges)),
                                                        size=n_edges_to_sample,
                                                        replace=False)]
-    nonedges_to_sample = np.array(nonedges)[np.random.choice(range(len(nonedges)),
-                                                       size=n_nonedges_to_sample,
-                                                       replace=False)]
+##    nonedges_to_sample = np.array(nonedges)[np.random.choice(range(len(nonedges)),
+##                                                       size=n_nonedges_to_sample,
+##                                                       replace=False)]
+    nonedges_to_sample = []
     with open(os.path.join(outdir,outfile),"w") as f:
         for e in np.concatenate((edges_to_sample,nonedges_to_sample)):
             f.write("%i %i\n" % (e[0], e[1]))
@@ -71,7 +72,7 @@ def write_data(G,outdir,outfile,edge_sample_file):
     deg_v_list = []
     ECC_list = []
 
-    H = G.to_undirected()
+    H = nx.Graph(G) 
     for e in edges:
         # compute all cross entropies. e[0] = alter, e[1] = ego
         
@@ -179,6 +180,7 @@ if __name__ == '__main__':
         outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,0.5,1000,trial)
         edge_sample_file = os.path.join("../data_separate_link-nonlink/edge_sample", name, outfile)
         if not os.path.isfile(os.path.join(outdir,outfile)):
-            G = read_any(name).to_directed()
+            G0 = read_any(name)
+            G = nx.DiGraph(G0)
             quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
              

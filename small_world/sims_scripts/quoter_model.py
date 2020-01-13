@@ -124,12 +124,18 @@ def quoter_model_sim(G,q,T,outdir,outfile,write_data=write_all_data,dunbar=None)
     """      
     
     # vocabulary distribution
-    alpha = 1.5
-    z = 1000
-    vocab = np.arange(1,z+1)
-    weights = vocab**(-alpha)
-    weights /= weights.sum()
+    #Zipf
+##    alpha = 1.5
+##    z = 1000
+##    vocab = np.arange(1,z+1)
+##    weights = vocab**(-alpha)
+##    weights /= weights.sum()
 
+    #Uniform
+    z = 10 # number of words
+    vocab = np.arange(1,z+1)
+    weights = np.array( [1/z]*z )
+    
     # limit IN-DEGREE to just dunbar's number
     if dunbar:
         for node in G.nodes():

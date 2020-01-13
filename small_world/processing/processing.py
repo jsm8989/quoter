@@ -41,13 +41,13 @@ trials_list = list(range(300))
 ##
 ##
 ### PLOT: clustering vs hx
-##data = pd.read_csv("small_world_q%0.1f.csv" % q)
-####plt.plot(data["p"],data["hx_avg"],'o-')
+data = pd.read_csv("small_world_q%0.1f.csv" % q)
+plt.plot(data["p"],data["hx_avg"],'o-')
 ##plt.errorbar(data["C"],data["hx_avg"],data["hx_var"])
 ##plt.xlabel("Transitivity")
-####plt.xlabel(r"Rewiring probability, $\beta$")
-##plt.ylabel("Average cross-entropy")
-##plt.show()
+plt.xlabel(r"Rewiring probability, $\beta$")
+plt.ylabel("Average cross-entropy")
+plt.show()
 
 
 # DISTANCE VS HX (in ring lattice)
@@ -80,12 +80,12 @@ trials_list = list(range(300))
 
 
 # PLOT distance vs hx
-data = pd.read_csv("small_world_Dist_q%0.1f.csv" % q)
-plt.plot(data["d"],data["hx_avg"],'C0o-')
-plt.errorbar(data["d"],data["hx_avg"],data["hx_var"])
-plt.xlabel("Distance")
-plt.ylabel("Average cross-entropy")
-plt.show()
+##data = pd.read_csv("small_world_Dist_q%0.1f.csv" % q)
+##plt.plot(data["d"],data["hx_avg"],'C0o-')
+##plt.errorbar(data["d"],data["hx_avg"],data["hx_var"])
+##plt.xlabel("Distance")
+##plt.ylabel("Average cross-entropy")
+##plt.show()
 
 
 

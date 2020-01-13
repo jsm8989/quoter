@@ -156,6 +156,7 @@ if __name__ == '__main__':
             nnodes = nx.number_of_nodes(G0)
             nedges = nx.number_of_edges(G0)
             n = min(int( nedges*eps ),len(list(nx.non_edges(G0))))
-            G = add_triangles3(G0,n).to_directed()
+            G1 = add_triangles3(G0,n)
+            G = nx.DiGraph(G1)
             quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
 

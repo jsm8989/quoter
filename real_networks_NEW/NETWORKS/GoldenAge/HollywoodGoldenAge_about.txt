@@ -1,0 +1,66 @@
+Created by Aaron Clauset (aaron.clauset@colorado.edu)
+dated : 6 January 2012
+
+Golden Age of Hollywood (GAH) actor collaboration network
+
+Reference:
+"Eigenvector-Based Centrality Measures for Temporal Networks"
+Dane Taylor, Sean A. Myers, Aaron Clauset, Mason A. Porter, Peter J. Mucha
+Preprint, arXiv:1507.01266 (2015)
+
+Please see http://arxiv.org/abs/1507.01266 for up-to-date citation information.
+
+------------------------------------
+
+ABOUT THE NETWORK:
+
+The "Golden Age of Hollywood" network is a sequence of graphs representing collaborations among 55 actors designated as representing the Golden Age of Hollywood. Nodes are actors and a directed edge points from one actor to another if (i) both actors are listed on the billing of some movie and (ii) the one had a lower billing position than the other. (More details below.) These edges are aggregated at the level of a decade of time. Each graph is a multigraph, and self-loops are allowed. Each graph is the (directed) actor-actor projection of an underlying actor-movie bipartite network.
+
+------------------------------------
+
+MORE DETAILS ABOUT NETWORK CONSTRUCTION:
+
+The multigraph matrices for connections among 55 "Golden Age of Hollywood" actors (male and female). The list of the specific actors is given in HollywoodGoldenAge_names.txt; these were not selected scientifically, but were taken from the list on this Wikipedia page (on 2 September 2011):
+  http://en.wikipedia.org/wiki/Classical_Hollywood_cinema
+
+The raw data for the networks themselves were extracted were from the full text of the Internet Movie Database (IMDb), downloaded on 2 September 2011. The rules for assembling the graph from the raw data are as follows:
+
+1. Each actor's list of "movies" is the full list from IMDb, except for entries that contain the following strings, which were removed:
+   (i)   "archive" = archive footage or audio appearances
+   (ii)  "unconfirmed"
+   (iii) "SUSPENDED"
+   (iv)  "(TV)" = TV movie, or made for cable movie
+   (v)   "(V)" = made for video movie
+   (vi)  "xxxxx" = television series
+
+2. Self-loops (A->A): If an actor A is the only actor among our 55 that appears in some movie, we add a self-loop A->A only if the associated <xx> billing position in the credits is <1> for the starring role.
+
+3. Arcs (A->B): If two actors A and B appear in the same movie, we add the arc A->B if the billing position of B is equal or better (smaller number) than A's position. If no billing position is listed for an actor, it is assumed to be the lowest possible rank.
+
+(Thus, if three actors appear in some movie and none have billing positions listed, then we add arcs three bi-directional arcs because we cannot distinguish who was a "supporting" role and who was a "leading" role.)
+
+4. The data in the files ending in _s0 follow rule #3 exactly. The data in the files ending in _s2 count billing positions <i> and <j> to be "equal" if |i-j|<=2. See the next section for the reasoning.
+
+---------------------------------------------
+
+A NOTE ABOUT SEXISM AND STATUS IN MOVIE BILLING:
+
+During this time period (i) women were rarely given equal or greater billing positions to men, and thus an ordering <1> and <2> could reasonably be considered equal billing rather than <1> being better / more important than <2>, and (ii) billing positions (even among actors of the same sex) that only differ by a small amount may not be informative and so could possibly be ignored.
+
+The files ending in _s2 are thus a modest (and admittedly heuristic) effort to control for the potentially spurious information represented in the direction of some particular edges.
+
+---------------------------------------------
+
+A NOTE ABOUT TEMPORAL AGGREGATION:
+
+Each network is a snapshot of the actor collaboration network: only movies with release dates strictly within a particular window are counted toward the collaboration matrix for that period.
+
+NOTE: each window is 10 years long, except for the first window, which is 11 years long in order to include 1909 (the first year any movie appeared in our sample).
+
+------------------------------------
+
+A FINAL NOTE:
+
+Given the above information, it should not be too difficult to derive an updated version of this network (using IMDb data that is more recent than 2011), or which is based on a different notion of equal billing.
+
+And, in general, these data are provided as-is with no guarantees of correctness or accuracy. I can only say that I did check both the code, and the output quite carefully before releasing the data.

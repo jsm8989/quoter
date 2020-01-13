@@ -28,7 +28,7 @@ if __name__ == '__main__':
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for p,trial in params:
-        outdir = "../data_clustering/"
+        outdir = "../data_uniform/"
         outfile = "N%i_p%0.1f_q%0.1f_T%i_sim%i.txt" % (N,p,q,T,trial)
         if not os.path.isfile(os.path.join(outdir, "edge", outfile)): # avoid re-doing & overwriting
             G0 = nx.watts_strogatz_graph(n=N,k=k,p=p)

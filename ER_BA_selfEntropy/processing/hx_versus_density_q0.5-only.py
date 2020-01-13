@@ -63,14 +63,14 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ### PLOT: DENSITY VERSUS AVERAGE CROSS ENTROPY
 ##fig, ax = plt.subplots(1,3,figsize=(10,3))
 ##plt.sca(ax[0])
-##ER = pd.read_csv("hx_ER_q0.5.csv")
-##BA = pd.read_csv("hx_BA_q0.5.csv")
-##
-##plt.plot(ERparam,ER["hx_avg"],'ko',label="ER")
-##plt.plot(BAparam,BA["hx_avg"],'ro',label="BA")
-##plt.xlabel(r"$\langle k \rangle$")
-##plt.ylabel("Average cross-entropy")
-##plt.legend()
+ER = pd.read_csv("hx_ER_q0.5.csv")
+BA = pd.read_csv("hx_BA_q0.5.csv")
+
+plt.plot(ERparam,ER["hx_avg"],'ko',label="ER")
+plt.plot(BAparam,BA["hx_avg"],'ro',label="BA")
+plt.xlabel(r"$\langle k \rangle$")
+plt.ylabel("Average cross-entropy")
+plt.legend()
 ##
 ##
 ##
@@ -135,13 +135,13 @@ BAparam = [2*m - 2*m**2/N for m in BAparam]
 ##plt.show()
 
 # PLOT: Stdev (or variance) of entropy vs density
-ER = pd.read_csv("hx_ER_q0.5.csv")
-BA = pd.read_csv("hx_BA_q0.5.csv")
-
-plt.plot(ERparam,ER["hx_std"],'ko',label="ER")
-plt.plot(BAparam,BA["hx_std"],'ro',label="BA")
-plt.xlabel(r"$\langle k \rangle$")
-plt.ylabel("Cross-entropy standard deviation")
-plt.legend()
-plt.show()
+##ER = pd.read_csv("hx_ER_q0.5.csv")
+##BA = pd.read_csv("hx_BA_q0.5.csv")
+##
+##plt.plot(ERparam,ER["hx_std"],'ko',label="ER")
+##plt.plot(BAparam,BA["hx_std"],'ro',label="BA")
+##plt.xlabel(r"$\langle k \rangle$")
+##plt.ylabel("Cross-entropy standard deviation")
+##plt.legend()
+##plt.show()
 

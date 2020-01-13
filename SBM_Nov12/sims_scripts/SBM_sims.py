@@ -140,7 +140,7 @@ if __name__ == "__main__":
 ##    NUMJOBS = 1
 
     N = 1000
-    q = 0.5
+    q = 0.9
     T = 1000
     trials_list = list(range(1000))
     p_list = np.arange(0.1,0.71,0.1)

@@ -1,0 +1,80 @@
+Hypertext 2009 network, part of the Koblenz Network Collection
+===========================================================================
+
+This directory contains the TSV and related files of the sociopatterns-hypertext network: This is the network of face-to-face contacts of the attendees of the ACM Hypertext 2009 conference. The ACM Conference on Hypertext and Hypermedia 2009 (HT 2009, http://www.ht2009.org/) was held in Turin, Italy over three days from June 29 to July 1, 2009. In the network, a node represents a conference visitor, and an edge represents a face-to-face contact that was active for at least 20 seconds. Multiple edges denote multiple contacts. Each edge is annotated with the time at which the contact took place. 
+
+
+More information about the network is provided here: 
+http://konect.cc/networks/sociopatterns-hypertext
+
+Files: 
+    meta.sociopatterns-hypertext -- Metadata about the network 
+    out.sociopatterns-hypertext -- The adjacency matrix of the network in whitespace-separated values format, with one edge per line
+      The meaning of the columns in out.sociopatterns-hypertext are: 
+        First column: ID of from node 
+        Second column: ID of to node
+        Third column (if present): weight or multiplicity of edge
+        Fourth column (if present):  timestamp of edges Unix time
+        Third column: edge weight
+        Fourth column: timestamp of the edge
+
+
+Use the following References for citation:
+
+@MISC{konect:2017:sociopatterns-hypertext,
+    title = {Hypertext 2009 network dataset -- {KONECT}},
+    month = oct,
+    year = {2017},
+    url = {http://konect.cc/networks/sociopatterns-hypertext}
+}
+
+@article{konect:sociopatterns,
+	title = {What's in a Crowd? Analysis of Face-to-Face Behavioral Networks},
+	author = {Lorenzo Isella and Juliette Stehlé and Alain Barrat and Ciro
+                  Cattuto and Jean-François Pinton and Wouter Van den
+                  Broeck}, 
+	journal = {J. of Theoretical Biology},
+	volume = {271},
+	number = {1},
+	pages = {166--180},
+	year = {2011},
+}
+
+@article{konect:sociopatterns,
+	title = {What's in a Crowd? Analysis of Face-to-Face Behavioral Networks},
+	author = {Lorenzo Isella and Juliette Stehlé and Alain Barrat and Ciro
+                  Cattuto and Jean-François Pinton and Wouter Van den
+                  Broeck}, 
+	journal = {J. of Theoretical Biology},
+	volume = {271},
+	number = {1},
+	pages = {166--180},
+	year = {2011},
+}
+
+
+@inproceedings{konect,
+	title = {{KONECT} -- {The} {Koblenz} {Network} {Collection}},
+	author = {Jérôme Kunegis},
+	year = {2013},
+	booktitle = {Proc. Int. Conf. on World Wide Web Companion},
+	pages = {1343--1350},
+	url = {http://dl.acm.org/citation.cfm?id=2488173},
+	url_presentation = {https://www.slideshare.net/kunegis/presentationwow},
+	url_web = {http://konect.cc/},
+	url_citations = {https://scholar.google.com/scholar?cites=7174338004474749050},
+}
+
+@inproceedings{konect,
+	title = {{KONECT} -- {The} {Koblenz} {Network} {Collection}},
+	author = {Jérôme Kunegis},
+	year = {2013},
+	booktitle = {Proc. Int. Conf. on World Wide Web Companion},
+	pages = {1343--1350},
+	url = {http://dl.acm.org/citation.cfm?id=2488173},
+	url_presentation = {https://www.slideshare.net/kunegis/presentationwow},
+	url_web = {http://konect.cc/},
+	url_citations = {https://scholar.google.com/scholar?cites=7174338004474749050},
+}
+
+
