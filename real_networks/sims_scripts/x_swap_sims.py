@@ -1,8 +1,4 @@
-# -*- coding: utf-8 -*-
 
-# add_triangle_sims.py
-# Tyson Pond
-# Last Modified: 2019-10-24
 
 from quoter_model import *
 from read_networks import *
@@ -28,16 +24,16 @@ def create_data_subdirs(datadir, subdirs):
             os.mkdir(path)
 
             
-def write_data(G,outdir,outfile,edge_sample_file):
+def write_data(G,outdir,outfile):
     """
         Compute and write data from quoter model simulations.
     """
-    # compute edge data
-    edges = []
-    with open(edge_sample_file, "r") as f:
-        for line in f:
-            line = line.rstrip().split()
-            edges.append((int(line[0]), int(line[1])))
+    edges = G.edges()
+    n_edges_to_sample = min(len(edges),      500)
+    edges_to_sample = np.array(edges)[np.random.choice(range(len(edges)),
+                                                       size=n_edges_to_sample,
+                                                       replace=False)]
+
     
     quoteProba_list = []
     hx_list = []
@@ -48,7 +44,7 @@ def write_data(G,outdir,outfile,edge_sample_file):
     ECC_list = []
 
     H = G.to_undirected()
-    for e in edges:
+    for e in edges_to_sample:
         # compute all cross entropies. e[0] = alter, e[1] = ego
         
         time_tweets_target = words_to_tweets(G.node[e[1]]["words"],G.node[e[1]]["times"])
@@ -60,15 +56,7 @@ def write_data(G,outdir,outfile,edge_sample_file):
         # also record quote probability
         quoteProba = 1/len(G.predecessors(e[1]))
         quoteProba_list.append(quoteProba)
-        
-        # also record distance between nodes
-        
-        try:
-            dist = nx.shortest_path_length(G,source=e[0],target=e[1])
-        except:
-            dist = -1
-        dist_list.append(dist)
-        
+
 
         # also record edge clustering info
         triangles, deg_u, deg_v, ECC = edge_clustering_coeff(H,e[0],e[1],return_info=True)
@@ -78,15 +66,19 @@ def write_data(G,outdir,outfile,edge_sample_file):
         ECC_list.append(ECC) 
         
     # write edge data
-    with open(os.path.join(outdir,outfile), "w") as f:
-        f.write("alter ego quoteProb hx distance triangles d_u d_v ECC\n") # header
-        for i,e in enumerate(edges):
-            f.write("%i %i %0.8f %0.8f %i %i %i %i %0.4f\n" % (e[0], e[1], quoteProba_list[i], hx_list[i], dist_list[i],
+    with open(os.path.join(outdir,"edge_" + outfile), "w") as f:
+        f.write("alter ego quoteProb hx triangles d_u d_v ECC\n") # header
+        for i,e in enumerate(edges_to_sample):
+            f.write("%i %i %0.8f %0.8f %i %i %i %0.4f\n" % (e[0], e[1], quoteProba_list[i], hx_list[i],
                                                 triangles_list[i], deg_u_list[i], deg_v_list[i], ECC_list[i]))
 
 
+    # write graph data (transitivity & average clustering)
+    with open(os.path.join(outdir,"graph_" + outfile), "w") as f:
+        f.write("transitivity average_clustering\n")
+        f.write("%0.4f %0.4f\n" % (nx.transitivity(H),nx.average_clustering(H)))
     # write edgelist for configuration model
-    nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
+##    nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
 
 
 networks_dict = {"Adolescent health": read_adolescent,
@@ -116,10 +108,8 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
               "Golden Age", "Kapferer tailor", "Les Miserables",
               "Hollywood music", "Sampson's monastery", "Terrorist"]
 
-
-
 if __name__ == '__main__':
-##    create_data_subdirs("../data_clustering", small_networks)
+##    create_data_subdirs("../data_xswap2", small_networks)
     
     try:
         JOBNUM, NUMJOBS = map(int, sys.argv[1:])
@@ -133,30 +123,22 @@ if __name__ == '__main__':
     q = 0.5
     T = 1000
     trials_list = list(range(300))
-
-    small_networks = ["CKM physicians"] ## 1 network -- how does number of edges change?
-    epsilon_list = np.arange(0.05,0.41,0.05)
     
     params = []
     for name in small_networks:
-        for eps in epsilon_list:
-            for trial in trials_list:
-                params.append((name,eps,trial))
+        for trial in trials_list:
+            params.append((name,trial))
             
     #parameters to keep for this job
-    params = [(name,eps,trial) for i,(name,eps,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
+    params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
-    for name,eps,trial in params:
-        outdir = os.path.join("../data_separate_link-nonlink/data_CKM_vary_n-edges", name)
-        outfile = "TRIANGLE_%s_eps%0.2f_q%0.1f_T%i_sim%i.txt" % (name,eps,q,T,trial)
-        efile = "%s_q%0.1f_T%i_sim%i.txt" % (name,0.5,1000,trial)
-        edge_sample_file = os.path.join("../data_separate_link-nonlink/edge_sample", name, efile)
+    for name,trial in params:
+        outdir = os.path.join("../data_xswap2", name)
+        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G0 = read_any(name)
-            nnodes = nx.number_of_nodes(G0)
             nedges = nx.number_of_edges(G0)
-            n = min(int( nedges*eps ),len(list(nx.non_edges(G0))))
-            G1 = add_triangles(G0,n)
+            G1 = xswap(G0,nedges)
             G = nx.DiGraph(G1)
-            quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
+            quoter_model_sim(G, q, T, outdir, outfile, write_data, None)
 

@@ -82,7 +82,11 @@ def get_all_lambdas(target, source, relative_pos, lambdas):
     """
     
     for i in prange(0, len(target)):
-        if not relative_pos[i] == 0:
+        # MODIFICATION
+        if i == len(target) - 1:
+            lambdas[i] = 1
+            
+        elif not relative_pos[i] == 0:
             lambdas[i] = find_lambda_jit(target[i:], source[:relative_pos[i]]) 
         else:
             lambdas[i] = 1

@@ -4,6 +4,9 @@ import pandas as pd
 import re
 import sys
 from networkx.algorithms import bipartite
+import community
+from modularity import *
+import matplotlib.pyplot as plt
 
 def get_giant_component(G):
     # extract only the giant component
@@ -706,9 +709,28 @@ def save_network_stats_table(outfile,sort_by="density"):
         dfstring = dfstring.replace(",", " & ")
         dfstring = dfstring.replace("\n", r"\\" + "\n")
         print(dfstring)
-    
+
+small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
+              "Golden Age", "Kapferer tailor", "Les Miserables",
+              "Hollywood music", "Sampson's monastery", "Terrorist"]
+
+
 if __name__ == "__main__":
-    save_network_stats_table("network_statistics_NEW.csv","num_nodes")
+    x = []
+    y = []
+    for network in small_networks:
+        G = read_any(network)
+        partition = community.best_partition(G)
+        Q = get_modularity(G,partition)
+        x.append(nx.transitivity(G))
+        y.append(Q)
+    plt.plot(x,y,'o')
+    plt.xlabel("Transitivity")
+    plt.ylabel("Modularity")
+    plt.show()
+        
+        
+##    save_network_stats_table("network_statistics_NEW.csv","num_nodes")
 
 
 ##    # Construct edgelists with quoteProbs

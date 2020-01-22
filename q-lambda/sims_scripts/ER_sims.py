@@ -17,10 +17,9 @@ if __name__ == '__main__':
 ##    NUMJOBS = 1
 
     N = 100
-##    q_list = [0, .2, .4, .6, .8, .9, .99, .999, .9999]
-    q_list = [.99, .999, .9999]
-    lam_list = [1, 2, 4, 6, 8]
-    k_list = [5, 20]
+    q_list = [0, 0.1, .2, 0.3, .4, 0.5, .6, 0.7, .8, .9, .99, .999, .9999, 1]
+    lam_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    k_list = [5, 10, 15, 20, 25]
     T = 1000
     trials_list = list(range(100))
     
@@ -29,8 +28,11 @@ if __name__ == '__main__':
 
     for q,lam,k,trial in params:
         outdir = "../data_ER/"
+        outfile1 = "N%i_k%i_q%0.1f_lam%i_T%i_sim%i.txt" % (N,k,q,lam,T,trial)
         outfile = "N%i_k%i_q%0.4f_lam%i_T%i_sim%i.txt" % (N,k,q,lam,T,trial)
-        if not os.path.isfile(os.path.join(outdir, "edge", outfile)): # avoid re-doing & overwriting
+        b1 = os.path.isfile(os.path.join(outdir, "edge", outfile1))
+        b2 = os.path.isfile(os.path.join(outdir, "edge", outfile))
+        if not (b1 or b2): # avoid re-doing & overwriting
             G0 = nx.erdos_renyi_graph(N, k/(N-1))
             G = nx.DiGraph(G0) # convert to directed
             quoter_model_sim(G, q, lam, T, outdir, outfile)

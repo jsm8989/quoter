@@ -158,6 +158,25 @@ def make_growing_SBM(N,p,mu_seq,trial):
 
 if __name__ == "__main__":
     pass
+    p_list = [0.0655977,0.0824176,0.102041,0.125232,0.153061,
+              0.187075,0.229592,0.284257,0.357143,0.459184,0.612245]
+    mu = 0.15
+
+    N = 100
+    m = N//2
+    A = range(0,m)
+    B = range(m,N)
+    comm_dict = {x:0 for x in A}
+    comm_dict.update({x:1 for x in B})
+    for p in p_list:
+        trial_avg = []
+        for trial in range(10):
+            G = make_SBM3(N,p,mu)
+            Q = get_modularity(G,comm_dict)
+            trial_avg.append(Q)
+        print(np.mean(trial_avg))
+    
+
 ##    N=100
 ##    M=750
 ##    for i,mu in enumerate([.03,.12,.3]):
@@ -190,20 +209,20 @@ if __name__ == "__main__":
 ##    print(2*(p*m*(m-1)/(2*L) - (k/(2*L))**2))
 
 
-    N = 1000
-    m = N//2
-    A = range(0,m)
-    B = range(m,N)
-    p = 0.4
-
-    # Mathematica code to generate this sequence:
-    # Reverse[Table[\[Mu] /. NSolve[q[0.4, \[Mu], 1000] == K, \[Mu]], {K, 
-    # 0.00, 0.40, 0.025}]]
-    mu_seq = [0.0444, 0.0570857, 0.0705176, 0.0847636, 0.0999,
-              0.116013, 0.1332, 0.151572, 0.171257, 0.1924, 0.215169,
-              0.23976, 0.2664, 0.295357, 0.326945, 0.361543, 0.3996]
-    for trial in range(1000):
-        G = make_growing_SBM(N,p,mu_seq,trial)
+##    N = 1000
+##    m = N//2
+##    A = range(0,m)
+##    B = range(m,N)
+##    p = 0.4
+##
+##    # Mathematica code to generate this sequence:
+##    # Reverse[Table[\[Mu] /. NSolve[q[0.4, \[Mu], 1000] == K, \[Mu]], {K, 
+##    # 0.00, 0.40, 0.025}]]
+##    mu_seq = [0.0444, 0.0570857, 0.0705176, 0.0847636, 0.0999,
+##              0.116013, 0.1332, 0.151572, 0.171257, 0.1924, 0.215169,
+##              0.23976, 0.2664, 0.295357, 0.326945, 0.361543, 0.3996]
+##    for trial in range(1000):
+##        G = make_growing_SBM(N,p,mu_seq,trial)
 
 ##    for i in range(len(mu_seq)):
 ##        print("i: ", i)

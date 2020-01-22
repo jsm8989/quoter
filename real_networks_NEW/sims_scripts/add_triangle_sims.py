@@ -180,7 +180,7 @@ if __name__ == '__main__':
             G0 = read_any(name)
             nedges = nx.number_of_edges(G0)
             n = min(int( nedges*eps ),len(list(nx.non_edges(G0))))
-            G1 = add_triangles3(G0,n)
+            G1 = add_triangles(G0,n)
             G = nx.DiGraph(G1)
             quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
 

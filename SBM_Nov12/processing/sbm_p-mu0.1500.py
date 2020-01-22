@@ -9,14 +9,9 @@ q=0.9
 T=1000
 p_list = np.arange(0.1,0.71,0.1)
 trials_list = list(range(10000))
-mu_list = [0.20,0.25,0.30]
-##try:
-##    JOBNUM, NUMJOBS = map(int, sys.argv[1:])
-##except IndexError:
-##    sys.exit("Usage: %s JOBNUM NUMJOBS" % sys.argv[0] )
-##mu = mu_list[JOBNUM]
-##
-##
+mu_list = [0.15,0.20,0.25,0.30]
+m = N//2
+
 ##W = np.zeros(len(p_list))
 ##B = np.zeros(len(p_list))
 ##for i,p in enumerate(p_list):
@@ -55,35 +50,39 @@ mu_list = [0.20,0.25,0.30]
 ##df.to_csv("sbm_mu%0.2f_N%i.csv" % (mu,N), index=False)
 
 
-# PLOT
-##fig, ax = plt.subplots(1,2,figsize=(8,4),sharey=False)
-##data =  pd.read_csv("sbm_mu0.1500_N1000.csv")
-##plt.sca(ax[0])
-##plt.plot(data["p"],data["hx_w"],'C0-',label="within")
-##plt.plot(data["p"],data["hx_b"],'C0--',label="between")
-##plt.legend()
-##plt.xlabel(r"$p$")
-##plt.ylabel("Average cross-entropy")
-##plt.title("$N = 1000$")
-##
-##data =  pd.read_csv("sbm_mu0.1500_N100.csv")
-##plt.sca(ax[1])
-##plt.plot(data["p"],data["hx_w"],'C0-',label="within")
-##plt.plot(data["p"],data["hx_b"],'C0--',label="between")
-##plt.xlabel(r"$p$")
-##plt.title("$N = 100$")
-##plt.show()
-
-mu_list = [0.15,0.20,0.25,0.30]
 style = ['C0-','C1-','C2-','C3-']
+
+# PLOT 1: hx vs p
 for i,mu in enumerate(mu_list):
     data =  pd.read_csv("sbm_mu%0.2f_N%i.csv" % (mu,N))
-    plt.plot(data["p"].values,data["hx_w"].values,style[i],label="%0.2f" % mu)
-    plt.plot(data["p"].values,data["hx_b"].values,style[i]+'-')
-
+    plt.plot(data["p"].values, data["hx_w"].values, style[i], label="%0.2f" % mu)
+    plt.plot(data["p"].values, data["hx_b"].values, style[i]+'-')
 plt.legend(title=r"$\mu$")
 plt.xlabel(r"$p$")
-plt.ylabel("Average cross-entropy")
+plt.ylabel(r"$\langle h_\times \rangle$")
 plt.show()
+
+# PLOT 2: Delta hx vs p
+for i,mu in enumerate(mu_list):
+    data =  pd.read_csv("sbm_mu%0.2f_N%i.csv" % (mu,N))
+    plt.plot(data["p"].values, data["hx_b"].values-data["hx_w"].values, style[i], label="%0.2f" % mu)
+plt.legend(title=r"$\mu$")
+plt.xlabel(r"$p$")
+plt.ylabel(r"$\Delta h_\times$")
+plt.show()
+
+# PLOT 3: Delta hx vs modularity
+for i,mu in enumerate(mu_list):
+    data =  pd.read_csv("sbm_mu%0.2f_N%i.csv" % (mu,N))
+    p_list = data["p"].values
+    mu_list = np.array([mu]*len(p_list))
+    modularity = (1/2)*np.divide(p_list-p_list*m+mu_list*m, p_list-p_list*m-mu_list*m)
+    plt.plot(modularity, data["hx_b"].values-data["hx_w"].values, style[i], label="%0.2f" % mu)
+plt.legend(title=r"$\mu$")
+plt.xlabel(r"Modularity, $Q$")
+plt.ylabel(r"$\Delta h_\times$")
+plt.show()
+
+
 
 

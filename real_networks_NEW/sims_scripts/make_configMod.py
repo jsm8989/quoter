@@ -27,73 +27,9 @@ def add_edges(G,n):
     nonedges = np.array(list(nx.non_edges(H)))
     to_add = np.random.choice(range(len(nonedges)), size=n, replace=False)
     H.add_edges_from(nonedges[to_add][:])
-    return H
+    return H     
 
-def add_triangles(G,n,max_tries):
-    """ Take a graph G and add n edges which complete triangles.
-        Of the edges which complete triangles, the edges are chosen at random.
-        This implementation results in a random node having very high
-        local clustering coefficient.
-    """
-    H = G.copy() 
-    nodes = H.nodes()
-    degree = list(H.degree().values())
-    i_degree2plus = [i for i,deg in enumerate(degree) if deg >= 2] # index of nodes with degree >= 2
-    np.random.shuffle(i_degree2plus)
-    nonedges = list(map(set,nx.non_edges(H))) # map to set so {u,v} = {v,u}
-    count = 0 # number of edges added
-    tries = 0 # number of "steps" tried
-    for i1 in i_degree2plus:
-        n1 = nodes[i1]
-        nbrs = nx.neighbors(H,n1)
-        np.random.shuffle(nbrs)
-        for i2 in range(len(nbrs)-1):
-            n2 = nbrs[i2]
-            for i3 in range(i2+1,len(nbrs)):
-                n3 = nbrs[i3]
-                if {n2,n3} in nonedges:
-                    H.add_edge(n2,n3)
-                    nonedges.remove({n2,n3})
-                    count += 1
-                tries += 1
-##                print(count,tries)
-                if count >= n or tries >= max_tries:
-                    return H
-    return H
-
-
-##def add_triangles2(G,n):
-##    """ Take a graph G and add n edges which complete triangles.
-##        Of the edges which complete triangles, the edges are chosen at random.
-##        This implementation requires first building A HUGE list of all possible
-##        edges that could be added (i.e. would complete a triangle),
-##        and then randomly picking from this list. Not computationally feasible
-##        even for small networks.
-##    """
-##    H = G.copy() 
-##    nodes = H.nodes()
-##    degree = list(H.degree().values())
-##    i_degree2plus = [i for i,deg in enumerate(degree) if deg >= 2] # index of nodes with degree >= 2
-##    nonedges = list(map(set,nx.non_edges(H))) # map to set so {u,v} = {v,u}
-##    to_add = []
-##    for i1 in i_degree2plus:
-##        n1 = nodes[i1]
-##        nbrs = nx.neighbors(H,n1)
-##        for i2 in range(len(nbrs)-1):
-##            n2 = nbrs[i2]
-##            for i3 in range(i2+1,len(nbrs)):
-##                n3 = nbrs[i3]
-##                if {n2,n3} in nonedges:
-##                    to_add.append((n2,n3))
-##                    nonedges.remove({n2,n3})
-##                print(i1,i2,i3)        
-##    to_add = np.array(to_add)[np.random.choice(range(len(to_add)),size=n,replace=False)]
-##    H.add_edges_from(to_add)
-##    return H     
-
-
-
-def add_triangles3(G,n):
+def add_triangles(G,n):
     """ Take a graph G and add n edges which complete triangles.
         Of the edges which complete triangles, the edges are chosen at random.
         This is a randomized version of the first implementation. This may
