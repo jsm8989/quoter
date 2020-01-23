@@ -70,8 +70,8 @@ def write_data(G,outdir,outfile):
     avg_clustering = nx.average_clustering(H)
     diameter = nx.diameter(H)
     ASPL = nx.average_shortest_path_length(H)
-    partition = community.best_partition(G)
-    Q = get_modularity(G,partition)
+    partition = community.best_partition(H)
+    Q = get_modularity(H,partition)
     
     # write edge data
     with open(os.path.join(outdir,"edge_" + outfile), "w") as f:

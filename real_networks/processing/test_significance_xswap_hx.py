@@ -22,7 +22,7 @@ for i,name in enumerate(small_networks):
 
         efile_orig = "../data_separate_link-nonlink/data/%s/%s_q%0.1f_T%i_sim%i.txt" % (name,name,q,T,trial)
         edata_orig = pd.read_csv(efile_orig, sep = " ")
-        hx_orig.extend(edata_orig["hx"].values)
+        hx_orig.extend(edata_orig["hx"].loc[edata_orig["distance"]==1].values)
 
     u,p = scipy.stats.mannwhitneyu(hx_orig,hx_swap)
     print(name, np.median(hx_orig), np.median(hx_swap), p)

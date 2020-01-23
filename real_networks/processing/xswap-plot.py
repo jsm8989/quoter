@@ -9,6 +9,8 @@ df1 = pd.read_csv("analyses-2019-10-29/real_networks-links_only.csv") #original
 df2 = pd.read_csv("real_networks-xswap.csv") #xswap
 
 # calculation for errorbar
+def sample_var(x1,x2,n):
+    return (n*x2 - n*np.power(x1,2))/(n-1)
 var1 = sample_var(df1["average_hx"].values,df1["average_hxsquared"].values,df1["count"].values)
 var2 = sample_var(df2["average_hx"].values,df2["average_hxsquared"].values,df2["count"].values)
 

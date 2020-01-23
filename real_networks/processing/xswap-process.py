@@ -9,9 +9,6 @@ q = 0.5
 T = 1000
 trials_list = list(range(300))
 
-def sample_var(x1,x2,n):
-    return (n*x2 - n*np.power(x1,2))/(n-1)
-
 
 # Process data
 data = np.zeros((len(small_networks),5))
