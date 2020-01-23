@@ -16,7 +16,7 @@ for i,name in enumerate(small_networks):
     hx_orig = []
     hx_swap = []
     for trial in trials_list:
-        efile_swap = "../data_xswap2/%s/edge_%s_q%0.1f_T%i_sim%i.txt" % (name,name,q,T,trial)
+        efile_swap = "../data_xswap/%s/edge_%s_q%0.1f_T%i_sim%i.txt" % (name,name,q,T,trial)
         edata_swap = pd.read_csv(efile_swap, sep = " ")
         hx_swap.extend(edata_swap["hx"].values)
 

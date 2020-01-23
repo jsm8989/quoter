@@ -1,5 +1,3 @@
-
-
 from quoter_model import *
 from read_networks import *
 from make_configMod import *
@@ -7,6 +5,8 @@ from edge_clustering_coeff import *
 import os, sys
 import numpy as np
 import networkx as nx
+import community
+from modularity import get_modularity
 
 def create_data_subdirs(datadir, subdirs):
     """ Create a directory for each real world network in which
@@ -64,7 +64,15 @@ def write_data(G,outdir,outfile):
         deg_u_list.append(deg_u)
         deg_v_list.append(deg_v)
         ECC_list.append(ECC) 
-        
+
+    # compute graph data beforehand (it takes a long time)
+    transitivity = nx.transitivity(H)
+    avg_clustering = nx.average_clustering(H)
+    diameter = nx.diameter(H)
+    ASPL = nx.average_shortest_path_length(H)
+    partition = community.best_partition(G)
+    Q = get_modularity(G,partition)
+    
     # write edge data
     with open(os.path.join(outdir,"edge_" + outfile), "w") as f:
         f.write("alter ego quoteProb hx triangles d_u d_v ECC\n") # header
@@ -74,9 +82,11 @@ def write_data(G,outdir,outfile):
 
 
     # write graph data (transitivity & average clustering)
+    
     with open(os.path.join(outdir,"graph_" + outfile), "w") as f:
-        f.write("transitivity average_clustering\n")
-        f.write("%0.4f %0.4f\n" % (nx.transitivity(H),nx.average_clustering(H)))
+        f.write("transitivity average_clustering diameter ASPL Q\n")
+        f.write("%0.4f %0.4f %i %0.4f %0.4f\n" % (transitivity,avg_clustering,
+                                            diameter,ASPL,Q))
     # write edgelist for configuration model
 ##    nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
 
@@ -109,7 +119,7 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
               "Hollywood music", "Sampson's monastery", "Terrorist"]
 
 if __name__ == '__main__':
-##    create_data_subdirs("../data_xswap2", small_networks)
+##    create_data_subdirs("../data_xswap-5x", small_networks)
     
     try:
         JOBNUM, NUMJOBS = map(int, sys.argv[1:])
@@ -133,12 +143,12 @@ if __name__ == '__main__':
     params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for name,trial in params:
-        outdir = os.path.join("../data_xswap2", name)
+        outdir = os.path.join("../data_xswap-5x", name)
         outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G0 = read_any(name)
             nedges = nx.number_of_edges(G0)
-            G1 = xswap(G0,nedges)
+            G1 = xswap(G0,5*nedges)
             G = nx.DiGraph(G1)
             quoter_model_sim(G, q, T, outdir, outfile, write_data, None)
 
