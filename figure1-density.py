@@ -40,14 +40,31 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
               "Golden Age", "Kapferer tailor", "Les Miserables",
               "Hollywood music", "Sampson's monastery", "Terrorist"]
 
-for i,network in enumerate(small_networks):
-    x = df["density"].values[i]
-    y = df["average_hx"].values[i]
-
-    if network == "Freeman's EIES":
-        plt.text(x, y-0.01*1.5, network.replace(" ", "\n"), fontsize=8.5, ha='center')
-    else:
-        plt.text(x+.02, y, network, fontsize=8.5)
+try:
+    from adjustText import adjust_text
+    T = []
+    for i,network in enumerate(small_networks):
+        x = df["density"].values[i]
+        y = df["average_hx"].values[i]
+    
+        lbl = network
+        if lbl == 'Les Miserables':
+            lbl = 'Les Mis'
+        else:
+            lbl = lbl.split(" ")[0]
+        T.append((x,y,lbl))
+    
+    texts = [plt.text(x, y, lbl, fontsize=8.5) for x,y,lbl in T]
+    adjust_text(texts)
+except ImportError:
+    for i,network in enumerate(small_networks):
+        x = df["density"].values[i]
+        y = df["average_hx"].values[i]
+        
+        if network == "Freeman's EIES":
+            plt.text(x, y-0.01*1.5, network.replace(" ", "\n"), fontsize=8.5, ha='center')
+        else:
+            plt.text(x+.02, y, network, fontsize=8.5)
 
 plt.xlabel(r"Density,  $M/\binom{N}{2}$")
 plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
