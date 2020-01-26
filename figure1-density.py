@@ -72,8 +72,8 @@ plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
 
 
 plt.tight_layout(w_pad=0.5)
-plt.savefig("figure1.pdf")
-# plt.show()
+##plt.savefig("figure1.pdf")
+plt.show()
 
 
 
