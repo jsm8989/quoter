@@ -1,9 +1,8 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
 
-os.chdir("Hubs_Vocab/processing")
+dir1 = "Hubs_Vocab/processing"
 
 ERparam =  np.arange(2,51,2) # for ER
 BAparam = list(range(1,21+1)) + list(range(22,25+1)) # for BA
@@ -19,8 +18,8 @@ for i,alphas in enumerate(alpha_list):
     hub_alpha = alphas[1]
 
     # load data
-    ER = pd.read_csv("hx_ER_A%0.1f_HA%0.1f.csv" % (alpha,hub_alpha))
-    BA = pd.read_csv("hx_BA_A%0.1f_HA%0.1f.csv" % (alpha,hub_alpha))
+    ER = pd.read_csv(f"{dir1}/hx_ER_A%0.1f_HA%0.1f.csv" % (alpha,hub_alpha))
+    BA = pd.read_csv(f"{dir1}/hx_BA_A%0.1f_HA%0.1f.csv" % (alpha,hub_alpha))
 
     # avg hx vs avg deg
     plt.sca(ax[0])
@@ -39,7 +38,7 @@ for i,alphas in enumerate(alpha_list):
     plt.ylabel(r"Variance of $h_\times$")
 
 plt.tight_layout()
-plt.savefig("../../figure5.pdf")
-plt.show()
+plt.savefig("figure5.pdf")
+##plt.show()
 
 

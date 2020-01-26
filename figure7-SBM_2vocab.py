@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-os.chdir("SBM_Vocab/processing")
+dir1 = "SBM_Vocab/processing"
 
 alpha_list = [(2.0,1.5),(2.0,2.0),(2.0,2.5)]
 mu = 0.15
@@ -15,7 +15,7 @@ for i,alpha in enumerate(alpha_list):
     alpha_B = alpha[1]
 
     # load data
-    data =  pd.read_csv("sbm_2param_aA%0.1f_aB%0.1f.csv" % (alpha_A,alpha_B))
+    data =  pd.read_csv(f"{dir1}/sbm_2param_aA%0.1f_aB%0.1f.csv" % (alpha_A,alpha_B))
 
     # what to plot on the x-axis? within-block connection prob, modularity, ?
     #x = data["p"].values
@@ -36,5 +36,5 @@ for i,alpha in enumerate(alpha_list):
         plt.xlabel(r"Modularity, $Q$")
 
 plt.tight_layout()
-plt.savefig("../../figure7.pdf")
-plt.show()
+plt.savefig("figure7.pdf")
+##plt.show()

@@ -708,7 +708,8 @@ def save_network_stats_table(outfile,sort_by="density"):
         print(dfstring)
     
 if __name__ == "__main__":
-    save_network_stats_table("network_statistics_NEW.csv","num_nodes")
+    display_network_stats()
+##    save_network_stats_table("network_statistics_NEW.csv","num_nodes")
 
 
 ##    # Construct edgelists with quoteProbs
