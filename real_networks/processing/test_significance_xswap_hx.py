@@ -25,7 +25,7 @@ for i,name in enumerate(small_networks):
         hx_orig.extend(edata_orig["hx"].loc[edata_orig["distance"]==1].values)
 
     u,p = scipy.stats.mannwhitneyu(hx_orig,hx_swap)
-    print(name, np.median(hx_orig), np.median(hx_swap), p)
+    print(name, np.mean(hx_orig) - np.mean(hx_swap), p)
 
     
         
