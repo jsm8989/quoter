@@ -5,7 +5,7 @@
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
 #PBS -l walltime=12:00:00 
-#PBS -l pmem=700mb,pvmem=1500mb
+#PBS -l pmem=1500mb,pvmem=1800mb
 #PBS -N job_small-clust
 
 cd $HOME/quoter-model-NEW/small_world/sims_scripts

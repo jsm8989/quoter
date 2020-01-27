@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 from read_networks import *
 from make_configMod import *
+import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
+import matplotlib.patches as mpatches
+
 
 ##small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
 ##              "Golden Age", "Kapferer tailor", "Les Miserables",
@@ -32,15 +36,25 @@ attempts = list(range(10))
 ##df[["network"] + cols].to_csv("real_networks-xswap-assort.csv",index=False)
 ##
 
-df = pd.read_csv("transivity-assortativity.csv")
-df1 = df[df.xswap=="no"]
-df2 = df[df.xswap=="yes"]
-for i,name in enumerate(small_networks):
-    plt.plot(df2["degree_assortativity"].values-df1["degree_assortativity"].values,
-             df2["transitivity"].values-df1["transitivity"].values,
-             "ko")
-plt.xlabel("Change in transitivity (xswap - original)")
-plt.ylabel("Change in assortativity (xswap - original)")
+
+for j in range(len(df1["network"].values)):
+        t1 = df1["degree_assortativity"].values[j]
+        t2 = df2["degree_assortativity"].values[j]
+        h1 = df1["average_hx"].values[j]
+        h2 = df2["average_hx"].values[j]
+        
+        plt.plot([t2,t1],[h2,h1],"r-")
+        plt.plot(t1,h1,"ko")
+        plt.plot(t2,h2,"ro")
+
+
+label1 = mlines.Line2D([], [], color='black', marker='o', linestyle='None',
+                          markersize=6, label='Real network')
+label2 = mlines.Line2D([], [], color='red', marker='o', linestyle='None',
+                          markersize=6, label='x-swap')
+plt.legend(handles=[label1,label2])
+plt.xlabel("Assortativity")
+plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
 plt.show()
 
 

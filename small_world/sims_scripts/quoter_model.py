@@ -31,37 +31,29 @@ def write_all_data(G,outdir,outfile):
     H = G.to_undirected()
     
     # compute edge data
-    edges = random.sample(G.edges(),min(500,nx.number_of_edges(G)))
-    nonedges = random.sample(list(nx.non_edges(G)),min(500,len(list(nx.non_edges(G)))) )
+    edge_sample = random.sample(G.edges(), min(500,nx.number_of_edges(G)))
     
-    edge_sample = edges + nonedges
-    alter_list, ego_list, qp_list, hx_list, dist_list=[],[],[],[],[]
-    tri_list, alter_degs, ego_degs = [],[],[]
-
     for e in edge_sample:
         # compute cross entropies. e[0] = alter, e[1] = ego 
         time_tweets_target = words_to_tweets(G.node[e[1]]["words"],G.node[e[1]]["times"])
         time_tweets_source = words_to_tweets(G.node[e[0]]["words"],G.node[e[0]]["times"])
         hx = timeseries_cross_entropy(time_tweets_target, time_tweets_source, please_sanitize=False)
-        hx_list.append(hx)
-        alter_list.append(e[0])
-        ego_list.append(e[1])
+        G[e[0]][e[1]]["hx"] = hx
 
         # also record quote probability
-        qp_list.append(1/len(G.predecessors(e[1])))
+        G[e[0]][e[1]]["quoteProb"] = 1/len(G.predecessors(e[1]))
+
+##        try: # error is raised if graph is disconnected
+##        avg_shortest_path = nx.average_shortest_path_length(H)
+##        except:
+##        avg_shortest_path = 0
 
         # also record edge embeddeness & edge clustering coefficient
         triangles, deg0, deg1, ECC = edge_clustering_coeff(H,e[0],e[1],return_info=True)
-        tri_list.append(triangles)
-        alter_degs.append(deg0)
-        ego_degs.append(deg1)
-
-        # also record distance between nodes
-        try:
-            dist = nx.shortest_path_length(G,source=e[0],target=e[1])
-        except:
-            dist = -1
-        dist_list.append(dist)
+        G[e[0]][e[1]]["tri"] = triangles
+        G[e[0]][e[1]]["deg0"] = deg0
+        G[e[0]][e[1]]["deg1"] = deg1
+##        G[e[0]][e[1]]["ECC"] = ECC
         
     # compute graph data
     nnodes = nx.number_of_nodes(H)
@@ -87,10 +79,10 @@ def write_all_data(G,outdir,outfile):
 
     # write edge data
     with open(outdir + "edge/" + outfile, "w") as f:
-        f.write("alter ego quoteProb hx distance triangles alter_deg ego_deg\n") # header
-        for i in range(len(hx_list)):
-            data_tuple = (alter_list[i],ego_list[i],qp_list[i],hx_list[i],dist_list[i],tri_list[i],alter_degs[i],ego_degs[i])
-            f.write("%i %i %0.8f %0.8f %i %i %i %i\n" % data_tuple)
+        f.write("alter ego quoteProb hx triangles alter_deg ego_deg\n") # header
+        for e in edge_sample:
+            f.write("%i %i %0.8f %0.8f %i %i %i\n" % (e[0], e[1], G[e[0]][e[1]]["quoteProb"], G[e[0]][e[1]]["hx"],
+                                             G[e[0]][e[1]]["tri"],G[e[0]][e[1]]["deg0"],G[e[0]][e[1]]["deg1"]))
     
     # write node data
     with open(outdir + "node/" + outfile, "w") as f:
@@ -103,6 +95,7 @@ def write_all_data(G,outdir,outfile):
             outdeg = G.out_degree(node)
             C = nx.clustering(H, node)
             f.write("%i %i %i %0.8f %0.8f\n" % (node,indeg,outdeg,C,h))
+            
 
 def quoter_model_sim(G,q,T,outdir,outfile,write_data=write_all_data,dunbar=None):
     """ Simulate the quoter model on a graph G. Nodes take turns generating content according to two
@@ -125,16 +118,16 @@ def quoter_model_sim(G,q,T,outdir,outfile,write_data=write_all_data,dunbar=None)
     
     # vocabulary distribution
     #Zipf
-##    alpha = 1.5
-##    z = 1000
-##    vocab = np.arange(1,z+1)
-##    weights = vocab**(-alpha)
-##    weights /= weights.sum()
+    alpha = 1.5
+    z = 1000
+    vocab = np.arange(1,z+1)
+    weights = vocab**(-alpha)
+    weights /= weights.sum()
 
     #Uniform
-    z = 10 # number of words
-    vocab = np.arange(1,z+1)
-    weights = np.array( [1/z]*z )
+##    z = 10 # number of words
+##    vocab = np.arange(1,z+1)
+##    weights = np.array( [1/z]*z )
     
     # limit IN-DEGREE to just dunbar's number
     if dunbar:
