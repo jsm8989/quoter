@@ -44,7 +44,7 @@ plt.title("Small-world")
 
 blt.letter_subplots(axes=ax, xoffset=-0.1, yoffset=1.1)
 plt.tight_layout(w_pad=5)
-plt.savefig("figure9.pdf")
+plt.savefig("figure7-robustness-q-lamba.pdf")
 plt.show()
 
 

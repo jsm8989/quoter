@@ -46,5 +46,5 @@ plt.axhline(y=0, linestyle='--', color='k', zorder=-2, lw=1)
 plt.xlabel(r"Modularity, $Q$")
 
 plt.tight_layout()
-plt.savefig("figure4.pdf")
+plt.savefig("figure4-SBM.pdf")
 ##plt.show()

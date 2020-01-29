@@ -4,7 +4,7 @@ import os
 
 N_list = [200,400]
 k_list = [6,12]
-q = 0.9
+q = 0.5
 T = 1000
 
 p_list = np.logspace(-4,0,8)
@@ -39,4 +39,4 @@ for N in N_list:
             print(N,k,p,"done")
 
         df = pd.DataFrame(data={"p":p_list,"hx_avg":hx_avg,"hx_var":hx_var,"C":C_avg})
-        df.to_csv("small_world_N%i_k%i.csv" % (N,k), index=False)
+        df.to_csv("small_world_N%i_k%i_q%0.1f.csv" % (N,k,q), index=False)

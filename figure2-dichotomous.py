@@ -38,6 +38,6 @@ plt.legend(title = r"$N, \langle k \rangle$", fontsize='small')
 
 blt.letter_subplots(axes=ax, xoffset=-0.1)
 plt.tight_layout()
-plt.savefig("figure2.pdf")
+plt.savefig("figure2-dichotomous.pdf")
 plt.show()
 

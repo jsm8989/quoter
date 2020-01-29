@@ -24,13 +24,13 @@ k_style = ["o-", "x-"]
 # hx versus p
 for i,N in enumerate(N_list):
     for j,k in enumerate(k_list):
-        data = pd.read_csv(f"{dir1}/small_world_N%i_k%i.csv" % (N,k))
+        data = pd.read_csv(f"{dir1}/small_world_N%i_k%i_q0.5.csv" % (N,k))
         plt.plot(data["p"], data["hx_avg"], N_style[i] + k_style[j], label="%i, %i" % (N,k))
         
 plt.xlabel(r"Rewiring probability, $p$")
 plt.ylabel(r"$\langle h_\times \rangle$")
 plt.xscale("log")
-plt.legend(title=r"$N, k$", ncol=2,fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
+plt.legend(title=r"$N, k$", ncol=2, fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
 
 
 
@@ -54,7 +54,7 @@ label2 = mlines.Line2D([], [], color='c', marker='o', linestyle='None',
                           markersize=6, label='Edges added randomly')
 label3 = mlines.Line2D([], [], color='r', marker='o', linestyle='None',
                           markersize=6, label='Triangle completion')
-#plt.legend(handles=[label2,label3])
+##plt.legend(handles=[label2,label3], fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
 plt.xlabel(r"Percent increase in edges")
 plt.ylabel(r"$\langle h_\times \rangle$")
 plt.text(0.025, 0.925, "CKM Physicians", transform=ax2.transAxes)
@@ -133,7 +133,7 @@ for stat,label,i in zip(stats,labels,Ids):
 
 blt.letter_subplots(axes=[ax1,ax2,ax3,ax4,ax5,ax6], xoffset=-0.275, yoffset=1)
 plt.tight_layout(w_pad=0.25)
-plt.savefig("figure3.pdf")
+plt.savefig("figure3-clustering.pdf")
 
 plt.show()
 
