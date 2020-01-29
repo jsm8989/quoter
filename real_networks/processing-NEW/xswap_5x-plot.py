@@ -43,17 +43,19 @@ plt.tight_layout()
 plt.show()
 
 # Transivity vs {density, modularity, diameter, ASPL}
-df1 = pd.read_csv("real_networks-links_only.csv") #original
-df2 = pd.read_csv("real_networks-xswap-5x.csv") #xswap
-stats = ["ASPL", "diameter", "Q", "degree_assortativity"]
-labels = ["Average shortest path length", "Diameter", r"Modularity, $Q$", "Assortativity"]
+stats = ["density", "Q", "diameter", "ASPL"]
 fig,ax = plt.subplots(2,2,figsize=(10,6),sharey=False)
 ax = ax.flatten()
-for i,(stat,label) in enumerate(zip(stats,labels)):
-    plt.sca(ax[i])    
-    plt.plot(df1[stat],df2[stat],'C0o')
-    plt.plot(df1[stat],df1[stat],'C1-')
-    plt.title(label)
+for i,stat in enumerate(stats):
+    plt.sca(ax[i])
+    for j in range(len(df1["network"].values)):
+        x = df1["transitivity"].values[j]
+        y = df1[stat].values[j]        
+        plt.plot(x,y,'ko')
+
+    plt.ylabel(stat)
+    if i in [2,3]:
+        plt.xlabel("transitivity")
         
 plt.tight_layout()
 plt.show()

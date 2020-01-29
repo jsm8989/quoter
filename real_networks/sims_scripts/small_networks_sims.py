@@ -49,7 +49,7 @@ def create_edge_sample(G,outdir,outfile):
 ##                                                       replace=False)]
     nonedges_to_sample = []
     with open(os.path.join(outdir,outfile),"w") as f:
-        for e in np.concatenate((edges_to_sample,nonedges_to_sample)):
+        for e in edges_to_sample:
             f.write("%i %i\n" % (e[0], e[1]))
 
         
@@ -86,13 +86,13 @@ def write_data(G,outdir,outfile,edge_sample_file):
         quoteProba = 1/len(G.predecessors(e[1]))
         quoteProba_list.append(quoteProba)
         
-        # also record distance between nodes
-        
-        try:
-            dist = nx.shortest_path_length(G,source=e[0],target=e[1])
-        except:
-            dist = -1
-        dist_list.append(dist)
+##        # also record distance between nodes
+##        
+##        try:
+##            dist = nx.shortest_path_length(G,source=e[0],target=e[1])
+##        except:
+##            dist = -1
+##        dist_list.append(dist)
         
 
         # also record edge clustering info
@@ -104,9 +104,9 @@ def write_data(G,outdir,outfile,edge_sample_file):
         
     # write edge data
     with open(os.path.join(outdir,outfile), "w") as f:
-        f.write("alter ego quoteProb hx distance triangles d_u d_v ECC\n") # header
+        f.write("alter ego quoteProb hx triangles d_u d_v ECC\n") # header
         for i,e in enumerate(edges):
-            f.write("%i %i %0.8f %0.8f %i %i %i %i %0.4f\n" % (e[0], e[1], quoteProba_list[i], hx_list[i], dist_list[i],
+            f.write("%i %i %0.8f %0.8f %i %i %i %0.4f\n" % (e[0], e[1], quoteProba_list[i], hx_list[i],
                                                 triangles_list[i], deg_u_list[i], deg_v_list[i], ECC_list[i]))
 
 
@@ -153,7 +153,6 @@ if __name__ == '__main__':
 ##            G = read_any(name).to_directed()
 ##            create_edge_sample(G,outdir,outfile)
             
-            
     try:
         JOBNUM, NUMJOBS = map(int, sys.argv[1:])
     except IndexError:
@@ -162,7 +161,7 @@ if __name__ == '__main__':
 ##    JOBNUM = 0
 ##    NUMJOBS = 1
     
-    q = 0.5
+    q = 0.9
     T = 1000
 
     trials_list = list(range(300))
@@ -176,11 +175,12 @@ if __name__ == '__main__':
     params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for name,trial in params:
-        outdir = os.path.join("../data_separate_link-nonlink/data", name)
-        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,0.5,1000,trial)
-        edge_sample_file = os.path.join("../data_separate_link-nonlink/edge_sample", name, outfile)
+        outdir = os.path.join("../data-NEW/data", name)
+        outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,0.9,1000,trial)
+        edge_sample_file = os.path.join("../data-NEW/edge_sample", name, outfile)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G0 = read_any(name)
             G = nx.DiGraph(G0)
             quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
              
+

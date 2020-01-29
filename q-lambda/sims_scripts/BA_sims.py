@@ -64,10 +64,10 @@ if __name__ == '__main__':
     params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for q,lam,k,trial in params:
-        outdir = "../data_ER-NEW/"
+        outdir = "../data_BA/"
         outfile = "N%i_k%i_q%0.4f_lam%i_T%i_sim%i.txt" % (N,k,q,lam,T,trial)
         if not os.path.isfile(os.path.join(outdir, "edge", outfile)): # avoid re-doing & overwriting
-            G0 = nx.erdos_renyi_graph(N, k/(N-1))
+            G0 = nx.barabasi_albert_graph(N, int(k/2))
             G = nx.DiGraph(G0) # convert to directed
             quoter_model_sim(G, q, lam, T, outdir, outfile, write_data=write_data)
 

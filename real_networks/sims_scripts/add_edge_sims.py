@@ -47,7 +47,7 @@ def write_data(G,outdir,outfile,edge_sample_file):
     deg_v_list = []
     ECC_list = []
 
-    H = G.to_undirected()
+    H = nx.Graph(G) 
     for e in edges:
         # compute all cross entropies. e[0] = alter, e[1] = ego
         
@@ -61,13 +61,13 @@ def write_data(G,outdir,outfile,edge_sample_file):
         quoteProba = 1/len(G.predecessors(e[1]))
         quoteProba_list.append(quoteProba)
         
-        # also record distance between nodes
-        
-        try:
-            dist = nx.shortest_path_length(G,source=e[0],target=e[1])
-        except:
-            dist = -1
-        dist_list.append(dist)
+##        # also record distance between nodes
+##        
+##        try:
+##            dist = nx.shortest_path_length(G,source=e[0],target=e[1])
+##        except:
+##            dist = -1
+##        dist_list.append(dist)
         
 
         # also record edge clustering info
@@ -79,15 +79,10 @@ def write_data(G,outdir,outfile,edge_sample_file):
         
     # write edge data
     with open(os.path.join(outdir,outfile), "w") as f:
-        f.write("alter ego quoteProb hx distance triangles d_u d_v ECC\n") # header
+        f.write("alter ego quoteProb hx triangles d_u d_v ECC\n") # header
         for i,e in enumerate(edges):
-            f.write("%i %i %0.8f %0.8f %i %i %i %i %0.4f\n" % (e[0], e[1], quoteProba_list[i], hx_list[i], dist_list[i],
+            f.write("%i %i %0.8f %0.8f %i %i %i %0.4f\n" % (e[0], e[1], quoteProba_list[i], hx_list[i],
                                                 triangles_list[i], deg_u_list[i], deg_v_list[i], ECC_list[i]))
-
-
-    # write edgelist for configuration model
-    nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
-
 
 networks_dict = {"Adolescent health": read_adolescent,
                 "Arxiv CondMat": read_arxiv_CondMat,
@@ -119,7 +114,7 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
 
 
 if __name__ == '__main__':
-##    create_data_subdirs("../data_clustering", small_networks)
+##    create_data_subdirs("../data-NEW/data_clustering", small_networks)
     
     try:
         JOBNUM, NUMJOBS = map(int, sys.argv[1:])
@@ -130,33 +125,38 @@ if __name__ == '__main__':
 ##    NUMJOBS = 1
 
     
-    q = 0.5
+    q = 0.9
     T = 1000
     trials_list = list(range(300))
 
-    small_networks = ["CKM physicians"] ## 1 network -- how does number of edges change?
-    epsilon_list = np.arange(0.05,0.41,0.05)
+##    small_networks = ["CKM physicians"] ## 1 network -- how does number of edges change?
+##    epsilon_list = np.arange(0.05,0.41,0.05)
+    eps = 0.25
+    
     
     params = []
     for name in small_networks:
-        for eps in epsilon_list:
-            for trial in trials_list:
-                params.append((name,eps,trial))
+##        for eps in epsilon_list:
+        for trial in trials_list:
+            params.append((name,trial))
             
     #parameters to keep for this job
-    params = [(name,eps,trial) for i,(name,eps,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
+    params = [P for i,P in enumerate(params) if i % NUMJOBS == JOBNUM]
 
-    for name,eps,trial in params:
-        outdir = os.path.join("../data_separate_link-nonlink/data_CKM_vary_n-edges", name)
-        outfile = "EDGE_%s_eps%0.2f_q%0.1f_T%i_sim%i.txt" % (name,eps,q,T,trial)
-        efile = "%s_q%0.1f_T%i_sim%i.txt" % (name,0.5,1000,trial)
-        edge_sample_file = os.path.join("../data_separate_link-nonlink/edge_sample", name, efile)
+    for name,trial in params:
+##        outdir = os.path.join("../data_separate_link-nonlink/data_CKM_vary_n-edges", name)
+##        outfile = "EDGE_%s_eps%0.2f_q%0.1f_T%i_sim%i.txt" % (name,eps,q,T,trial)
+        outdir = os.path.join("../data-NEW/data_clustering", name)
+        outfile = "EDGE_%s_q%0.1f_T%i_sim%i.txt" % (name,q,1000,trial)
+        efile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,1000,trial)
+        edge_sample_file = os.path.join("../data-NEW/edge_sample", name, efile)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G0 = read_any(name)
             nnodes = nx.number_of_nodes(G0)
             nedges = nx.number_of_edges(G0)
             n = min(int( nedges*eps ),len(list(nx.non_edges(G0))))
-            G = add_edges(G0,n).to_directed()
+            G1 = add_edges(G0,n)
+            G = nx.DiGraph(G1)
             quoter_model_sim(G, q, T, outdir, outfile, write_data, None, edge_sample_file)
 
 

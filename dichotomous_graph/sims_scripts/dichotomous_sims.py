@@ -34,8 +34,8 @@ if __name__ == '__main__':
 ##    JOBNUM = 0
 ##    NUMJOBS = 1
 
-    k1_list = np.concatenate((np.arange(4,36,4),np.arange(1,9,1)))
-    k2_list = np.concatenate((64-np.arange(4,36,4),32-np.arange(1,9,1)))
+    k1_list = np.concatenate((np.arange(4,36,4),np.arange(2,18,2)))
+    k2_list = np.concatenate((64-np.arange(4,36,4),32-np.arange(2,18,2)))
     k1k2 = zip(k1_list,k2_list)
     n_list = [250, 500]
     q = 0.9

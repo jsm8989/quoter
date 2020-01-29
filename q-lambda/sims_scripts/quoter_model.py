@@ -142,18 +142,29 @@ def quoter_model_sim(G,q,lam,T,outdir,outfile,write_data=write_all_data,dunbar=N
     for t in range(1,T*nx.number_of_nodes(G)):
         node = random.choice(G.nodes())
 
+        # length of tweet
+        tweetLength = np.random.poisson(lam=lam)
+
         # quote with probability q, provided ego has alters to quote from
         nbrs = G.predecessors(node) 
         if random.random() < q and len(nbrs) > 0:
             # pick a neighbor to quote from (simplifying assumption: uniformly at random from all neighbors)
             user_copied = random.choice(nbrs)
 
-            # quote last lam words
+            # find a valid position in the neighbor's text to quote from
             words_friend = G.node[user_copied]["words"]
-            newWords = words_friend[-lam:]
+            numWords_friend = len(words_friend)
+            
+            # this avoids case where tweetLength > the 20 initial words
+            if tweetLength >= numWords_friend:
+                newWords = words_friend
+            else:
+                copy_pos_start = random.choice( list(range(max( 0, numWords_friend-tweetLength))) )
+                copy_pos_end = min( numWords_friend-1, copy_pos_start + tweetLength)
+                newWords = words_friend[copy_pos_start: copy_pos_end]
             
         else: # new content
-            newWords = np.random.choice(vocab, size=lam, replace=True, p=weights).tolist()
+            newWords = np.random.choice(vocab, size=tweetLength, replace=True, p=weights).tolist()
 
         G.node[node]["words"].extend(newWords)
         G.node[node]["times"].extend([t]*len(newWords))

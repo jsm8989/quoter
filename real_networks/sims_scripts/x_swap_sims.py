@@ -130,7 +130,7 @@ if __name__ == '__main__':
 ##    NUMJOBS = 1
 
     
-    q = 0.5
+    q = 0.9
     T = 1000
     trials_list = list(range(300))
     
@@ -143,7 +143,7 @@ if __name__ == '__main__':
     params = [(name,trial) for i,(name,trial) in enumerate(params) if i % NUMJOBS == JOBNUM]
 
     for name,trial in params:
-        outdir = os.path.join("../data_xswap-5x", name)
+        outdir = os.path.join("../data-NEW/data_xswap-5x", name)
         outfile = "%s_q%0.1f_T%i_sim%i.txt" % (name,q,T,trial)
         if not os.path.isfile(os.path.join(outdir,outfile)):
             G0 = read_any(name)
