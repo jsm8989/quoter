@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import bltools as blt
 
 dir1 = "ER_BA_N1000/processing"
 dir2 = "Lewis_sims"
@@ -19,7 +20,7 @@ plt.plot(ER["k"].values[Ier_], ER["hx_avg"].values[Ier_],'ko-', label="ER")
 Iba_ = BAdeg <= 40
 #plt.plot(BAdeg[I_], BA["hx_avg"].values - BA["h_avg"].values, 'ro', label="BA")
 plt.plot(BAdeg[Iba_], BA["hx_avg"].values[Iba_], 'ro-', label="BA")
-plt.xlabel(r"Average degree, $\langle k \rangle$")
+plt.xlabel(r"$\langle k \rangle$")
 #plt.ylabel(r"KL-divergence, $\langle h_\times - h \rangle$")
 plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
 plt.legend()
@@ -29,7 +30,7 @@ plt.title("Quoter Model")
 plt.sca(ax[1,0])
 plt.plot(ER["k"].values[Ier_], np.power(ER["hx_std"].values[Ier_], 2), 'ko-', label="ER")
 plt.plot(BAdeg[Iba_], np.power(BA["hx_std"].values[Iba_], 2), 'ro-', label="BA")
-plt.xlabel(r"Average degree, $\langle k \rangle$")
+plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel(r"Variance of $h_\times$")
 
 ER_simple_peak_size_m = pd.read_csv(f'{dir2}/ER_simple_peak_size_m.csv')
@@ -46,12 +47,14 @@ BA_complex_peak_size_var = pd.read_csv(f'{dir2}/BA_complex_peak_size_var.csv')
 plt.sca(ax[0,1])
 plt.plot(ER_simple_peak_size_m['k'],ER_simple_peak_size_m['peak_size'],'k-o')
 plt.plot(BA_simple_peak_size_m['m'],BA_simple_peak_size_m['peak_size'],'r-o')
+plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel('Average peak size')
 plt.title("Simple Contagion")
 
 plt.sca(ax[1,1])
 plt.plot(ER_simple_peak_size_var['k'],ER_simple_peak_size_var['peak_size'],'k-o',label='Erdos-Renyi')
 plt.plot(BA_simple_peak_size_var['m'],BA_simple_peak_size_var['peak_size'],'r-o',label='Barabasi-Albert')
+plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel('Variance of peak size')
 plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
@@ -78,6 +81,7 @@ plt.ylabel('Variance of peak size')
 plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 plt.xlabel(r'$\langle k \rangle$')
 
+blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1.1)
 plt.tight_layout()
 plt.savefig('figure1tentative-QM-complex-simple.pdf')
 plt.show()
