@@ -79,7 +79,7 @@ plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 plt.xlabel(r'$\langle k \rangle$')
 
 plt.tight_layout()
-plt.savefig('simple_complex_sims.pdf')
+plt.savefig('figure1tentative-QM-complex-simple.pdf')
 plt.show()
 
 
