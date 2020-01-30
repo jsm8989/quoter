@@ -7,7 +7,7 @@ k1k2_list = [32,64] # k1+k2, i.e. twice the average degree
 
 n_style = ["C0", "C1"]
 k_style = ["o-", "x-"]
-q = 0.5
+q = 0.9
 
 fig, ax = plt.subplots(1,2,figsize=(8,4),sharey=False)
 for i,n in enumerate(n_list):
