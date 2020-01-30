@@ -3,17 +3,33 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
+from matplotlib.gridspec import GridSpec
 import bltools as blt
 
 dir1 = "small_world/processing"
 dir2 = "real_networks/processing/analyses-2019-10-29"
 dir3 = "real_networks/processing"
 
-a = 1.2
-fig = plt.figure(figsize=(8*a,5*a))
+a = 1.25
+fig = plt.figure(figsize=(8*a,5*a), constrained_layout=True)
+
+gs = GridSpec(4, 6, figure=fig)
+
+ax1 = fig.add_subplot(gs[0:2, 0:2])
+ax2 = fig.add_subplot(gs[0:2, 2:4])
+ax3 = fig.add_subplot(gs[0:2, 4:6])
+ax4 = fig.add_subplot(gs[2:4, 0:2])
+ax5 = fig.add_subplot(gs[2:4, 2:4])
+
+ax6 = fig.add_subplot(gs[2, 4]) 
+ax7 = fig.add_subplot(gs[2, 5]) 
+ax8 = fig.add_subplot(gs[3, 4]) 
+ax9 = fig.add_subplot(gs[3, 5]) 
+
 
 # (1,1): Small world networks: hx vs rewiring probability
-ax1 = plt.subplot(2, 3, 1)
+# ax1 = plt.subplot(2, 3, 1)
+plt.sca(ax1)
 
 N_list = [200,400]
 k_list = [6,12]
@@ -35,7 +51,8 @@ plt.legend(title=r"$N, k$", ncol=2, fontsize=9, labelspacing=0, handlelength=1, 
 
 
 # (1,2): Real networks: vary the number of edges added in ``CKM physicians``
-ax2 = plt.subplot(2, 3, 2)
+#ax2 = plt.subplot(2, 3, 2)
+plt.sca(ax2)
 
 df1 = pd.read_csv(f"{dir2}/real_networks-links_only.csv")
 df2 = pd.read_csv(f"{dir2}/CKM-links_only-EDGE.csv")
@@ -54,13 +71,14 @@ label2 = mlines.Line2D([], [], color='c', marker='o', linestyle='None',
                           markersize=6, label='Edges added randomly')
 label3 = mlines.Line2D([], [], color='r', marker='o', linestyle='None',
                           markersize=6, label='Triangle completion')
-##plt.legend(handles=[label2,label3], fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
+plt.legend(handles=[label2,label3], fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25, loc='lower right')
 plt.xlabel(r"Percent increase in edges")
 plt.ylabel(r"$\langle h_\times \rangle$")
 plt.text(0.025, 0.925, "CKM Physicians", transform=ax2.transAxes)
 
 ### (1,3): Real networks: adding edges vs adding triangles
-ax3 = plt.subplot(2, 3, 3)
+# ax3 = plt.subplot(2, 3, 3)
+plt.sca(ax3)
 
 df1 = pd.read_csv(f"{dir2}/real_networks-links_only.csv")
 df2 = pd.read_csv(f"{dir2}/real_networks-links_only-EDGE.csv")
@@ -87,7 +105,8 @@ plt.xlabel("Transitivity")
 plt.ylabel(r"$\langle h_\times \rangle$")
 
 # (2,1): Real networks: x-swap
-ax4 = plt.subplot(2, 3, 4)
+#ax4 = plt.subplot(2, 3, 4)
+plt.sca(ax4)
 df1 = pd.read_csv(f"{dir3}/real_networks-links_only.csv") #original
 df2 = pd.read_csv(f"{dir3}/real_networks-xswap-5x.csv") #xswap
 
@@ -97,7 +116,8 @@ plt.xlabel(r"$\langle h_\times \rangle$ original")
 plt.ylabel(r"$\langle h_\times \rangle$ x-swap")
 
 # (2,2): Real networks: x-swap
-ax5 = plt.subplot(2, 3, 5)
+#ax5 = plt.subplot(2, 3, 5)
+plt.sca(ax5)
 for j in range(len(df1["network"].values)):
         t1 = df1["transitivity"].values[j]
         t2 = df2["transitivity"].values[j]
@@ -121,21 +141,18 @@ df1 = pd.read_csv(f"{dir3}/real_networks-links_only.csv") #original
 df2 = pd.read_csv(f"{dir3}/real_networks-xswap-5x.csv") #xswap
 stats = ["transitivity", "ASPL","Q", "degree_assortativity"]
 labels = ["Transitivity", "ASPL", r"Modularity", "Assortativity"]
-for stat,label,i in zip(stats,labels,Ids):
-    if i == 17:
-        ax6 = plt.subplot(4,6,i)
-    else:
-        plt.subplot(4,6,i)
+for stat,label,ax in zip(stats,labels,[ax6,ax7,ax8,ax9]):
+    plt.sca(ax)
     plt.plot(df1[stat],df2[stat],'C0o')
     plt.plot(df1[stat],df1[stat],'C1-')
-    plt.title(label)
+    plt.gca().set_title(label, fontsize=10, pad=-5)
 
 
-blt.letter_subplots(axes=[ax1,ax2,ax3,ax4,ax5,ax6], xoffset=-0.275, yoffset=1)
-plt.tight_layout(w_pad=0.25)
+blt.letter_subplots(axes=[ax1,ax2,ax3,ax4,ax5,ax6], xoffset=-0.2)
+#plt.tight_layout(w_pad=0, h_pad=0)
 plt.savefig("figure3-clustering.pdf")
 
-plt.show()
+#plt.show()
 
 
 
