@@ -10,7 +10,8 @@ dir1 = "SBM_Nov12/processing"
 mu_list = [0.15,0.20,0.25,0.30]
 N = 100
 m = N//2
-fig, ax = plt.subplots(1,3,figsize=(8,3),sharey=False)
+a=1.15
+fig, ax = plt.subplots(1,3,figsize=(a*8,a*3),sharey=False)
 
 style = ['C0-','C1-','C2-','C3-']
 
@@ -55,6 +56,7 @@ plt.xlabel(r"Modularity, $Q$")
 plt.ylabel(r"$\Delta h_\times$")
 plt.legend(title=r"$p_1$", fontsize=9, handlelength=1)
 
+blt.letter_subplots(xoffset=[-0.275,-0.29,-0.29])
 plt.tight_layout(w_pad=0.5)
 plt.savefig("figure4-SBM.pdf")
 ##plt.show()
