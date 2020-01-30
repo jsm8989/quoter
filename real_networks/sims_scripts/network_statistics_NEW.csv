@@ -1,37 +1,11 @@
-network,num_nodes,num_edges,density,avg_k,max_k,min_k,assortativity,transitivity,average_clustering,notes,giant_comp
-Highland tribes,12,23,0.3485,3.8,7,2,0.08,0.57,0.58,"small, signed, not well-cited",Y
-Sampson's monastery,18,71,0.4641,7.9,12,5,-0.07,0.53,0.56,"small, signed, several versions, temporal",
-Taro exchange,22,39,0.1688,3.5,6,3,-0.38,0.28,0.34,"small, not well-cited",
-Club membership,25,259,0.8633,20.7,24,11,-0.08,0.92,0.93,"projection, small, too dense, not well-cited",
-Seventh grade,29,250,0.6158,17.2,28,7,-0.16,0.73,0.78,slightly too dense,
-NFL,32,212,0.4274,13.2,15,13,0,0.54,0.54,NOT A SOCIAL NETWORK,
-Freeman's EIES,34,415,0.7398,24.4,33,9,-0.15,0.82,0.84,"too dense, several versions",
-Karate club,34,78,0.139,4.6,17,1,-0.48,0.26,0.57,"well-cited (in community detection), but disassortative",
-Kapferer tailor,39,158,0.2132,8.1,24,1,-0.18,0.39,0.46,,
-Hollywood music,39,219,0.2955,11.2,26,2,-0.08,0.56,0.66,projection,Y
-Golden Age,55,564,0.3798,20.5,41,2,-0.13,0.53,0.57,,
-Dolphins,62,159,0.0841,5.1,12,1,-0.04,0.31,0.26,not a human social network,
-Terrorist,62,152,0.0804,4.9,22,1,-0.08,0.36,0.49,"not a typical social network, bad taste",
-Prison,67,142,0.0642,4.2,11,1,0.1,0.29,0.31,not well-cited,
-Highschool,70,274,0.1135,7.8,19,2,0.08,0.4,0.46,,
-Intra-organizational,77,1341,0.4583,34.8,76,18,-0.14,0.67,0.78,,
-Les Miserables,77,254,0.0868,6.6,36,1,-0.17,0.5,0.57,not a human social network,
-CKM physicians,110,193,0.0322,3.5,9,1,0.11,0.16,0.15,several versions,Y
-Hypertext,113,2196,0.347,38.9,98,1,-0.12,0.5,0.53,temporal,
-Jazz musicians,198,2742,0.1406,27.7,100,1,0.02,0.52,0.62,,
-Residence hall,217,1839,0.0785,16.9,56,2,0.1,0.3,0.36,,
-Network science,379,914,0.0128,4.8,34,1,-0.08,0.43,0.74,,Y
-Email Eu Core,986,16687,0.0344,33.8,347,1,-0.01,0.27,0.41,,Y
-Email Spain,1133,5452,0.0085,9.6,71,1,0.08,0.17,0.22,,
-Blogs,1222,16714,0.0224,27.4,351,1,-0.22,0.23,0.32,not a typical social network,Y
-UC Irvine,1893,13835,0.0077,14.6,255,1,-0.19,0.06,0.11,,Y
-Adolescent health,2539,10455,0.0032,8.2,27,1,0.25,0.14,0.15,,
-Facebook,2888,2981,0.0007,2.1,769,1,-0.67,0,0.03,"slightly too big, ego-net",
-Arxiv GrQc,4158,13428,0.0016,6.5,81,1,0.64,0.63,0.56,"too big, not well-cited (use CondMat or HepTh)",Y
-Arxiv HepTh,5835,13815,0.0008,4.7,50,1,0.19,0.28,0.51,"too big, not as well-cited as CondMat",Y
-Email Enron,10486,54466,0.001,10.4,603,1,-0.16,0.09,0.21,"way too big, BUT well-cited",Y
-Web of Trust,10680,24316,0.0004,4.6,205,1,0.24,0.38,0.27,way too big,
-Arxiv CondMat,13861,44619,0.0005,6.4,107,1,0.16,0.35,0.65,way too big,Y
-Marvel,19365,96616,0.0005,10,1625,1,-0.19,0,0,"way too big, fictional",Y
-Twitter,22322,31823,0.0001,2.9,238,1,-0.49,0.02,0.07,"way too big, ego-net, not well-cited",Y
-Gplus,23613,39182,0.0001,3.3,2761,1,-0.39,0,0.17,"way too big, ego-net",Y
+network,num_nodes,num_edges,avg_k,density,transitivity,ASPL,Q,assortativity
+Sampson's monastery,18,71,7.9,0.464,0.53,1.54,0.2,-0.07
+Freeman's EIES,34,415,24.4,0.74,0.82,1.26,0.07,-0.15
+Kapferer tailor,39,158,8.1,0.213,0.39,2.04,0.32,-0.18
+Hollywood music,39,219,11.2,0.296,0.56,1.86,0.2,-0.08
+Golden Age,55,564,20.5,0.38,0.53,1.64,0.45,-0.13
+Dolphins,62,159,5.1,0.084,0.31,3.36,0.52,-0.04
+Terrorist,62,152,4.9,0.08,0.36,2.95,0.52,-0.08
+Les Miserables,77,254,6.6,0.087,0.5,2.64,0.56,-0.17
+CKM physicians,110,193,3.5,0.032,0.16,4.24,0.61,0.11
+Email Spain,1133,5452,9.6,0.009,0.17,3.61,0.57,0.08

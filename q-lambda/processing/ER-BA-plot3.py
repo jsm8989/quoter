@@ -6,8 +6,10 @@ import scipy.stats
 q_list = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9] + [.99, .999, .9999]
 lam_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-data1 = np.loadtxt("hx_ER-NEW_k%i.csv" % 6, delimiter=",")
-data2 = np.loadtxt("hx_ER-NEW_k%i.csv" % 20, delimiter=",")
+##data1 = np.loadtxt("hx_ER-NEW_k%i.csv" % 6, delimiter=",")
+##data2 = np.loadtxt("hx_ER-NEW_k%i.csv" % 20, delimiter=",")
+data1 = np.loadtxt("hx_BA_k%i.csv" % 6, delimiter=",")
+data2 = np.loadtxt("hx_BA_k%i.csv" % 20, delimiter=",")
 
 plt.imshow(np.subtract(data2,data1), origin="lower")
 plt.colorbar()

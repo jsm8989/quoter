@@ -18,7 +18,7 @@ for k in k_list:
             print("k%i q%0.4f lambda%i" % (k,q,lam))
             hx_list = []
             for trial in trials_list:
-                efile = "../data_ER-NEW/edge/N%i_k%i_q%0.4f_lam%i_T%i_sim%i.txt" % (N,k,q,lam,T,trial)
+                efile = "../data_BA/edge/N%i_k%i_q%0.4f_lam%i_T%i_sim%i.txt" % (N,k,q,lam,T,trial)
                 
                 if os.path.isfile(efile):  
                     edata = pd.read_csv(efile, sep = " ")
@@ -31,7 +31,7 @@ for k in k_list:
             data[i,j] = np.mean(hx_list)
 
     df = pd.DataFrame(data=data)
-    df.to_csv("hx_ER-NEW_k%i.csv" % k, header=False, index=False)
+    df.to_csv("hx_BA_k%i.csv" % k, header=False, index=False)
 
 
 

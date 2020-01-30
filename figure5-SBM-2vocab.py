@@ -56,8 +56,8 @@ for i,alpha in enumerate(alpha_list):
                    bbox_to_anchor=(.65, .67, .3, .3),
                    bbox_transform=axcurr.transAxes, loc="center")
         
-    plt.plot(list(range(1,1001)),Zipf(alpha_A,1000),"k",linewidth=4)
-    plt.plot(list(range(1,1001)),Zipf(alpha_B,1000),"C6--",linewidth=3)
+    plt.plot(list(range(1,1001)),Zipf(alpha_A,1000),"C6",linewidth=4)
+    plt.plot(list(range(1,1001)),Zipf(alpha_B,1000),"k--",linewidth=3)
     plt.xscale("log")
     plt.yscale("log")
 

@@ -626,6 +626,11 @@ networks_dict = {"Adolescent health": read_adolescent,
                 "Taro exchange": read_taro,
                 "Twitter": read_twitter}
 
+small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
+              "Golden Age", "Kapferer tailor", "Les Miserables",
+              "Hollywood music", "Sampson's monastery", "Terrorist"]
+
+
 # Note: Twitter,  Facebook, Gplus are ego-networks
 # >>> very low density & clustering. very disassortative
 # Bad:
@@ -668,13 +673,15 @@ def save_network_stats_table(outfile,sort_by="density"):
     avg_k = []
     max_k = []
     min_k = []
-##    ASPL = []
+    ASPL = []
 ##    diam = []
     assortativity = []
     transitivity = []
     avg_clustering = []
+    modularity = []
     
-    for name in networks_dict:
+    
+    for name in small_networks:
         print(name)
         G = read_any(name)
         n = nx.number_of_nodes(G)
@@ -682,22 +689,24 @@ def save_network_stats_table(outfile,sort_by="density"):
         titles.append(name)
         num_nodes.append(n)
         num_edges.append(e)
-        density.append(round(e/(n*(n-1)/2),4))
+        density.append(round(e/(n*(n-1)/2),3))
         avg_k.append(round(2*nx.number_of_edges(G)/nx.number_of_nodes(G),1))
-        max_k.append(max(list(nx.degree(G,G.nodes()).values())))
-        min_k.append(min(list(nx.degree(G,G.nodes()).values())))
-##        ASPL.append(nx.average_shortest_path_length(G))
+##        max_k.append(max(list(nx.degree(G,G.nodes()).values())))
+##        min_k.append(min(list(nx.degree(G,G.nodes()).values())))
+        ASPL.append(round(nx.average_shortest_path_length(G),2))
 ##        diam.append(nx.diameter(G))
         assortativity.append(round(nx.degree_assortativity_coefficient(G),2))
         transitivity.append(round(nx.transitivity(G),2))
-        avg_clustering.append(round(nx.average_clustering(G),2))
+##        avg_clustering.append(round(nx.average_clustering(G),2))
+        partition = community.best_partition(G)
+        Q = get_modularity(G,partition)
+        modularity.append(round(Q,2))
 
-    data = [[titles[i],num_nodes[i],num_edges[i],density[i],avg_k[i],max_k[i],
-             min_k[i],assortativity[i],
-             transitivity[i],avg_clustering[i]] for i in range(len(num_nodes))]
+    data = [[titles[i],num_nodes[i],num_edges[i],avg_k[i],density[i],
+             transitivity[i],ASPL[i],modularity[i],assortativity[i]] for i in range(len(num_nodes))]
 
-    df = pd.DataFrame(data, columns=["network","num_nodes","num_edges","density","avg_k","max_k","min_k",
-                                     "assortativity","transitivity","average_clustering"]) 
+    df = pd.DataFrame(data, columns=["network","num_nodes","num_edges","avg_k","density","transitivity",
+                                     "ASPL","Q","assortativity"]) 
     df.set_index("network")
     df = df.sort_values(sort_by)
     with open(outfile,"w") as f:
@@ -710,27 +719,24 @@ def save_network_stats_table(outfile,sort_by="density"):
         dfstring = dfstring.replace("\n", r"\\" + "\n")
         print(dfstring)
 
-small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
-              "Golden Age", "Kapferer tailor", "Les Miserables",
-              "Hollywood music", "Sampson's monastery", "Terrorist"]
 
 
 if __name__ == "__main__":
-    x = []
-    y = []
-    for network in small_networks:
-        G = read_any(network)
-        partition = community.best_partition(G)
-        Q = get_modularity(G,partition)
-        x.append(nx.transitivity(G))
-        y.append(Q)
-    plt.plot(x,y,'o')
-    plt.xlabel("Transitivity")
-    plt.ylabel("Modularity")
-    plt.show()
+##    x = []
+##    y = []
+##    for network in small_networks:
+##        G = read_any(network)
+##        partition = community.best_partition(G)
+##        Q = get_modularity(G,partition)
+##        x.append(nx.transitivity(G))
+##        y.append(Q)
+##    plt.plot(x,y,'o')
+##    plt.xlabel("Transitivity")
+##    plt.ylabel("Modularity")
+##    plt.show()
         
         
-##    save_network_stats_table("network_statistics_NEW.csv","num_nodes")
+    save_network_stats_table("network_statistics_NEW.csv","num_nodes")
 
 
 ##    # Construct edgelists with quoteProbs
