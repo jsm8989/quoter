@@ -1,13 +1,14 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 import bltools as blt
 
 
 dir1 = "ER_BA_selfEntropy/processing"
 dir2 = "small_world/processing"
 
-fig, ax = plt.subplots(1,2,figsize=(8,3),sharey=True)
+fig, ax = plt.subplots(1,2,figsize=(7,3),sharey=True)
 
 # ER BA
 plt.sca(ax[0])
@@ -24,9 +25,17 @@ for i,q in enumerate(q_list):
     plt.plot(ERparam, ER["hx_avg"].values, "k" + q_style[i], label=r"$q=%0.1f$" % q)
     plt.plot(BAparam, BA["hx_avg"].values, "r" + q_style[i])
 
-plt.legend() # put in caption that black=ER, red=BA
+leg1 = plt.legend() # put in caption that black=ER, red=BA
+ax[0].add_artist(leg1)
 plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
+
+er_line = mlines.Line2D([], [], color='k', ls='-',lw=3)
+ba_line = mlines.Line2D([], [], color='r', ls='-',lw=3)
+plt.legend([er_line, ba_line], ['ER', "BA"], loc='lower center', handlelength=1.25, fontsize=9)
+
+
+
 
 
 # SMALL WORLD
@@ -42,14 +51,14 @@ for i,q in enumerate(q_list):
         
 plt.xlabel(r"Rewiring probability, $p$")
 plt.xscale("log")
-plt.legend(loc="center left")
+plt.legend(bbox_to_anchor=(.0, 0.55), loc=2,)
 
 blt.letter_subplots(axes=ax, xoffset=0, yoffset=1.05)
 
 plt.tight_layout()
 plt.savefig("figure6-robustness-q.pdf")
 
-plt.show()
+# plt.show()
 
     
     

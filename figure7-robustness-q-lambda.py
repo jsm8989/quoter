@@ -59,6 +59,7 @@ cb.ax.set_ylabel(r"$\langle h_\times \rangle_{p = 0} - \langle h_\times\rangle_{
 plt.title("SW")
 
 
+
 blt.letter_subplots(axes=ax, xoffset=-0.1, yoffset=1.1)
 plt.tight_layout(w_pad=3)
 plt.savefig("figure7-robustness-q-lamba.pdf")

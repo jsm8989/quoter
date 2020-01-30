@@ -16,7 +16,7 @@ dir1 = "SBM_Vocab/processing"
 alpha_list = [(2.0,1.5),(2.0,2.0),(2.0,2.5)]
 mu = 0.15
 
-fig, ax = plt.subplots(1,3,figsize=(10,5),sharey=True)
+fig, ax = plt.subplots(1,3,figsize=(8,3),sharey=True, constrained_layout=True)
 for i,alpha in enumerate(alpha_list):
     plt.sca(ax[i])
     alpha_A = alpha[0]
@@ -29,39 +29,48 @@ for i,alpha in enumerate(alpha_list):
     #x = data["p"].values
     x = np.linspace(-.2,.3,11)
 
-    plt.plot(x,data["AB"].values,'o-',label=r"$A \to B$") # these are reversed oops
-    plt.plot(x,data["BA"].values,'o-',label=r"$B \to A$") # ...
-    plt.plot(x,data["AA"].values,'o-',label=r"$A \to A$")
-    plt.plot(x,data["BB"].values,'o-',label=r"$B \to B$")
+    plt.plot(x,data["AB"].values,'o-',label=r"$A \to B$", ms=4) # these are reversed oops
+    plt.plot(x,data["BA"].values,'o-',label=r"$B \to A$", ms=4) # ...
+    plt.plot(x,data["AA"].values,'s-',label=r"$A \to A$", ms=4)
+    plt.plot(x,data["BB"].values,'s-',label=r"$B \to B$", ms=4)
 ##    plt.plot(x,data["hx_w"].values,'o-',label="within")
 ##    plt.plot(x,data["hx_b"].values,'o-',label="between")
     
     plt.title(r"$\alpha_A = %0.1f, \alpha_B = %0.1f$" % (alpha_A,alpha_B))
     if i == 0:
 ##        plt.legend(title=r"$h_\times$")
-        plt.legend(ncol = 4, fontsize=9, labelspacing=0, handlelength=0.75, handletextpad=0.4, borderaxespad=0.25)
+        plt.legend(title=r'$h_\times$', ncol=1, fontsize=9, labelspacing=0, handlelength=0.75, handletextpad=0.4, borderaxespad=0.25)
         plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
     if i == 1:
         plt.xlabel(r"Modularity, $Q$")
 
     # inset plots
     axcurr = plt.gca()
+    dd = 0.02
+    dx,dy = -0.195+dd, -0.13+dd
+    a = 1.3
+    wi,hi = a*0.4-dd,a*0.4*0.8-dd
     if i == 0:
-
         axins = inset_axes(axcurr, width="100%", height="100%",
-                   bbox_to_anchor=(.65, .3, .3, .3),
+                   bbox_to_anchor=(.65+dx, .3+dy, wi,hi),
                    bbox_transform=axcurr.transAxes, loc="center")
     else:
         axins = inset_axes(axcurr, width="100%", height="100%",
-                   bbox_to_anchor=(.65, .67, .3, .3),
+                   bbox_to_anchor=(.65+dx, .67+dy, wi,hi),
                    bbox_transform=axcurr.transAxes, loc="center")
+    axins.tick_params(labelsize=9)
         
-    plt.plot(list(range(1,1001)),Zipf(alpha_A,1000),"C6",linewidth=4)
-    plt.plot(list(range(1,1001)),Zipf(alpha_B,1000),"k--",linewidth=3)
+
+    plt.plot(list(range(1,1001)),Zipf(alpha_A,1000),"k",   linewidth=2, label=r'$A$')
+    plt.plot(list(range(1,1001)),Zipf(alpha_B,1000),"C6:",linewidth=3, label=r'$B$')
+    if i == 0:
+        plt.legend(fontsize=8,  labelspacing=0,handletextpad=0.4, borderaxespad=0.25,loc='lower left')
+    plt.xlabel(r"$r$", labelpad=-2)
+    plt.ylabel(r"       $P(w_r)$")
     plt.xscale("log")
     plt.yscale("log")
 
-plt.tight_layout()
-blt.letter_subplots(axes=ax, xoffset=0, yoffset=1.05)
+blt.letter_subplots(axes=ax, yoffset=1.05, xoffset=0)
+# plt.tight_layout()
 plt.savefig("figure5-SBM-2vocab.pdf")
-plt.show()
+#plt.show()
