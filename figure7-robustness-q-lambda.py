@@ -22,7 +22,7 @@ plt.xticks(range(len(lam_list)), lam_list)
 plt.yticks(range(len(q_list)),q_list)
 plt.xlabel(r"Quote length, $\lambda$")
 plt.ylabel(r"Quote probability, $q$")
-cb = plt.colorbar()
+cb = plt.colorbar(fraction=0.058, pad=0.05)
 cb.ax.set_ylabel(r"$\langle h_\times \rangle_{k = 20} - \langle h_\times\rangle_{k = 6}$",
                  rotation=270, size=12, labelpad=20)
 plt.title("ER")
@@ -37,10 +37,11 @@ plt.xticks(range(len(lam_list)), lam_list)
 plt.yticks(range(len(q_list)),q_list)
 plt.xlabel(r"Quote length, $\lambda$")
 plt.ylabel(r"Quote probability, $q$")
-cb = plt.colorbar()
+cb = plt.colorbar(fraction=0.058, pad=0.05)
 cb.ax.set_ylabel(r"$\langle h_\times \rangle_{p = 0} - \langle h_\times\rangle_{p = 1}$",
                  rotation=270, size=12, labelpad=20)
 plt.title("Small-world")
+
 
 blt.letter_subplots(axes=ax, xoffset=-0.1, yoffset=1.1)
 plt.tight_layout(w_pad=5)
