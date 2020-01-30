@@ -5,6 +5,7 @@ import bltools as blt
 from scipy import stats, linalg
 from scipy.optimize import fsolve
 import math
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
 def get_predictability(S,N): # explodes for small values of N or large values of S
     try:
@@ -16,7 +17,7 @@ def get_predictability(S,N): # explodes for small values of N or large values of
 dir1 = "ER_BA_N1000/processing"
 dir2 = "Lewis_sims"
 
-fig,ax = plt.subplots(1,3,figsize=(8,3))
+fig,ax = plt.subplots(1,3,figsize=(8,3),constrained_layout=True)
 
 # LEWIS et al: simple & complex contagion 
 ER_simple_peak_size_m = pd.read_csv(f'{dir2}/ER_simple_peak_size_m.csv')
@@ -58,7 +59,7 @@ BA = pd.read_csv(f"{dir1}/hx_BA.csv")
 N = 1000
 BAdeg = np.array([2*m - 2*m**2/N for m in BA["m"].values]) # theoretical degree for BA
 
-# average cross-entropy vs average degree
+# average predictability vs average degree
 plt.sca(ax[2])
 Ier_ = ER["k"].values <= 40
 ERpred = [get_predictability(s,1000) for s in ER["hx_avg"].values[Ier_]]
@@ -70,14 +71,22 @@ plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel(r"Average predictability, $\Pi$")
 plt.title("Quoter Model")
 
-### variance of cross-entropy vs average degree
-##plt.plot(ER["k"].values[Ier_], np.power(ER["hx_std"].values[Ier_], 2), 'ko-', label="ER")
-##plt.plot(BAdeg[Iba_], np.power(BA["hx_std"].values[Iba_], 2), 'ro-', label="BA")
-##plt.xlabel(r"$\langle k \rangle$")
-##plt.ylabel(r"Variance of $h_\times$")
+# inset. average hx vs average degree
+axcurr = plt.gca()
+dd = 0.02
+dx,dy = -0.195+dd, 0.26+dd
+a = 1.3
+wi,hi = a*0.4-dd,a*0.4*0.8-dd
+axins = inset_axes(axcurr, width="100%", height="100%",
+                   bbox_to_anchor=(.65+dx, .3+dy, wi,hi),
+                   bbox_transform=axcurr.transAxes, loc="center")
+plt.plot(ER["k"].values[Ier_], ER["hx_avg"].values[Ier_], "ko-")
+plt.plot(BAdeg[Iba_], BA["hx_avg"].values[Iba_], "ro-")
+plt.xlabel(r"$\langle k \rangle$")
+plt.ylabel(r"$\langle h_\times \rangle$")
 
 blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1.1)
-plt.tight_layout()
+##plt.tight_layout()
 plt.savefig('figure1tentative-QM-complex-simple.pdf')
 plt.show()
 
