@@ -87,7 +87,7 @@ plt.ylabel(r"$\langle h_\times \rangle$")
 
 blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1.1)
 ##plt.tight_layout()
-plt.savefig('figure1tentative-QM-complex-simple.pdf')
+plt.savefig('figure1-QM-complex-simple.pdf')
 plt.show()
 
 

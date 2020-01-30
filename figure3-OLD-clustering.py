@@ -150,7 +150,7 @@ for stat,label,ax in zip(stats,labels,[ax6,ax7,ax8,ax9]):
 
 blt.letter_subplots(axes=[ax1,ax2,ax3,ax4,ax5,ax6], xoffset=-0.2)
 #plt.tight_layout(w_pad=0, h_pad=0)
-plt.savefig("figure3-clustering.pdf")
+plt.savefig("figure3-OLD-clustering.pdf")
 
 #plt.show()
 

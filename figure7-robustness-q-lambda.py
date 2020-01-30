@@ -9,8 +9,8 @@ dir1 = "q-lambda/processing"
 q_list = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9] + [.99, .999, .9999]
 lam_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-
-fig, ax = plt.subplots(1,3,figsize=(9,4))
+a = 1.6
+fig, ax = plt.subplots(1,3,figsize=(8*a,3*a))
 
 # (1,1): robustness of density result (ER)
 data1 = np.loadtxt(f"{dir1}/hx_ER-NEW_k%i.csv" % 6, delimiter=",")

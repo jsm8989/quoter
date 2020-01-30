@@ -52,5 +52,5 @@ print("Association between density and hx:")
 slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(d, hx)
 print(r_value, p_value)
 
-plt.savefig("figure2tentative-real_networks-density.pdf")
+plt.savefig("figure2-real_networks-density.pdf")
 ##plt.show()
