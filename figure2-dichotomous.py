@@ -43,8 +43,8 @@ k1k2=32
 q = 0.5
 data = pd.read_csv(f"{dir1}/hx_dichotomous_n%i_k1k2%i_q%0.1f.csv" % (n,k1k2,q))
 
-##edgetypes = [["1","1"],["1","2"],["2","1"],["2","2"]] # which types of edges are most influential/influenced??
-edgetypes = [["X","1"],["X","2"],["1","X"],["2","X"]] # ...     ...    nodes   ....     ...    ...
+edgetypes = [["1","1"],["1","2"],["2","1"],["2","2"]] # which types of edges are most influential/influenced??
+##edgetypes = [["X","1"],["X","2"],["1","X"],["2","X"]] # ...     ...    nodes   ....     ...    ...
 
 for e in edgetypes:
     n1 = e[0]
