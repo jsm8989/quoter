@@ -85,7 +85,7 @@ plt.plot(BAdeg[Iba_], BA["hx_avg"].values[Iba_], "ro-")
 plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel(r"$\langle h_\times \rangle$")
 
-blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1.1)
+blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1)
 ##plt.tight_layout()
 plt.savefig('figure1-QM-complex-simple.pdf')
 plt.show()

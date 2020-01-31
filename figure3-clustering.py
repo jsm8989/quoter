@@ -169,7 +169,7 @@ plt.ylabel(r"$\langle h_\times \rangle$")
 
 ##blt.letter_subplots(axes=[ax1,ax2,ax3,ax4,ax5,ax6], xoffset=-0.2)
 #plt.tight_layout(w_pad=0, h_pad=0)
-plt.savefig("figure3tentative-clustering.pdf")
+plt.savefig("figure3-clustering.pdf")
 plt.show()
 
 
