@@ -56,7 +56,7 @@ plt.legend(bbox_to_anchor=(.0, 0.55), loc=2,)
 blt.letter_subplots(axes=ax, xoffset=0, yoffset=1.05)
 
 plt.tight_layout()
-plt.savefig("figure6-robustness-q.pdf")
+plt.savefig("figure7-robustness-q.pdf")
 
 # plt.show()
 

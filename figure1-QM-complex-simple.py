@@ -11,7 +11,7 @@ def get_predictability(S,N): # explodes for small values of N or large values of
     try:
         PiMax = fsolve(lambda Pi : S + Pi*math.log(Pi,2) + (1 - Pi)*math.log(1 - Pi,2) - (1 - Pi)*math.log(N-1,2), 0.5)
     except:
-        PiMax = 0
+        PiMax = 1
     return float(PiMax)
 
 dir1 = "ER_BA_N1000/processing"
@@ -85,7 +85,7 @@ plt.plot(BAdeg[Iba_], BA["hx_avg"].values[Iba_], "ro-")
 plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel(r"$\langle h_\times \rangle$")
 
-blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1)
+blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1.05)
 ##plt.tight_layout()
 plt.savefig('figure1-QM-complex-simple.pdf')
 plt.show()

@@ -58,5 +58,5 @@ plt.legend(title=r"$p_1$", fontsize=9, handlelength=1)
 
 blt.letter_subplots(xoffset=[-0.275,-0.29,-0.29])
 plt.tight_layout(w_pad=0.5)
-plt.savefig("figure4-SBM.pdf")
+plt.savefig("figure5-SBM.pdf")
 ##plt.show()

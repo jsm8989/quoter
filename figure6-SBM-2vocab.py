@@ -72,5 +72,5 @@ for i,alpha in enumerate(alpha_list):
 
 blt.letter_subplots(axes=ax, yoffset=1.05, xoffset=0)
 # plt.tight_layout()
-plt.savefig("figure5-SBM-2vocab.pdf")
+plt.savefig("figure6-SBM-2vocab.pdf")
 #plt.show()

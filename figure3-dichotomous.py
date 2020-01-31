@@ -92,6 +92,6 @@ plt.legend()
 
 blt.letter_subplots(axes=ax, xoffset=-0.1, yoffset=1.1)
 plt.tight_layout()
-plt.savefig("figure2-dichotomous.pdf")
+plt.savefig("figure3-dichotomous.pdf")
 plt.show()
 
