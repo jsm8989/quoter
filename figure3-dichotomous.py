@@ -49,6 +49,8 @@ plt.sca(ax[1])
 ##plt.xlabel(r"Variance of degree distribution")
 plt.xlabel(r"$k_1/k_2$")
 plt.ylabel(r"$\langle h_\times \rangle$")
+plt.legend(title = r"$N, \langle k \rangle$", fontsize='small')
+
 
 plt.sca(ax[2])
 ##plt.xlabel(r"Variance of degree distribution")
@@ -68,13 +70,14 @@ data = pd.read_csv(f"{dir2}/hx_dichotomous_n%i_k1k2%i_q%0.1f.csv" % (n,k1k2,q))
 
 # (2,2): 
 plt.sca(ax[3])
-edgetypes = [["1","1"],["1","2"],["2","1"],["2","2"]] # which types of edges are most influential/influenced??
+# edgetypes = [["1","1"],["1","2"],["2","1"],["2","2"]] # which types of edges are most influential/influenced??
+edgetypes = [["1","1"],["2","1"],["1","2"],["2","2"]] # which types of edges are most influential/influenced??
 
 for e in edgetypes:
     n1 = e[0]
     n2 = e[1]
     
-    plt.plot(data["degree_ratio"].values, data["hx%s%s_avg" % (n1,n2)].values, "o-", label=r"$k_{%s} \to k_{%s}$" % (n1,n2))
+    plt.plot(data["degree_ratio"].values, data["hx%s%s_avg" % (n1,n2)].values, "o-", ms=5, label=r"$k_{%s} \to k_{%s}$" % (n1,n2))
 
 plt.xlabel(r"$k_1/k_2$")
 plt.ylabel(r"$\langle h_\times \rangle$")
