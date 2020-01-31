@@ -12,18 +12,19 @@ dir2 = "real_networks/processing/analyses-2019-10-29"
 dir3 = "real_networks/processing"
 
 a = 1.25
-fig = plt.figure(figsize=(8*a,5*a), constrained_layout=True)
+fig = plt.figure(figsize=(6.5*a,5.125*a), constrained_layout=True)
 
 gs = GridSpec(4, 4, figure=fig)
 
 ax1 = fig.add_subplot(gs[0, 0:2]) # SW: hx vs p
-ax2 = fig.add_subplot(gs[1, 0:2]) # WattsStrogatz
+ax2 = fig.add_subplot(gs[1, 0:2], sharex=ax1) # WattsStrogatz
+plt.setp(ax1.get_xticklabels(), visible=False)
 ax3 = fig.add_subplot(gs[0:2, 2:4]) # x-swap: hx vs transitivity + inset
 
 # x-swap other properties
-ax4 = fig.add_subplot(gs[2, 0]) 
-ax5 = fig.add_subplot(gs[2, 1]) 
-ax6 = fig.add_subplot(gs[3, 0]) 
+ax4 = fig.add_subplot(gs[2, 0])
+ax5 = fig.add_subplot(gs[2, 1])
+ax6 = fig.add_subplot(gs[3, 0])
 ax7 = fig.add_subplot(gs[3, 1])
 
 ax8 = fig.add_subplot(gs[2:4, 2:4]) # our clustering experiment
@@ -44,13 +45,13 @@ for i,N in enumerate(N_list):
         data = pd.read_csv(f"{dir1}/small_world_N%i_k%i_q0.5.csv" % (N,k))
         plt.plot(data["p"], data["hx_avg"], N_style[i] + k_style[j], label="%i, %i" % (N,k))
         
-plt.xlabel(r"Rewiring probability, $p$")
+# plt.xlabel(r"Rewiring probability, $p$")
 plt.ylabel(r"$\langle h_\times \rangle$")
 plt.xscale("log")
-legend = plt.legend(title=r"$N, k$", ncol=2, fontsize=9,
-           bbox_to_anchor=(0.35,0.37),
-           prop={'size': 7}, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
-plt.setp(legend.get_title(),fontsize='small')
+#legend = plt.legend(title=r"$N, k$", ncol=2, fontsize=9,
+#           bbox_to_anchor=(0.35,0.37),
+#           prop={'size': 7}, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
+# plt.setp(legend.get_title(),fontsize='small')
 
 # Small world networks: Watts Strogatz plot
 plt.sca(ax2)
@@ -110,20 +111,24 @@ label2 = mlines.Line2D([], [], color='red', marker='o', linestyle='None',
                           markersize=6, label='x-swap')
 plt.legend(handles=[label1,label2], fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
 plt.ylabel(r"$\langle h_\times \rangle$")
+xl,xr = plt.xlim()
+plt.xlim(xl,xr+0.075)
 plt.xlabel("Transitivity")
 
 dd = 0.02
-dx,dy = 0.07+dd, -0.13+dd
+dx,dy = 0.04, -0.13
 a = a/2
 wi,hi = a*0.4-dd,a*0.4*0.8-dd
+wi,hi = 0.29,0.4
 axins = inset_axes(ax3, width="100%", height="100%",
            bbox_to_anchor=(.65+dx, .3+dy, wi,hi),
            bbox_transform=ax3.transAxes, loc="center")
-plt.plot(df1["average_hx"],df2["average_hx"],"o")
+axins.tick_params(labelsize=7)
+plt.plot(df1["average_hx"],df2["average_hx"],"o",ms=5)
 plt.plot(df1["average_hx"],df1["average_hx"],"-")
-plt.xlabel(r"original")
-plt.ylabel(r"x-swap")
-plt.annotate(r"$\langle h_\times \rangle$", (3.235, 3.3))
+plt.xlabel(r"$\langle h_\times \rangle$ original", fontsize=9)
+plt.ylabel(r"x-swap", fontsize=9)
+# plt.annotate(r"$\langle h_\times \rangle$", (3.235, 3.3), fontsize=9)
 ##plt.title(r"$\langle h_\times \rangle$")
 
 # Real networks: x-swap properties
@@ -135,7 +140,8 @@ for stat,label,ax in zip(stats,labels,[ax4,ax5,ax6,ax7]):
     plt.sca(ax)
     plt.plot(df1[stat],df2[stat],'C0o')
     plt.plot(df1[stat],df1[stat],'C1-')
-    plt.gca().set_title(label, fontsize=10, pad=-9)
+    # plt.text(label, fontsize=10, pad=-19)
+    plt.text( 0.025, 0.875, label, transform=ax.transAxes)
 
 
 
@@ -167,9 +173,10 @@ plt.xlabel("Transitivity")
 plt.ylabel(r"$\langle h_\times \rangle$")
 
 
-##blt.letter_subplots(axes=[ax1,ax2,ax3,ax4,ax5,ax6], xoffset=-0.2)
-#plt.tight_layout(w_pad=0, h_pad=0)
+xoff1, xoff2 = -0.175,-0.175*360/150
+blt.letter_subplots(axes=[ax1,ax3,ax4,ax8], xoffset=[xoff1,xoff1,xoff2,xoff1])
+#plt.tight_layout(w_pad=0, h_pad=-1)
 plt.savefig("figure4-clustering.pdf")
-plt.show()
+#plt.show()
 
 
