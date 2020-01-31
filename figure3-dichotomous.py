@@ -6,7 +6,7 @@ import bltools as blt
 dir1 = "ER_BA_N1000/processing"
 dir2 = "dichotomous_graph/processing"
 
-fig, ax = plt.subplots(2,3,figsize=(8,5),sharey=False)
+fig, ax = plt.subplots(2,2,figsize=(7,5),constrained_layout=True)
 ax = ax.flatten()
 
 ER = pd.read_csv(f"{dir1}/hx_ER.csv")
@@ -22,6 +22,8 @@ plt.plot(ER["k"].values[Ier_], np.power(ER["hx_std"].values[Ier_], 2), 'ko-', la
 plt.plot(BAdeg[Iba_], np.power(BA["hx_std"].values[Iba_], 2), 'ro-', label="BA")
 plt.xlabel(r"$\langle k \rangle$")
 plt.ylabel(r"Variance of $h_\times$")
+plt.legend()
+plt.locator_params(axis='y', nbins=6)
 
 
 # DICHOTOMOUS NETWORKS
@@ -46,16 +48,17 @@ for i,n in enumerate(n_list):
 plt.sca(ax[1])
 ##plt.xlabel(r"Variance of degree distribution")
 plt.xlabel(r"$k_1/k_2$")
-plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
+plt.ylabel(r"$\langle h_\times \rangle$")
 
 plt.sca(ax[2])
 ##plt.xlabel(r"Variance of degree distribution")
 plt.xlabel(r"$k_1/k_2$")
 plt.ylabel(r"Variance of $h_\times$")
 plt.legend(title = r"$N, \langle k \rangle$", fontsize='small')
+plt.locator_params(axis='y', nbins=6)
 
 # (2,1):
-ax[3].set_visible(False)
+# ax[3].set_visible(False)
 
 # 2ND ROW: Influential nodes
 n=500 # size of each group... total number of nodesis N=2*n
@@ -64,7 +67,7 @@ q = 0.5
 data = pd.read_csv(f"{dir2}/hx_dichotomous_n%i_k1k2%i_q%0.1f.csv" % (n,k1k2,q))
 
 # (2,2): 
-plt.sca(ax[4])
+plt.sca(ax[3])
 edgetypes = [["1","1"],["1","2"],["2","1"],["2","2"]] # which types of edges are most influential/influenced??
 
 for e in edgetypes:
@@ -74,24 +77,32 @@ for e in edgetypes:
     plt.plot(data["degree_ratio"].values, data["hx%s%s_avg" % (n1,n2)].values, "o-", label=r"$k_{%s} \to k_{%s}$" % (n1,n2))
 
 plt.xlabel(r"$k_1/k_2$")
-plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
+plt.ylabel(r"$\langle h_\times \rangle$")
 plt.legend()
 
 # (2,3):
-plt.sca(ax[5])
-##edgetypes = [["X","1"],["X","2"],["1","X"],["2","X"]]
-edgetypes = [["X","1"],["X","2"]]
-for e in edgetypes:
-    n1 = e[0]
-    n2 = e[1]
-    plt.plot(data["degree_ratio"].values, data["hx%s%s_avg" % (n1,n2)].values, "o-", label=r"$k_{\bullet} \to k_{%s}$" % n2)
+# plt.sca(ax[5])
+# ##edgetypes = [["X","1"],["X","2"],["1","X"],["2","X"]]
+# edgetypes = [["X","1"],["X","2"]]
+# for e in edgetypes:
+    # n1 = e[0]
+    # n2 = e[1]
+    # plt.plot(data["degree_ratio"].values, data["hx%s%s_avg" % (n1,n2)].values, "o-", label=r"$k_{\bullet} \to k_{%s}$" % n2)
 
-plt.xlabel(r"$k_1/k_2$")
-plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
-plt.legend()
+# plt.xlabel(r"$k_1/k_2$")
+# plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
+# plt.legend()
 
-blt.letter_subplots(axes=[ax[0],ax[1],ax[2],ax[4],ax[5]], xoffset=-0.1, yoffset=1.1)
-plt.tight_layout()
+
+
+
+blt.letter_subplots(axes=ax, xoffset=-0.21)
+#plt.tight_layout()
+
+#fig.set_constrained_layout_pads(w_pad=8./72., h_pad=0./72.,)# hspace=0., wspace=0.)
+fig.set_constrained_layout_pads(hspace=-0.05)
+
+
 plt.savefig("figure3-dichotomous.pdf")
-plt.show()
+# plt.show()
 
