@@ -10,6 +10,13 @@ from scipy.optimize import fsolve
 import math
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 
+
+def get_association(x,y):
+    slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(x,y)
+    print(r_value, p_value)
+    return r_value, p_value
+    
+
 def get_predictability(S,N): # explodes for small values of N or large values of S
     try:
         PiMax = fsolve(lambda Pi : S + Pi*math.log(Pi,2) + (1 - Pi)*math.log(1 - Pi,2) - (1 - Pi)*math.log(N-1,2), 0.5)
@@ -36,6 +43,9 @@ plt.xlabel(r"Density")
 plt.ylabel("Average peak size (proportion)")
 plt.title("Simple Contagion")
 
+print("Association between density and peak size (simple contagion):")
+get_association(real_simple["density"],real_simple["peak_size_prop"])
+
 # Annotate
 T = []
 for i in range(len(real_simple)):
@@ -61,6 +71,9 @@ plt.plot(real_complex["density"],real_complex["peak_size_prop"], "o")
 plt.xlabel(r"Density")
 plt.ylabel("Average peak size (proportion)")
 plt.title("Complex Contagion")
+
+print("Association between density and peak size (complex contagion):")
+get_association(real_complex["density"],real_complex["peak_size_prop"])
 
 # Annotate
 T = []
@@ -127,9 +140,9 @@ d = df["density"].values
 hx = df["average_hx"].values
 
 print("Association between density and hx (predictability):")
-##slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(d, hx)
-slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(d, pred)
-print(r_value, p_value)
+print("Association between density and peak size (complex contagion):")
+get_association(d, pred)
+
 
 blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1.05)
 ##plt.tight_layout()

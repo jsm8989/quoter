@@ -90,7 +90,7 @@ plt.xlabel(r"$k_1/k_2$")
 plt.ylabel(r"Average cross-entropy, $\langle h_\times \rangle$")
 plt.legend()
 
-blt.letter_subplots(axes=ax, xoffset=-0.1, yoffset=1.1)
+blt.letter_subplots(axes=[ax[0],ax[1],ax[2],ax[4],ax[5]], xoffset=-0.1, yoffset=1.1)
 plt.tight_layout()
 plt.savefig("figure3-dichotomous.pdf")
 plt.show()
