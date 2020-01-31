@@ -12,9 +12,9 @@ dir2 = "real_networks/processing/analyses-2019-10-29"
 dir3 = "real_networks/processing"
 
 a = 1.25
-fig = plt.figure(figsize=(6.5*a,5.125*a), constrained_layout=True)
+fig = plt.figure(figsize=(6.5*a,4.125*a), constrained_layout=True)
 
-gs = GridSpec(4, 4, figure=fig)
+gs = GridSpec(3, 4, figure=fig)
 
 ax1 = fig.add_subplot(gs[0, 0:2]) # SW: hx vs p
 ax2 = fig.add_subplot(gs[1, 0:2], sharex=ax1) # WattsStrogatz
@@ -24,10 +24,10 @@ ax3 = fig.add_subplot(gs[0:2, 2:4]) # x-swap: hx vs transitivity + inset
 # x-swap other properties
 ax4 = fig.add_subplot(gs[2, 0])
 ax5 = fig.add_subplot(gs[2, 1])
-ax6 = fig.add_subplot(gs[3, 0])
-ax7 = fig.add_subplot(gs[3, 1])
+ax6 = fig.add_subplot(gs[2, 2])
+ax7 = fig.add_subplot(gs[2, 3])
 
-ax8 = fig.add_subplot(gs[2:4, 2:4]) # our clustering experiment
+# ax8 = fig.add_subplot(gs[2:4, 2:4]) # our clustering experiment
 
 
 # Small world networks: hx vs rewiring probability
@@ -116,7 +116,7 @@ plt.xlim(xl,xr+0.075)
 plt.xlabel("Transitivity")
 
 dd = 0.02
-dx,dy = 0.04, -0.13
+dx,dy = 0.037, -0.13
 a = a/2
 wi,hi = a*0.4-dd,a*0.4*0.8-dd
 wi,hi = 0.29,0.4
@@ -141,40 +141,42 @@ for stat,label,ax in zip(stats,labels,[ax4,ax5,ax6,ax7]):
     plt.plot(df1[stat],df2[stat],'C0o')
     plt.plot(df1[stat],df1[stat],'C1-')
     # plt.text(label, fontsize=10, pad=-19)
-    plt.text( 0.025, 0.875, label, transform=ax.transAxes)
+    plt.text( 0.05, 0.875, label, transform=ax.transAxes)
+    plt.xlabel("Original")
+    plt.ylabel("x-swap")
 
 
 
 ### Real networks: adding edges vs adding triangles
-plt.sca(ax8)
-
-df1 = pd.read_csv(f"{dir2}/real_networks-links_only.csv")
-df2 = pd.read_csv(f"{dir2}/real_networks-links_only-EDGE.csv")
-df3 = pd.read_csv(f"{dir2}/real_networks-links_only-TRIANGLE.csv")
-
-for i in range(len(df1["network"].values)):
-    t1 = df1["transitivity"].values[i]
-    t2 = df2["transitivity"].values[i]
-    t3 = df3["transitivity"].values[i]
-    h1 = df1["average_hx"].values[i]
-    h2 = df2["average_hx"].values[i]
-    h3 = df3["average_hx"].values[i]
-    plt.plot([t2,t1,t3],[h2,h1,h3],"k-")
-    plt.plot(t1,h1,"o", color='black')
-    plt.plot(t2,h2,"o", color='c')
-    plt.plot(t3,h3,"o", color='r')
-
-      
-label1 = mlines.Line2D([], [], color='black', marker='o', linestyle='None', markersize=6, label='Original network')
-label2 = mlines.Line2D([], [], color='c',  marker='o', linestyle='None', markersize=6, label='Edges added randomly')
-label3 = mlines.Line2D([], [], color='r',   marker='o', linestyle='None', markersize=6, label='Triangle completion')
-plt.legend(handles=[label1,label2,label3], fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
-plt.xlabel("Transitivity")
-plt.ylabel(r"$\langle h_\times \rangle$")
+#plt.sca(ax8)
+#
+#df1 = pd.read_csv(f"{dir2}/real_networks-links_only.csv")
+#df2 = pd.read_csv(f"{dir2}/real_networks-links_only-EDGE.csv")
+#df3 = pd.read_csv(f"{dir2}/real_networks-links_only-TRIANGLE.csv")
+#
+#for i in range(len(df1["network"].values)):
+#    t1 = df1["transitivity"].values[i]
+#    t2 = df2["transitivity"].values[i]
+#    t3 = df3["transitivity"].values[i]
+#    h1 = df1["average_hx"].values[i]
+#    h2 = df2["average_hx"].values[i]
+#    h3 = df3["average_hx"].values[i]
+#    plt.plot([t2,t1,t3],[h2,h1,h3],"k-")
+#    plt.plot(t1,h1,"o", color='black')
+#    plt.plot(t2,h2,"o", color='c')
+#    plt.plot(t3,h3,"o", color='r')
+#
+#      
+#label1 = mlines.Line2D([], [], color='black', marker='o', linestyle='None', markersize=6, label='Original network')
+#label2 = mlines.Line2D([], [], color='c',  marker='o', linestyle='None', markersize=6, label='Edges added randomly')
+#label3 = mlines.Line2D([], [], color='r',   marker='o', linestyle='None', markersize=6, label='Triangle completion')
+#plt.legend(handles=[label1,label2,label3], fontsize=9, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
+#plt.xlabel("Transitivity")
+#plt.ylabel(r"$\langle h_\times \rangle$")
 
 
 xoff1, xoff2 = -0.175,-0.175*360/150
-blt.letter_subplots(axes=[ax1,ax3,ax4,ax8], xoffset=[xoff1,xoff1,xoff2,xoff1])
+blt.letter_subplots(axes=[ax1,ax3,ax4], xoffset=[xoff1,xoff1,xoff2])
 #plt.tight_layout(w_pad=0, h_pad=-1)
 plt.savefig("figure4-clustering.pdf")
 #plt.show()
