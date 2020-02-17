@@ -89,7 +89,7 @@ for i in range(len(real_complex)):
     T.append((x,y,lbl))
 
 texts = [plt.text(x, y, lbl, fontsize=8.5) for x,y,lbl in T]
-adjust_text(texts)
+adjust_text(texts,force_points=(1.15,.8),avoid_points=False)
 
 
 # QUOTER MODEL
