@@ -5,9 +5,12 @@ import matplotlib.pyplot as plt
 from scipy.stats import stats
 import bltools as blt # see baglab github
 
-# This figure requires access to the full data...
+# This figure requires access to full data: stored in ./hx_distribution.zip
 
 fig, ax = plt.subplots(1,3,figsize=(8,3), sharey=True)
+##dir1 = "ER_BA_N1000"
+##dir2 = "small_world"
+dir1 = dir2 = "hx_distribution"
 
 # ERBA plots ------
 N = 1000
@@ -16,22 +19,25 @@ T = 1000
 trials_list = list(range(200))
 
 ##graph = "ER" # ER or BA
-x=6 # average degree
+x=12 # average degree
 
 for i,graph in enumerate(["ER","BA"]):
     hx_list = []
     pv = []
+
+    # file naming format depends on whether ER or BA
+    if graph == "ER":
+        param_sym = "k"
+    else:
+        param_sym = "m"
+        x = int(x/2) # m = k/2
+            
     for trial in trials_list:
 ##        if trial % 40 == 0:
 ##            print(trial, "done")
 
-        # file naming format depends on whether ER or BA
-        if graph == "ER":
-            param_sym = "k"
-        else:
-            param_sym = "m"
         
-        efile = "ER_BA_N1000/data_%s/edge/N%i_%s%i_q%0.1f_T%i_sim%i.txt" % (graph,N,param_sym,x,q,T,trial)
+        efile = "%s/data_%s/edge/N%i_%s%i_q%0.1f_T%i_sim%i.txt" % (dir1,graph,N,param_sym,x,q,T,trial)
         
         if os.path.isfile(efile):
             edata = pd.read_csv(efile, sep = " ")
@@ -80,7 +86,6 @@ trials_list = list(range(500))
 N = 200
 k = 6
 p = p_list[0]
-print(p)
 
 hx_list = []
 pv = []
@@ -88,7 +93,7 @@ for trial in trials_list:
 ##    if trial % 50 == 0:
 ##        print(trial, "done")
         
-    efile = "small_world/data_clustering2/edge/N%i_k%i_p%0.4f_q%0.1f_T%i_sim%i.txt" % (N,k,p,q,T,trial)
+    efile = "%s/data_clustering2/edge/N%i_k%i_p%0.4f_q%0.1f_T%i_sim%i.txt" % (dir2,N,k,p,q,T,trial)
 
     if os.path.isfile(efile):
         edata = pd.read_csv(efile, sep=" ")
