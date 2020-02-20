@@ -5,3 +5,4 @@ edgelist/
 fileshare*
 __pycache__
 .Rhistory
+hx_distribution/
