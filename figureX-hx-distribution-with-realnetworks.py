@@ -9,9 +9,9 @@ import bltools as blt # see baglab github
 
 fig, ax = plt.subplots(2,6,figsize=(8,2.5), sharey=True)
 ax = ax.flatten()
-dir1 = "ER_BA_N1000"
-dir2 = "small_world"
-##dir1 = dir2 = "hx_distribution"
+##dir1 = "ER_BA_N1000"
+##dir2 = "small_world"
+dir1 = dir2 = "hx_distribution"
 
 # ERBA plots ------
 N = 1000
@@ -75,10 +75,6 @@ for i,graph in enumerate(["ER","BA"]):
     plt.axvline(np.mean(hx_list),color="k",linestyle="-",label="mean")
     plt.axvline(np.median(hx_list),color="r",linestyle="--",label="median")
     
-    if i==0:
-        plt.ylabel("Prob. density")
-##        plt.legend(handlelength=1.0, loc='upper left')
-
     plt.title("%s" %  title, fontsize=10)
 
 
@@ -97,7 +93,8 @@ small_networks = ["Sampson's monastery", "Freeman's EIES", "Kapferer tailor",
                   "Hollywood music", "Golden Age", "Dolphins", "Terrorist",
                   "Les Miserables", "CKM physicians", "Email Spain"]
 
-datadir = "real_networks/data_separate_link-nonlink/data"
+##datadir = "real_networks/data_separate_link-nonlink/data"
+datadir = "hx_distribution/data"
 for i,name in enumerate(small_networks):
     print(name)
     
@@ -116,9 +113,6 @@ for i,name in enumerate(small_networks):
     plt.hist(hx_list, density=True, bins=75,histtype='stepfilled')
     plt.axvline(np.mean(hx_list),color="k",linestyle="-",label="mean")
     plt.axvline(np.median(hx_list),color="r",linestyle="--",label="median")
-    
-    if i+2 == 6:
-        plt.ylabel("Prob. density")
 
     if name != "Les Miserables":
         title = name.split()[0]
@@ -126,15 +120,31 @@ for i,name in enumerate(small_networks):
         title = "Les Mis"
     plt.title("%s" %  title, fontsize=10)
 
-for i in [-1,-2,-3,-4,-5,-6]:
+
+for i in range(len(ax)):
+    for tick in ax[i].xaxis.get_major_ticks():
+        tick.label.set_fontsize(9)
+
+    for tick in ax[i].yaxis.get_major_ticks():
+        tick.label.set_fontsize(9)
+
     plt.sca(ax[i])
-    plt.xlabel(r"$h_\times$")
+    if i in [-1,-2,-3,-4,-5,-6]:
+        plt.xlabel(r"$h_\times$")
+
+    if i in [0,6]:
+        plt.ylabel("Prob. density")
+        
+##    if i == 0:
+##        plt.legend(handlelength=1.0, loc='upper left')
+
 
 
 ##blt.letter_subplots(axes=ax.flatten(), xoffset=-.05, yoffset=1.05)
-plt.tight_layout(h_pad=0.1, w_pad=0)
-##plt.savefig("figureX-hx-distribution.pdf")
-plt.show()
+plt.tight_layout(h_pad=0.2, w_pad=0)
+plt.savefig("figureX-hx-distribution.pdf")
+##plt.show()
+
 
 
 ### Small world plot ------------------
