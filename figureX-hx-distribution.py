@@ -66,14 +66,14 @@ for i,graph in enumerate(["ER","BA"]):
 
     # Plot compiled hx distribution
     plt.sca(ax[i])
-    plt.hist(hx_list, density=True, bins=100)
+    plt.hist(hx_list, density=True, bins=75, histtype='stepfilled')
     plt.axvline(np.mean(hx_list),color="k",linestyle="-",label="mean")
     plt.axvline(np.median(hx_list),color="C6",linestyle="--",label="median")
     plt.xlabel(r"$h_\times$")
     #plt.ylabel("Count (in 200 trials x 1000 edges/trial)")
     if i==0:
-        plt.ylabel("Density")
-        plt.legend(handlelength=1.0)
+        plt.ylabel("Prob. density")
+        plt.legend(handlelength=1.0, loc='upper left')
     plt.title("%s" % graph_name, fontsize=10)
 
 
@@ -122,15 +122,15 @@ print("kurtosis/skewness",stats.kurtosis(hx_list), stats.skew(hx_list))
 print(len([p for p in pv if p > alpha_level])/len(trials_list), "percent of trials have normaly distributed hx\n")
 
 # Plot compiled hx distribution
-plt.hist(hx_list, density=True, bins=100)
+plt.hist(hx_list, density=True, bins=75, histtype='stepfilled')
 plt.axvline(np.mean(hx_list), color="k", linestyle="-")
 plt.axvline(np.median(hx_list), color="C6", linestyle="--")
 plt.xlabel(r"$h_\times$")
 ##plt.ylabel("Count (in 500 trials x 500 edges/trial)")
 plt.title("Small-World", fontsize=10)
 
-blt.letter_subplots(axes=ax.flatten(), xoffset=-.1, yoffset=1.05)
-plt.tight_layout()
+blt.letter_subplots(axes=ax.flatten(), xoffset=-.05, yoffset=1.05)
+plt.tight_layout(h_pad=0.0, w_pad=0)
 plt.savefig("figureX-hx-distribution.pdf")
-plt.show()
+# plt.show()
 
