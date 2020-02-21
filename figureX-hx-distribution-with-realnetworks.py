@@ -7,7 +7,8 @@ import bltools as blt # see baglab github
 
 # This figure requires access to full data: stored in ./hx_distribution.zip
 
-fig, ax = plt.subplots(2,6,figsize=(8,2.5), sharey=True)
+a = 1.2
+fig, ax = plt.subplots(2,7,figsize=(8*a,2.5*a), sharey=True)
 ax = ax.flatten()
 ##dir1 = "ER_BA_N1000"
 ##dir2 = "small_world"
@@ -78,6 +79,56 @@ for i,graph in enumerate(["ER","BA"]):
     plt.title("%s" %  title, fontsize=10)
 
 
+### Small world plot ------------------
+##N_list = [200,400] # number of nodes
+##k_list = [6,12] # degree
+
+plt.sca(ax[2])
+
+q = 0.5
+T = 1000
+p_list = np.logspace(-4,0,8) # rewiring 
+trials_list = list(range(500))
+
+# let's just study one combination of (N,k,p)
+N = 200
+k = 6
+p = p_list[0]
+
+hx_list = []
+pv = []
+for trial in trials_list:
+    #if trial % 50 == 0:
+    #    print(trial, "done")
+
+    efile = "%s/data_clustering2/edge/N%i_k%i_p%0.4f_q%0.1f_T%i_sim%i.txt" % (dir2,N,k,p,q,T,trial)
+
+    if os.path.isfile(efile):
+        edata = pd.read_csv(efile, sep=" ")
+
+
+        hx_vals = edata["hx"].values
+
+        hx_list.extend(hx_vals) # compile all hx
+        pv.append(stats.normaltest(hx_vals)[1]) # store p-value of normality test for this trial
+
+    else:
+        print(trial, "no data")
+
+print("compiled hx p-val", stats.normaltest(hx_list)) # compile all hx from all trials -- are these normally distributed?
+print("kurtosis/skewness",stats.kurtosis(hx_list), stats.skew(hx_list))
+
+# Dont compile all hx. Instead count num trials which have normally distributed hx
+print(len([p for p in pv if p > alpha_level])/len(trials_list), "percent of trials have normaly distributed hx\n")
+
+# Plot compiled hx distribution
+plt.hist(hx_list, density=True, bins=75, histtype='stepfilled')
+plt.axvline(np.mean(hx_list), color="k", linestyle="-")
+plt.axvline(np.median(hx_list), color="r", linestyle="--")
+plt.xlabel(r"$h_\times$")
+plt.title("SW", fontsize=10)
+
+
 
 # Real networks -----------
 q = 0.5
@@ -109,7 +160,7 @@ for i,name in enumerate(small_networks):
         hx_vals = edata["hx"].values
         hx_list.extend(hx_vals)
 
-    plt.sca(ax[i+2])
+    plt.sca(ax[i+3])
     plt.hist(hx_list, density=True, bins=75,histtype='stepfilled')
     plt.axvline(np.mean(hx_list),color="k",linestyle="-",label="mean")
     plt.axvline(np.median(hx_list),color="r",linestyle="--",label="median")
@@ -129,14 +180,16 @@ for i in range(len(ax)):
         tick.label.set_fontsize(9)
 
     plt.sca(ax[i])
-    if i in [-1,-2,-3,-4,-5,-6]:
+    if i in [-1,-2,-3,-4,-5,-6,-7]:
         plt.xlabel(r"$h_\times$")
 
-    if i in [0,6]:
+    if i in [0,7]:
         plt.ylabel("Prob. density")
         
 ##    if i == 0:
 ##        plt.legend(handlelength=1.0, loc='upper left')
+
+ax[-1].axis('off')
 
 
 
@@ -145,59 +198,3 @@ plt.tight_layout(h_pad=0.2, w_pad=0)
 plt.savefig("figureX-hx-distribution.pdf")
 ##plt.show()
 
-
-
-### Small world plot ------------------
-####N_list = [200,400] # number of nodes
-####k_list = [6,12] # degree
-##
-##plt.sca(ax[2])
-##
-##q = 0.5
-##T = 1000
-##p_list = np.logspace(-4,0,8) # rewiring 
-##trials_list = list(range(500))
-##
-### let's just study one combination of (N,k,p)
-##N = 200
-##k = 6
-##p = p_list[0]
-##
-##hx_list = []
-##pv = []
-##for trial in trials_list:
-##    #if trial % 50 == 0:
-##    #    print(trial, "done")
-##
-##    efile = "%s/data_clustering2/edge/N%i_k%i_p%0.4f_q%0.1f_T%i_sim%i.txt" % (dir2,N,k,p,q,T,trial)
-##
-##    if os.path.isfile(efile):
-##        edata = pd.read_csv(efile, sep=" ")
-##
-##
-##        hx_vals = edata["hx"].values
-##
-##        hx_list.extend(hx_vals) # compile all hx
-##        pv.append(stats.normaltest(hx_vals)[1]) # store p-value of normality test for this trial
-##
-##    else:
-##        print(trial, "no data")
-##
-##print("compiled hx p-val", stats.normaltest(hx_list)) # compile all hx from all trials -- are these normally distributed?
-##print("kurtosis/skewness",stats.kurtosis(hx_list), stats.skew(hx_list))
-##
-### Dont compile all hx. Instead count num trials which have normally distributed hx
-##print(len([p for p in pv if p > alpha_level])/len(trials_list), "percent of trials have normaly distributed hx\n")
-##
-### Plot compiled hx distribution
-##plt.hist(hx_list, density=True, bins=75, histtype='stepfilled')
-##plt.axvline(np.mean(hx_list), color="k", linestyle="-")
-##plt.axvline(np.median(hx_list), color="C6", linestyle="--")
-##plt.xlabel(r"$h_\times$")
-####plt.ylabel("Count (in 500 trials x 500 edges/trial)")
-##plt.title("Small-World", fontsize=10)
-##
-##blt.letter_subplots(axes=ax.flatten(), xoffset=-.05, yoffset=1.05)
-##plt.tight_layout(h_pad=0.0, w_pad=0)
-##plt.savefig("figureX-hx-distribution.pdf")
-### plt.show()
