@@ -68,7 +68,7 @@ for i,graph in enumerate(["ER","BA"]):
 
     # Dont compile all hx. Instead count num trials which have normally distributed hx
     alpha_level = 0.05
-    print(len([p for p in pv if p > alpha_level])/len(trials_list), "percent of trials have normaly distributed hx") 
+    print(len([p for p in pv if p > alpha_level])/len(trials_list), "percent of trials have normally distributed hx\n") 
 
     # Plot compiled hx distribution
     plt.sca(ax[i])
@@ -119,15 +119,13 @@ print("compiled hx p-val", stats.normaltest(hx_list)) # compile all hx from all 
 print("kurtosis/skewness",stats.kurtosis(hx_list), stats.skew(hx_list))
 
 # Dont compile all hx. Instead count num trials which have normally distributed hx
-print(len([p for p in pv if p > alpha_level])/len(trials_list), "percent of trials have normaly distributed hx\n")
+print(len([p for p in pv if p > alpha_level])/len(trials_list), "percent of trials have normally distributed hx\n")
 
 # Plot compiled hx distribution
 plt.hist(hx_list, density=True, bins=75, histtype='stepfilled')
 plt.axvline(np.mean(hx_list), color="k", linestyle="-")
 plt.axvline(np.median(hx_list), color="r", linestyle="--")
-plt.xlabel(r"$h_\times$")
 plt.title("SW", fontsize=10)
-
 
 
 # Real networks -----------
@@ -172,6 +170,8 @@ for i,name in enumerate(small_networks):
     plt.title("%s" %  title, fontsize=10)
 
 
+
+# More axes formatting
 for i in range(len(ax)):
     for tick in ax[i].xaxis.get_major_ticks():
         tick.label.set_fontsize(9)
@@ -180,14 +180,16 @@ for i in range(len(ax)):
         tick.label.set_fontsize(9)
 
     plt.sca(ax[i])
-    if i in [-1,-2,-3,-4,-5,-6,-7]:
-        plt.xlabel(r"$h_\times$")
 
     if i in [0,7]:
         plt.ylabel("Prob. density")
         
 ##    if i == 0:
 ##        plt.legend(handlelength=1.0, loc='upper left')
+
+##for i in [-1,-2,-3,-4,-5,-6,-7]:
+##    plt.sca(ax[i])
+##    plt.xlabel(r"$h_\times$")
 
 ax[-1].axis('off')
 
