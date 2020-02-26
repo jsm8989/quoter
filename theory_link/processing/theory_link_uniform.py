@@ -43,6 +43,34 @@ for i,z in enumerate(z_list):
                  q/2*(math.log(T*z**(lam+2),2)+(z**lam/T + 1)*math.log(T/z**lam + 1,2) - 2)) for q in q_list]
         theory_hx = [T*math.log(T,2)/L for L in theory_L]
         plt.plot(q_list, theory_hx, c=lam_color[j])
+
+##        #d = 0.18
+##        d = 1/z
+##        q = q_list[1]
+##        s = 0
+##        for t in range(T):
+##            if t % 40 == 0:
+##                print("done", t/T)
+##                
+##            s1 = 0
+####            for l in range(T-t): # expectation of P(Lambda_t = ell|R)
+##            for l in range(200): # expectation of P(Lambda_t = ell|R)
+##                s1 += l*(1-(1-d**l*(1-d))**t)
+##
+##            s2 = 0
+####            for l in range(T-t): # expectation of P(Lambda_t = ell|Q)
+##            for l in range(200): # expectation of P(Lambda_t = ell|Q)
+##                s2 += (l+lam)*l*(1-(1-d**l*(1-d))**t)
+####                for j in range(50): # message length
+####                    s2 += (l+j)*l*(1-(1-d**l*(1-d))**t) * lam**j * math.exp(-lam)/math.factorial(j)
+##
+##            s += (1-q)*s1 + q*s2
+##
+##        with open("output.txt","w") as f:
+##            f.write(str(T*math.log(T,2)/s) + " " + str(theory_hx[1]))
+
+        
+        
 leg = plt.legend(title=r"$T=1000\lambda$", loc="lower left", bbox_to_anchor=(0,0.08), ncol=3, prop={'size': 8})
 leg._legend_box.align = "left"
 plt.xlabel(r"Quote probability, $q$")
