@@ -127,6 +127,7 @@ def quoter_model_sim(G,q,T,lam,outdir,outfile,alpha_alter,alpha_ego,write_data=w
             newWords = new_content(alpha_alter,startWords)
         G.node[node]["words"] = newWords
         G.node[node]["times"] = [0]*len(newWords)
+        G.node[node]["Q"] = [0]*len(newWords)
 
     # simulate quoter model
     for t in range(1,T*nx.number_of_nodes(G)):
@@ -148,11 +149,15 @@ def quoter_model_sim(G,q,T,lam,outdir,outfile,alpha_alter,alpha_ego,write_data=w
             copy_pos_end = min( numWords_friend-1, copy_pos_start + tweetLength)
             newWords = words_friend[copy_pos_start: copy_pos_end]
             
+            G.node[node]["Q"].extend([1]*len(newWords))
+            
         else: # new content
             if node == 1:
                 newWords = new_content(alpha_ego,tweetLength)
             else:
                 newWords = new_content(alpha_alter,tweetLength)
+
+            G.node[node]["Q"].extend([0]*len(newWords))
 
         G.node[node]["words"].extend(newWords)
         G.node[node]["times"].extend([t]*len(newWords))

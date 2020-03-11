@@ -4,9 +4,9 @@
 #PBS -q workq
 # How much time and computer memory will the job need:
 # (Jobs run more quickly the less resources they require)
-#PBS -l walltime=05:00:00
-#PBS -l pmem=600mb,pvmem=800mb
-#PBS -N job_uniform
+#PBS -l walltime=10:00:00 
+#PBS -l pmem=700mb,pvmem=1500mb
+#PBS -N jobfile_ER
 
-cd $HOME/quoter-model-NEW/theory_link/sims_scripts
-python theory_link_uniform.py "$PBS_ARRAYID" "${n}"
+cd $HOME/quoter-model-NEW/heterogeneous_Zipfs/sims_scripts
+python ER_sims.py "$PBS_ARRAYID" "${n}"
