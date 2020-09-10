@@ -6,7 +6,7 @@ import math
 import itertools
 import matplotlib.lines as mlines
 import bltools as blt
-
+from matplotlib.patches import Rectangle
 
 q_list = np.linspace(0,1,20)
 T = 10000
@@ -33,6 +33,8 @@ trials_list = list(range(100))
 
 z_style = ['x','s','o']
 lam_color = ['C0','C1','C2']
+linewidth = 2.5
+ms = 4
 
 fig,ax = plt.subplots(1,2,figsize=(8,4))
 for t,TT in enumerate([1000,10000]):
@@ -53,27 +55,41 @@ for t,TT in enumerate([1000,10000]):
                      q/2*(math.log(T*z**(lam+2))+(z**lam/T + 1)*math.log(T/z**lam + 1) - 2)) for q in q_list]
             theory_hx2 = [T*math.log(T,2)/L for L in theory_L2]
 
+
+
             # change Lambda_R and Lambda_Q
             # theory_L2 = [T/math.log(z) *  ( (1-q)*(math.log(T*z) - 1) +
             #          q/2*(math.log(T*z**(lam+2))+(z**lam/T + 1)*math.log(T/z**lam + 1) - 2)) + T*(np.euler_gamma/math.log(z) - 1/2) for q in q_list]
             # theory_hx2 = [T*math.log(T,2)/L for L in theory_L2]
         
-            plt.plot(q_list, theory_hx, c=lam_color[j])
-            plt.plot(q_list, theory_hx2, ':'+lam_color[j])
-            plt.xlabel(r"Quote probability, $q$")
+            plt.plot(q_list, theory_hx, ':', c=lam_color[j], ms=ms)
+            plt.plot(q_list, theory_hx2, '-', c=lam_color[j], linewidth=linewidth)
+
+    # axcurr = plt.gca()
+    # x0, x1 = axcurr.get_xlim()
+    # y0, y1 = axcurr.get_ylim()
+    # dx = x1 - x0
+    # dy = y1 - y0
+    # xlen = 0.25
+    # xpad = 0.02
+    # ypad = 0.02
+    # axcurr.add_artist(Rectangle((x0+xpad*dx, y0+ypad*dy), xlen*dx, dy*(1-2*ypad), facecolor="none", ec="gray", lw=3.0))
+    plt.xlabel(r"Quote probability, $q$",fontsize=14.5)    
 
 plt.sca(ax[0])
-leg1 = plt.legend(loc="lower left", bbox_to_anchor=(0,0.08), ncol=3, prop={'size': 8})
+# leg1 = plt.legend(loc="lower center", ncol=3, prop={'size': 9})
+leg1 = plt.legend(loc="lower left", bbox_to_anchor=(0,0.08), ncol=3, prop={'size': 14.5})
 # leg = plt.legend(title=r"$T=%i$" % TT, loc="lower left", bbox_to_anchor=(0,0.08), ncol=3, prop={'size': 8}))
 leg1._legend_box.align = "left"
 ax[0].add_artist(leg1)
 
-theory1_line = mlines.Line2D([], [], color='k', ls='-',lw=3)
-theory2_line = mlines.Line2D([], [], color='k', ls=':',lw=3)
-plt.legend([theory1_line,theory2_line],["theory 1", "theory 2"],loc="upper right")
+theory1_line = mlines.Line2D([], [], color='k', ls=':',lw=linewidth)
+theory2_line = mlines.Line2D([], [], color='k', ls='-',lw=linewidth)
+plt.legend([theory1_line,theory2_line],["theory 1", "theory 2"],loc="upper right",prop={'size': 14.5})
 
-plt.ylabel(r"Cross-entropy, $h_\times$ [bits]")
-plt.savefig("C:/Users/tysonp/Desktop/Figure_1.pdf")
+# plt.ylabel(r"Cross-entropy, $h_\times$ [bits]",fontsize=14.5)
+plt.ylabel(r"$h_\times$",fontsize=14.5)
+# plt.savefig("C:/Users/tysonp/Desktop/Figure_1.pdf")
 
 blt.letter_subplots(axes=ax, xoffset=0, yoffset=1.05)
 

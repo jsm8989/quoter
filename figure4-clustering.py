@@ -48,10 +48,10 @@ for i,N in enumerate(N_list):
 # plt.xlabel(r"Rewiring probability, $p$")
 plt.ylabel(r"$\langle h_\times \rangle$")
 plt.xscale("log")
-#legend = plt.legend(title=r"$N, k$", ncol=2, fontsize=9,
-#           bbox_to_anchor=(0.35,0.37),
-#           prop={'size': 7}, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
-# plt.setp(legend.get_title(),fontsize='small')
+legend = plt.legend(loc="lower left", title=r"$N, k$", ncol=2, fontsize=9,
+          bbox_to_anchor=(0.02,0.2),
+          prop={'size': 9}, labelspacing=0, handlelength=1, handletextpad=0.4, borderaxespad=0.25)
+plt.setp(legend.get_title(),fontsize='small')
 
 # Small world networks: Watts Strogatz plot
 plt.sca(ax2)

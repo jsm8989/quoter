@@ -148,7 +148,7 @@ def read_golden():
     file = "../NETWORKS/GoldenAge/HollywoodGoldenAge_matrix_s0.txt"
     A=np.loadtxt(file)
     G = nx.from_numpy_matrix(A)
-    G.remove_edges_from(G.selfloop_edges())
+    G.remove_edges_from(nx.selfloop_edges(G))
     return G
 
 
@@ -377,7 +377,7 @@ def read_blogs():
 
     G = nx.Graph()
     G.add_edges_from(elist)
-    G.remove_edges_from(G.selfloop_edges())
+    G.remove_edges_from(nx.selfloop_edges(G))
     
     return get_giant_component(G)
 
@@ -655,7 +655,7 @@ def display_network_stats():
 
     for name in sorted(networks_dict):
         G = read_any(name)
-        G.remove_edges_from(G.selfloop_edges())
+        G.remove_edges_from(nx.selfloop_edges(G))
         cc = sorted(nx.connected_components(G), key=len, reverse=True)
         print(name.ljust(22),
               str(nx.number_of_nodes(G)).ljust(5),
@@ -735,8 +735,34 @@ if __name__ == "__main__":
 ##    plt.ylabel("Modularity")
 ##    plt.show()
         
-        
-    save_network_stats_table("network_statistics_NEW.csv","num_nodes")
+    G = read_any("Network science")
+    print(G.number_of_nodes())
+    pos = nx.spring_layout(G, k=0.09, iterations=25)
+    partition = community.best_partition(G)
+
+    # extract top communities and color them
+    from collections import Counter
+    counts = [x[0] for x in Counter(list(partition.values())).most_common(5)]
+    cmap = ['red', 'green', 'black', 'magenta', 'cyan']
+    cols = []
+    for node in G.nodes():
+        if partition[node] in counts:
+            cols.append(cmap[counts.index(partition[node])])
+        else:
+            cols.append('white')
+
+    nodes = nx.draw_networkx_nodes(G, pos=pos, node_size=25, node_color=cols)
+    edges = nx.draw_networkx_edges(G, pos=pos, edge_width=5, edge_color="#DEB992")
+    ax = plt.axes()
+    x='#051622'
+    ax.spines["bottom"].set_color(x)
+    ax.spines["top"].set_color(x)
+    ax.spines["left"].set_color(x)
+    ax.spines["right"].set_color(x)
+    ax.set_facecolor(x)
+    plt.show()
+
+    # save_network_stats_table("network_statistics_NEW.csv","num_nodes")
 
 
 ##    # Construct edgelists with quoteProbs
