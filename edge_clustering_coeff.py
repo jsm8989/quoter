@@ -2,20 +2,32 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
-def edge_clustering_coeff(G,u,v,return_info=False):
-    u_nbrs = nx.neighbors(G,u)
-    v_nbrs = nx.neighbors(G,v)
+
+def edge_clustering_coeff(G: nx.Graph, u: int, v: int, return_info: bool = False):
+    """_summary_
+
+    Args:
+        G (nx.Graph): _description_
+        u (int): _description_
+        v (int): _description_
+        return_info (bool, optional): _description_. Defaults to False.
+
+    Returns:
+        _type_: _description_
+    """
+    u_nbrs = nx.neighbors(G, u)
+    v_nbrs = nx.neighbors(G, v)
     uv_nbrs = set(u_nbrs) & set(v_nbrs)
     triangles = len(uv_nbrs)
 
     deg_u = len(u_nbrs)
     deg_v = len(v_nbrs)
-    
-    if min(deg_u-1,deg_v-1) == 0: # undefined?
-        ECC = 0
+
+    if min(deg_u - 1, deg_v - 1) == 0:  # undefined?
+        ECC: float = 0
     else:
-        ECC = triangles/min(deg_u-1,deg_v-1)
-    
+        ECC = triangles / min(deg_u - 1, deg_v - 1)
+
     if return_info:
         return triangles, deg_u, deg_v, ECC
     else:
@@ -25,12 +37,25 @@ def edge_clustering_coeff(G,u,v,return_info=False):
 if __name__ == "__main__":
     # ECC example from paper
     G = nx.Graph()
-    G.add_edges_from([(1,2),(1,4),(1,5),(1,6),(2,3),(3,4),(3,5),(3,6),
-                      (4,5),(4,6),(5,6)])
-    print(edge_clustering_coeff(G,1,4))
+    G.add_edges_from(
+        [
+            (1, 2),
+            (1, 4),
+            (1, 5),
+            (1, 6),
+            (2, 3),
+            (3, 4),
+            (3, 5),
+            (3, 6),
+            (4, 5),
+            (4, 6),
+            (5, 6),
+        ]
+    )
+    print(edge_clustering_coeff(G, 1, 4))
     pos = nx.spring_layout(G)
-    labels=nx.draw_networkx_labels(G,pos)
-    nx.draw(G,pos)
+    labels = nx.draw_networkx_labels(G, pos)
+    nx.draw(G, pos)
     plt.show()
 
     # Test on real networks

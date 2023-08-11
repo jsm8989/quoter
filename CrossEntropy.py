@@ -1,7 +1,6 @@
 # Code by Tobin South
 # https://github.com/tobinsouth/ProcessEntropy
 
-import numba
 from numba import jit, prange
 import numpy as np
 import math
