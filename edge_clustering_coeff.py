@@ -4,16 +4,17 @@ import numpy as np
 
 
 def edge_clustering_coeff(G: nx.Graph, u: int, v: int, return_info: bool = False):
-    """_summary_
+    """
+    Compute ECC between two nodes.
 
     Args:
-        G (nx.Graph): _description_
-        u (int): _description_
-        v (int): _description_
-        return_info (bool, optional): _description_. Defaults to False.
+        G: NetworkX graph to be analysed. Must be directed
+        u: node index of first node
+        v: node index of second node
+        return_info: if True return information about the algorithm
 
     Returns:
-        _type_: _description_
+        triangles deg_u deg_v ECC as
     """
     u_nbrs = nx.neighbors(G, u)
     v_nbrs = nx.neighbors(G, v)

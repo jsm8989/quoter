@@ -4,19 +4,31 @@ import pandas as pd
 import re
 from networkx.algorithms import bipartite
 import community
-
-# from modularity import *
+from modularity import get_modularity
 import matplotlib.pyplot as plt
 
 
 def get_giant_component(G):
-    # extract only the giant component
+    """
+    Returns the giant component of a graph. Giant components are nodes that are connected to each other in the graph.
+
+    @param G - NetworkX graph to be analysed. It must be directed.
+
+    @return G with only the giant component removed. This is a copy of G
+    """
     cc = sorted(nx.connected_components(G), key=len, reverse=True)
     G.remove_nodes_from(set(G.nodes()) - set(cc[0]))
     return G
 
 
 def read_adolescent():
+    """
+    Read adolescent_health file and return networkx graph. This file is used to determine the health of the network and should contain a list of tuples ( node_id node_name ) where node_id is the node id of the node that is connected to the node with the same node_name.
+
+
+    Returns:
+        NetworkX graph
+    """
     file = "../NETWORKS/adolescent_health/out.moreno_health_health"
     elist = []
     with open(file, "r") as f:
@@ -31,6 +43,13 @@ def read_adolescent():
 
 
 def read_arxiv_CondMat():
+    """
+    Read Arxiv Cond Mat file and return Giant component.
+
+
+    Returns:
+        Graph with components as node ids
+    """
     file = "../NETWORKS/Arxiv_ca-CondMat/Newman-Cond_mat_95-99-binary.txt"
     elist = []
     with open(file, "r") as f:
@@ -45,6 +64,13 @@ def read_arxiv_CondMat():
 
 
 def read_arxiv_GrQc():
+    """
+    Read GrQc file and return giant component. It is assumed that the file is in arxiv format
+
+
+    Returns:
+        networkx graph with components as node ids
+    """
     file = "../NETWORKS/Arxiv_ca-GrQc/CA-GrQc.txt"
     elist = []
     with open(file, "r") as f:
