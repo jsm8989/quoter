@@ -74,6 +74,7 @@ mypy=0.981=py311h06a4308_0
 mypy_extensions=0.4.3=py311h06a4308_1
 ncurses=6.4=h6a678d5_0
 networkx=3.1=py311h06a4308_0
+nltk=3.8.1=pypi_0
 nspr=4.35=h6a678d5_0
 nss=3.89.1=h6a678d5_0
 numba=0.57.0=py311ha02d727_0
@@ -87,6 +88,7 @@ pcre=8.45=h295c915_0
 pillow=9.4.0=py311h6a678d5_0
 pip=23.2.1=py311h06a4308_0
 ply=3.11=py311h06a4308_0
+processentropy=1.1.2.dev0=pypi_0
 psutil=5.9.0=py311h5eee18b_0
 pyparsing=3.0.9=py311h06a4308_0
 pyqt=5.15.7=py311h6a678d5_0
