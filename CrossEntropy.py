@@ -4,7 +4,6 @@
 
 from numba import jit, prange
 import numpy as np
-import math
 from ProcessEntropy.Preprocessing import tweet_to_hash_array
 
 
@@ -178,4 +177,4 @@ def timeseries_cross_entropy(
 
     if get_lambdas:
         return lambdas
-    return len(target) * math.log(len(source), 2) / np.sum(lambdas)
+    return len(target) * np.log2(len(source)) / np.sum(lambdas)
