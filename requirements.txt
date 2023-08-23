@@ -88,7 +88,7 @@ pcre=8.45=h295c915_0
 pillow=9.4.0=py311h6a678d5_0
 pip=23.2.1=py311h06a4308_0
 ply=3.11=py311h06a4308_0
-processentropy=1.1.2.dev0=pypi_0
+processentropy=1.1.2.dev0=pypi_0 #pip install --no-dependencies ProcessEntropy
 psutil=5.9.0=py311h5eee18b_0
 pyparsing=3.0.9=py311h06a4308_0
 pyqt=5.15.7=py311h6a678d5_0
