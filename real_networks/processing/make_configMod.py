@@ -6,8 +6,10 @@
 
 import networkx as nx
 import numpy as np
-from read_networks import *
-import matplotlib.pyplot as plt
+import sys
+
+sys.path.append("/home/jimjam/Documents/Adelaide/quoter")
+import real_networks.sims_scripts.read_networks as read
 import random
 
 
@@ -16,112 +18,128 @@ def make_configMod(G):
     if sum(degree_seq) % 2 != 0:
         degree_seq[0] += 1
 
-    G=nx.configuration_model(degree_seq,create_using=nx.Graph())
+    G = nx.configuration_model(degree_seq, create_using=nx.Graph())
 
     return G
 
 
-def add_edges(G,n):
-    """ Take a graph G and add n edges randomly """
+def add_edges(G, n):
+    """Take a graph G and add n edges randomly"""
     H = G.copy()
     nonedges = np.array(list(nx.non_edges(H)))
     to_add = np.random.choice(range(len(nonedges)), size=n, replace=False)
     H.add_edges_from(nonedges[to_add][:])
-    return H     
+    return H
 
-def add_triangles(G,n):
-    """ Take a graph G and add n edges which complete triangles.
-        Of the edges which complete triangles, the edges are chosen at random.
-        This is a randomized version of the first implementation. This may
-        take a long time for extremely dense networks (a more exhaustive search
-        like implementation 1 or 2 may be necessary) or for a large number
-        of added edges.
+
+def add_triangles(G, n):
+    """Take a graph G and add n edges which complete triangles.
+    Of the edges which complete triangles, the edges are chosen at random.
+    This is a randomized version of the first implementation. This may
+    take a long time for extremely dense networks (a more exhaustive search
+    like implementation 1 or 2 may be necessary) or for a large number
+    of added edges.
     """
-    H = G.copy() 
+    H = G.copy()
     nodes = H.nodes()
     count = 0
     trial = 0
     while count < n:
         n1 = random.choice(nodes)
-        nbrs = nx.neighbors(H,n1)
+        nbrs = nx.neighbors(H, n1)
         if len(nbrs) >= 2:
-            n2,n3 = random.sample(nbrs,k=2)
-            if (n2,n3) not in H.edges() and (n3,n2) not in H.edges():
-                H.add_edge(n2,n3)
+            n2, n3 = random.sample(nbrs, k=2)
+            if (n2, n3) not in H.edges() and (n3, n2) not in H.edges():
+                H.add_edge(n2, n3)
                 count += 1
-##        print(trial)
+        ##        print(trial)
         trial += 1
     return H
 
-def xswap(G,n_steps):
+
+def xswap(G, n_steps):
     H = G.copy()
     count = 0
     while count < n_steps:
         H_temp = H.copy()
         edges = list(H_temp.edges())
-        e1_ind, e2_ind = random.sample(range(len(edges)),k=2) # choose 2 edges
-        e1 = edges[e1_ind] # edge 1
-        e2 = edges[e2_ind] # edge 2
-        n1_ind = random.choice([0,1]) # choose one node from edge 1
-        n2_ind = random.choice([0,1]) # choose one node from edge 2
-        new_e1 = (e1[n1_ind], e2[1-n2_ind]) # SWAP them (this is shorthand notation)
-        new_e2 = (e1[1-n1_ind], e2[n2_ind]) 
+        e1_ind, e2_ind = random.sample(range(len(edges)), k=2)  # choose 2 edges
+        e1 = edges[e1_ind]  # edge 1
+        e2 = edges[e2_ind]  # edge 2
+        n1_ind = random.choice([0, 1])  # choose one node from edge 1
+        n2_ind = random.choice([0, 1])  # choose one node from edge 2
+        new_e1 = (e1[n1_ind], e2[1 - n2_ind])  # SWAP them (this is shorthand notation)
+        new_e2 = (e1[1 - n1_ind], e2[n2_ind])
 
         # this if-statement avoids multiple edges
-        if new_e1 not in edges and new_e1[::-1] not in edges and new_e2 not in edges and new_e2[::-1] not in edges:
-            H_temp.remove_edges_from([e1,e2])
+        if (
+            new_e1 not in edges
+            and new_e1[::-1] not in edges
+            and new_e2 not in edges
+            and new_e2[::-1] not in edges
+        ):
+            H_temp.remove_edges_from([e1, e2])
             H_temp.add_edge(*new_e1)
             H_temp.add_edge(*new_e2)
 
             # this if-statement avoids network fragmentation
             if nx.number_connected_components(H_temp) == 1:
-                H = H_temp # update the actual network
+                H = H_temp  # update the actual network
                 count += 1
-                
+
     return H
 
-networks_dict = {"Adolescent health": read_adolescent,
-                "Arxiv CondMat": read_arxiv_CondMat,
-##                "Arxiv GrQc": read_arxiv_GrQc,
-                "CKM physicians": read_ckm,
-                "Dolphins": read_dolphins,
-                "Email Spain": read_email,
-                "Email Enron": read_enron,
-##                "Email Eu Core": read_Eu_Core,
-                "Freeman's EIES": read_Freemans,
-                "Golden Age": read_golden,
-##                "Hypertext": read_hypertext,
-                "Kapferer tailor": read_kapf,
-                "Les Miserables": read_lesmis,
-##                "Marvel": read_Marvel, 
-                "Hollywood music": read_movies,
-##                "Network science": read_netscience,
-##                "NFL": read_NFL,
-##                "Intra-organizational": read_org,
-##                "Web of Trust": read_pgp,
-                "Sampson's monastery": read_Sampson,
-                "Terrorist": read_terrorist}
-##                "UC Irvine": read_UC_Irvine
 
-small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
-              "Golden Age", "Kapferer tailor", "Les Miserables",
-              "Hollywood music", "Sampson's monastery", "Terrorist"]
+networks_dict = {
+    "Adolescent health": read.read_adolescent,
+    "Arxiv CondMat": read.read_arxiv_CondMat,
+    ##                "Arxiv GrQc": read.read_arxiv_GrQc,
+    "CKM physicians": read.read_ckm,
+    "Dolphins": read.read_dolphins,
+    "Email Spain": read.read_email,
+    "Email Enron": read.read_enron,
+    ##                "Email Eu Core": read.read_Eu_Core,
+    "Freeman's EIES": read.read_Freemans,
+    "Golden Age": read.read_golden,
+    ##                "Hypertext": read.read_hypertext,
+    "Kapferer tailor": read.read_kapf,
+    "Les Miserables": read.read_lesmis,
+    ##                "Marvel": read.read_Marvel,
+    "Hollywood music": read.read_movies,
+    ##                "Network science": read.read_netscience,
+    ##                "NFL": read.read_NFL,
+    ##                "Intra-organizational": read.read_org,
+    ##                "Web of Trust": read.read_pgp,
+    "Sampson's monastery": read.read_Sampson,
+    "Terrorist": read.read_terrorist,
+}
+##                "UC Irvine": read.read_UC_Irvine
 
-
-
+small_networks = [
+    "CKM physicians",
+    "Dolphins",
+    "Email Spain",
+    "Freeman's EIES",
+    "Golden Age",
+    "Kapferer tailor",
+    "Les Miserables",
+    "Hollywood music",
+    "Sampson's monastery",
+    "Terrorist",
+]
 
 
 if __name__ == "__main__":
-    G = read_any("CKM physicians")
-    Gx = xswap(G,20)
-    print(nx.number_of_nodes(G),nx.number_of_nodes(Gx))
-    print(nx.number_of_edges(G),nx.number_of_edges(Gx))
-    print(nx.number_connected_components(G),nx.number_connected_components(Gx))
-    print(nx.density(G),nx.density(Gx))
-    print(nx.transitivity(G),nx.transitivity(Gx))
+    G = read.read_any("CKM physicians")
+    Gx = xswap(G, 20)
+    print(nx.number_of_nodes(G), nx.number_of_nodes(Gx))
+    print(nx.number_of_edges(G), nx.number_of_edges(Gx))
+    print(nx.number_connected_components(G), nx.number_connected_components(Gx))
+    print(nx.density(G), nx.density(Gx))
+    print(nx.transitivity(G), nx.transitivity(Gx))
 ##    for name in small_networks:
 ##        print(name)
-##        G0 = read_any(name)
+##        G0 = read.read_any(name)
 ##        nnodes = nx.number_of_nodes(G0)
 ##        nedges = nx.number_of_edges(G0)
 ##        n = min(int(nedges*0.25),len(list(nx.non_edges(G0))))
@@ -130,18 +148,17 @@ if __name__ == "__main__":
 ##        print(nx.transitivity(G0),nx.density(G0))
 ##        print(nx.transitivity(G1),nx.density(G1))
 ##        print(nx.transitivity(G2),nx.density(G2))
-    
+
 ##    before = []
 ##    after = []
 ##    for name in networks_dict:
 ##        print(name)
-##        G0 = read_any(name)
+##        G0 = read.read_any(name)
 ##        before.append(nx.transitivity(G0))
-##        
+##
 ##
 ##        G = make_configMod(G0)
 ##        after.append(nx.transitivity(G))
 ##
 ##    for i,name in enumerate(networks_dict.keys()):
 ##        print(name.ljust(15), "\t", before[i], "\t", after[i])
-
