@@ -7,7 +7,7 @@
 import networkx as nx  # version 1.11
 import numpy as np
 import random
-import CrossEntropy
+from CrossEntropy import timeseries_cross_entropy  # currently local module
 from edge_clustering_coeff import edge_clustering_coeff
 from typing import Iterable, Union, Tuple
 
@@ -62,7 +62,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
         time_tweets_source = words_to_tweets(
             G.node[e[0]]["words"], G.node[e[0]]["times"]
         )
-        hx = CrossEntropy.timeseries_cross_entropy(
+        hx = timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
         hx_list.append(hx)
@@ -150,7 +150,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
             time_tweets_source = words_to_tweets(
                 G.node[node]["words"], G.node[node]["times"]
             )
-            h = CrossEntropy.timeseries_cross_entropy(
+            h = timeseries_cross_entropy(
                 time_tweets_target, time_tweets_source, please_sanitize=False
             )
             indeg = G.in_degree(node)
