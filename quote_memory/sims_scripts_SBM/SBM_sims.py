@@ -1,11 +1,15 @@
 import os, sys
-from make_SBM import *
-import quoter_model as qm
+import networkx as nx
+import numpy as np
+from make_SBM import make_SBM_simple
 import random
 import itertools
+from modularity import get_modularity
 
-# from edge_clustering_coeff import *
-from modularity import *
+sys.path.append(
+    "/home/jimjam/Documents/Adelaide/quoter"
+)  # regrettably using this quick fix
+import quoter_model as qm
 
 
 def write_data(G, outdir, outfile):
