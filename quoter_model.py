@@ -1,13 +1,11 @@
-# -*- coding: utf-8 -*-
-
-# quoter_model.py
-# Tyson Pond
-# Last Modified: 2019-10-08
-
-import networkx as nx  # version 1.11
+import networkx as nx
 import numpy as np
 import random
-from CrossEntropy import timeseries_cross_entropy  # currently local module
+
+# from CrossEntropy import timeseries_cross_entropy  # currently local module
+from ProcessEntropy.CrossEntropyPythonOnly import (
+    timeseries_cross_entropy,
+)  # remote package; might have install dependency issues
 from edge_clustering_coeff import edge_clustering_coeff
 from typing import Iterable, Union, Tuple
 
