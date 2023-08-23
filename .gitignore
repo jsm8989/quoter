@@ -10,3 +10,4 @@ dir-figures/
 .vscode
 untouched_experiments/
 *.sh
+__init__.py
