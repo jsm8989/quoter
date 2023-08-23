@@ -28,10 +28,10 @@ networks_dict = {"Adolescent health": read_adolescent,
                 "Intra-organizational": read_org,
                 "Web of Trust": read_pgp,
                 "Sampson's monastery": read_Sampson,
-                "Terrorist": read_terrorist}
+                "Terrorist": read_terrorist,
                 "UC Irvine": read_UC_Irvine}
 
-q = 0.5
+q = 0.9
 T = 1000
 trials_list = list(range(300))
 small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
@@ -40,13 +40,13 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
 
 ### PLOT 1 split into links which are at distance 1 & average over all
 data = np.zeros((len(small_networks),14))
-datadir = "../../data_separate_link-nonlink/data"
+datadir = "../../data-NEW/data"
 for i,name in enumerate(small_networks):
     print(name)
     
     os.chdir("../") # <--this is a mess. Change this!!
     G = read_any(name)
-    os.chdir("analyses-2019-10-27")
+    os.chdir("analyses-2019-10-29")
     
     nnodes = nx.number_of_nodes(G)
     nedges = nx.number_of_edges(G)
@@ -68,11 +68,11 @@ for i,name in enumerate(small_networks):
         edata = pd.read_csv(os.path.join(outdir,outfile), sep = " ")
 
 
-        data[i,10] += np.sum(edata["hx"].loc[edata["distance"]==1].values)
-        data[i,11] += np.sum(np.power(edata["hx"].loc[edata["distance"]==1].values,2))
+        data[i,10] += np.sum(edata["hx"].values)
+        data[i,11] += np.sum(np.power(edata["hx"].values,2))
         edata["ECC"].loc[edata["ECC"]==2] = 1 # call undefined ECC to  be 1
-        data[i,12] += np.sum(edata["ECC"].loc[edata["distance"]==1].values)
-        count += len(edata["hx"].loc[edata["distance"]==1].values)
+        data[i,12] += np.sum(edata["ECC"].values)
+        count += len(edata["hx"].values)
 
     data[i,[10,11,12]] /= count
     data[i,13] = count

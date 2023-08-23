@@ -7,13 +7,13 @@ import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
 
 
-##small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
-##              "Golden Age", "Kapferer tailor", "Les Miserables",
-##              "Hollywood music", "Sampson's monastery", "Terrorist"]
-small_networks = ["CKM physicians", "Dolphins", "Freeman's EIES",
+small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
               "Golden Age", "Kapferer tailor", "Les Miserables",
               "Hollywood music", "Sampson's monastery", "Terrorist"]
-attempts = list(range(10))
+##small_networks = ["CKM physicians", "Dolphins", "Freeman's EIES",
+##              "Golden Age", "Kapferer tailor", "Les Miserables",
+##              "Hollywood music", "Sampson's monastery", "Terrorist"]
+##attempts = list(range(10))
 
 
 ##assort_avg = []
@@ -36,6 +36,10 @@ attempts = list(range(10))
 ##df[["network"] + cols].to_csv("real_networks-xswap-assort.csv",index=False)
 ##
 
+
+df =  pd.read_csv("transitivity-assortativity.csv")
+df1 = df.loc[df["xswap"]=="no"]
+df2 = df.loc[df["xswap"]=="yes"]
 
 for j in range(len(df1["network"].values)):
         t1 = df1["degree_assortativity"].values[j]

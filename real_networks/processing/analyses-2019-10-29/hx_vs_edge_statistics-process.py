@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 
-q = 0.5
+q = 0.9
 T = 1000
 trials_list = list(range(300))
 small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
@@ -10,7 +10,7 @@ small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
               "Hollywood music", "Sampson's monastery", "Terrorist"]
 
 # Cross-entropy versus "edge" statistics (quoteProb, ECC, distance)
-datadir = "../../data_separate_link-nonlink/data"
+datadir = "../../data-NEW/data"
 
 ##with open("edge_stats-all_networks-links_only.txt","a+") as g:
 ##    g.write("network trial alter ego quoteProb hx distance triangles d_u d_v ECC\n")

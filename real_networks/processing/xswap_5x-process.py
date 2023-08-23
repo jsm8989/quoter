@@ -8,7 +8,7 @@ from modularity import get_modularity
 small_networks = ["CKM physicians", "Dolphins", "Email Spain", "Freeman's EIES",
               "Golden Age", "Kapferer tailor", "Les Miserables",
               "Hollywood music", "Sampson's monastery", "Terrorist"]
-q = 0.5
+q = 0.9
 T = 1000
 trials_list = list(range(300))
 
@@ -23,8 +23,8 @@ for i,name in enumerate(small_networks):
     count = 0
     for trial in trials_list:
         print(name,trial)
-        efile = "../data_xswap-5x/%s/edge_%s_q%0.1f_T%i_sim%i.txt" % (name,name,q,T,trial)
-        gfile = "../data_xswap-5x/%s/graph_%s_q%0.1f_T%i_sim%i.txt" % (name,name,q,T,trial)
+        efile = "../data-NEW/data_xswap-5x/%s/edge_%s_q%0.1f_T%i_sim%i.txt" % (name,name,q,T,trial)
+        gfile = "../data-NEW/data_xswap-5x/%s/graph_%s_q%0.1f_T%i_sim%i.txt" % (name,name,q,T,trial)
 
         if os.path.isfile(efile) and os.path.isfile(gfile):
             edata = pd.read_csv(efile, sep = " ")
