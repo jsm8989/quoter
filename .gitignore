@@ -8,3 +8,5 @@ __pycache__
 hx_distribution/
 dir-figures/
 .vscode
+untouched_experiments/
+*.sh
