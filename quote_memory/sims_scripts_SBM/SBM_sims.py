@@ -4,12 +4,12 @@ import numpy as np
 from make_SBM import make_SBM_simple
 import random
 import itertools
-from modularity import get_modularity
 
 sys.path.append(
     "/home/jimjam/Documents/Adelaide/quoter"
 )  # regrettably using this quick fix
 import quoter_model as qm
+from real_networks.sims_scripts.modularity import get_modularity
 
 
 def write_data(G, outdir, outfile):

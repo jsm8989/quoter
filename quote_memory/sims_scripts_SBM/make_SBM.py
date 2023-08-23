@@ -3,7 +3,12 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 import itertools
-from modularity import get_modularity
+import sys
+
+sys.path.append(
+    "/home/jimjam/Documents/Adelaide/quoter"
+)  # regrettably using this quick fix
+from real_networks.sims_scripts.modularity import get_modularity
 
 
 def make_SBM_general(sizes, p, return_blocks=False):
