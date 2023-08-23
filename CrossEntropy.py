@@ -50,7 +50,7 @@ def find_lambda_jit(target, source):
     return t_max + 1
 
 
-@jit(parallel=True)
+@jit(parallel=True, nopython=True)
 def get_all_lambdas(target, source, relative_pos, lambdas):
     """
     Finds all the the longest subsequences of the target,
