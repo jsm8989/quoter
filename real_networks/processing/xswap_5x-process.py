@@ -8,22 +8,10 @@ sys.path.append(
     "/home/jimjam/Documents/Adelaide/quoter"
 )  # regrettably using this quick fix
 from real_networks.sims_scripts.modularity import get_modularity
-from real_networks.sims_scripts.read_networks import read_any
+from real_networks.sims_scripts.read_networks import read_any, small_networks
 
 
 if __name__ == "__main__":
-    small_networks = [
-        "CKM physicians",
-        "Dolphins",
-        "Email Spain",
-        "Freeman's EIES",
-        "Golden Age",
-        "Kapferer tailor",
-        "Les Miserables",
-        "Hollywood music",
-        "Sampson's monastery",
-        "Terrorist",
-    ]
     q = 0.9
     T = 1000
     trials_list = list(range(300))

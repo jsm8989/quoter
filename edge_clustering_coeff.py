@@ -1,6 +1,11 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
+from real_networks.sims_scripts.read_networks import (
+    read_any,
+    networks_dict,
+    small_networks,
+)
 
 
 def edge_clustering_coeff(
@@ -66,13 +71,13 @@ if __name__ == "__main__":
     print(edge_clustering_coeff(G, 1, 4, draw=True))
 
     # Test on real networks - TODO
-    # for name in networks_dict:
-    #     print(name)
-    #     G = read_any(name)
-    #     ECCs = []
-    #     for i, e in enumerate(G.edges()):
-    #         ECCs.append(edge_clustering_coeff(G, e[0], e[1]))
-    #     print(len([x for x in ECCs if x == 2]) / len(G.edges()))
-    #     print(np.mean([x for x in ECCs if x != 2]))
-    # plt.hist([x for x in ECCs if x != 2])
-    # plt.show()
+    for name in networks_dict:
+        print(name)
+        G = read_any(name)
+        ECCs = []
+        for i, e in enumerate(G.edges()):
+            ECCs.append(edge_clustering_coeff(G, e[0], e[1]))
+        print(len([x for x in ECCs if x == 2]) / len(G.edges()))
+        print(np.mean([x for x in ECCs if x != 2]))
+    plt.hist([x for x in ECCs if x != 2])
+    plt.show()

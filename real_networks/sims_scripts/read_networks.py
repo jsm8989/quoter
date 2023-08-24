@@ -4,7 +4,7 @@ import pandas as pd
 import re
 from networkx.algorithms import bipartite
 import community
-from modularity import get_modularity
+from real_networks.sims_scripts.modularity import get_modularity
 import matplotlib.pyplot as plt
 
 

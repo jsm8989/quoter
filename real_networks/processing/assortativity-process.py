@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from make_configMod import xswap
+
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
@@ -9,24 +9,9 @@ import sys
 sys.path.append(
     "/home/jimjam/Documents/Adelaide/quoter"
 )  # regrettably using this quick fix
-from real_networks.sims_scripts.read_networks import read_any
+from real_networks.sims_scripts.read_networks import read_any, small_networks
+from real_networks.sims_scripts.make_configMod import xswap
 
-
-small_networks = [
-    "CKM physicians",
-    "Dolphins",
-    "Email Spain",
-    "Freeman's EIES",
-    "Golden Age",
-    "Kapferer tailor",
-    "Les Miserables",
-    "Hollywood music",
-    "Sampson's monastery",
-    "Terrorist",
-]
-##small_networks = ["CKM physicians", "Dolphins", "Freeman's EIES",
-##              "Golden Age", "Kapferer tailor", "Les Miserables",
-##              "Hollywood music", "Sampson's monastery", "Terrorist"]
 ##attempts = list(range(10))
 
 

@@ -6,25 +6,11 @@ import sys
 sys.path.append(
     "/home/jimjam/Documents/Adelaide/quoter"
 )  # regrettably using this quick fix
-from real_networks.sims_scripts.read_networks import read_any
-
-# from real_networks.processing.make_configMod import *
+from real_networks.sims_scripts.read_networks import small_networks
 
 q = 0.9
 T = 1000
 trials_list = list(range(300))
-small_networks = [
-    "CKM physicians",
-    "Dolphins",
-    "Email Spain",
-    "Freeman's EIES",
-    "Golden Age",
-    "Kapferer tailor",
-    "Les Miserables",
-    "Hollywood music",
-    "Sampson's monastery",
-    "Terrorist",
-]
 eps = 0.25
 ##Clustering experiment
 data = np.zeros((len(small_networks), 14))
