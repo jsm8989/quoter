@@ -21,6 +21,9 @@ def get_giant_component(G):
     return G
 
 
+networks_folder = "/home/jimjam/Documents/Adelaide/quoter/real_networks/NETWORKS"
+
+
 def read_adolescent():
     """
     Read adolescent_health file and return networkx graph. This file is used to determine the health of the network and should contain a list of tuples ( node_id node_name ) where node_id is the node id of the node that is connected to the node with the same node_name.
@@ -29,7 +32,7 @@ def read_adolescent():
     Returns:
         NetworkX graph
     """
-    file = "../NETWORKS/adolescent_health/out.moreno_health_health"
+    file = networks_folder + "/adolescent_health/out.moreno_health_health"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -50,7 +53,7 @@ def read_arxiv_CondMat():
     Returns:
         Graph with components as node ids
     """
-    file = "../NETWORKS/Arxiv_ca-CondMat/Newman-Cond_mat_95-99-binary.txt"
+    file = networks_folder + "/Arxiv_ca-CondMat/Newman-Cond_mat_95-99-binary.txt"
     elist = []
     with open(file, "r") as f:
         for line in f:
@@ -71,7 +74,7 @@ def read_arxiv_GrQc():
     Returns:
         networkx graph with components as node ids
     """
-    file = "../NETWORKS/Arxiv_ca-GrQc/CA-GrQc.txt"
+    file = networks_folder + "/Arxiv_ca-GrQc/CA-GrQc.txt"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(4)]  # skip a line
@@ -87,7 +90,7 @@ def read_arxiv_GrQc():
 
 def read_ckm(network_num=3):
     assert network_num in [1, 2, 3], "network_num (int) must be 1, 2, or 3"
-    file = "../NETWORKS/CKM_physicians/ckm.txt"
+    file = networks_folder + "/CKM_physicians/ckm.txt"
     with open(file, "r") as f:
         skip = [next(f) for _ in range(9)]
         A123 = f.read().strip().split()
@@ -99,17 +102,17 @@ def read_ckm(network_num=3):
         A2 = np.reshape(A2, (N, N)).astype(int)
         A3 = np.reshape(A3, (N, N)).astype(int)
         if network_num == 1:
-            G = nx.from_numpy_matrix(A1)
+            G = nx.from_numpy_array(A1)
         elif network_num == 2:
-            G = nx.from_numpy_matrix(A2)
+            G = nx.from_numpy_array(A2)
         else:  # network_num == 3
-            G = nx.from_numpy_matrix(A3)
+            G = nx.from_numpy_array(A3)
 
     return get_giant_component(G)
 
 
 def read_dolphins():
-    file = "../NETWORKS/dolphins/out.dolphins"
+    file = networks_folder + "/dolphins/out.dolphins"
     elist = []
     with open(file, "r") as f:
         next(f, "")  # skip a line
@@ -124,7 +127,7 @@ def read_dolphins():
 
 def read_email():
     # Spain email network
-    file = "../NETWORKS/email_network/email.txt"
+    file = networks_folder + "/email_network/email.txt"
     elist = []
     with open(file, "r") as f:
         for line in f:
@@ -142,7 +145,7 @@ def read_enron():
     We use the undirected graph.
     """
 
-    file = "../NETWORKS/enron/enron-edgelist.txt"
+    file = networks_folder + "/enron/enron-edgelist.txt"
 
     G = nx.read_edgelist(
         file, delimiter=" ", create_using=nx.Graph(), data=False, encoding="utf-8"
@@ -153,7 +156,7 @@ def read_enron():
 
 
 def read_Eu_Core():
-    file = "../NETWORKS/email-Eu-core/email-Eu-core.txt"
+    file = networks_folder + "/email-Eu-core/email-Eu-core.txt"
     G = nx.read_edgelist(file, nodetype=int)
 
     return get_giant_component(G)
@@ -161,7 +164,7 @@ def read_Eu_Core():
 
 def read_Freemans(network_num=1):
     assert network_num in [1, 2], "network_num (int) must be 1 or 2"
-    file = "../NETWORKS/Freemans_EIES/Freemans_EIES-time%i_n48.txt" % network_num
+    file = networks_folder + "/Freemans_EIES/Freemans_EIES-time%i_n48.txt" % network_num
     elist = []
     with open(file, "r") as f:
         for line in f:
@@ -174,9 +177,9 @@ def read_Freemans(network_num=1):
 
 
 def read_golden():
-    file = "../NETWORKS/GoldenAge/HollywoodGoldenAge_matrix_s0.txt"
+    file = networks_folder + "/GoldenAge/HollywoodGoldenAge_matrix_s0.txt"
     A = np.loadtxt(file)
-    G = nx.from_numpy_matrix(A)
+    G = nx.from_numpy_array(A)
     G.remove_edges_from(nx.selfloop_edges(G))
     return G
 
@@ -186,7 +189,7 @@ def read_hypertext():
     We are treating it as static (a link is present if a
     link existed at any time).
     """
-    file = "../NETWORKS/sociopatterns-hypertext/out.sociopatterns-hypertext"
+    file = networks_folder + "/sociopatterns-hypertext/out.sociopatterns-hypertext"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]
@@ -200,9 +203,9 @@ def read_hypertext():
 
 
 def read_kapf():
-    file = "../NETWORKS/kapfdata/kapfts1.dat"
+    file = networks_folder + "/kapfdata/kapfts1.dat"
     adjmat = np.loadtxt(file)
-    G = nx.from_numpy_matrix(adjmat)
+    G = nx.from_numpy_array(adjmat)
     return G
 
 
@@ -216,17 +219,17 @@ def read_lesmis():
     ##    with open("../lesmis/lesmis_reformatted.gml","w") as f:
     ##        f.write(new_file_string)
 
-    file = "../NETWORKS/lesmis/lesmis_reformatted.gml"
+    file = networks_folder + "/lesmis/lesmis_reformatted.gml"
     G = nx.read_gml(file)
     G = nx.convert_node_labels_to_integers(G, first_label=0)
     return G
 
 
 def read_Marvel():
-    file = "../NETWORKS/Marvel/Marvel.txt"
+    file = networks_folder + "/Marvel/Marvel.txt"
     elist = []
     with open(file, "r") as f:
-        skip = [next(f) for _ in range(19430)]
+        # skip = [next(f) for _ in range(19430)]
         for line in f:
             linelist = line.rstrip().split()
             lineedges = [(linelist[0], e2) for e2 in linelist[1:]]
@@ -242,7 +245,7 @@ def read_movies():
     # Was unable to figure out how to use nx.read_pajek for this file,
     # ended up looking at the data and doing it manually. Edgelist starts
     # at line 107 and ends at line 298.
-    file = "../NETWORKS/movies/Movies.paj"
+    file = networks_folder + "/movies/Movies.paj"
     ##    G = nx.read_pajek(file)
     elist = []
     with open(file, "r") as f:
@@ -270,14 +273,14 @@ def read_movies():
 def read_netscience():
     # The downloaded file is not in proper GML format for Networkx
     # Run this once to reformat.
-    ##    file = "../NETWORKS/netscience/netscience.gml"
+    ##    file = networks_folder + "/netscience/netscience.gml"
     ##    with open(file, "r") as f:
     ##        new_file_string = f.read().replace("\s+\[", "[")
     ##
     ##    with open("../netscience/netscience_reformatted.gml","w") as f:
     ##        f.write(new_file_string)
 
-    file = "../NETWORKS/netscience/netscience_reformatted.gml"
+    file = networks_folder + "/netscience/netscience_reformatted.gml"
     G = nx.read_gml(file)
     G = nx.convert_node_labels_to_integers(G, first_label=0)
 
@@ -285,7 +288,7 @@ def read_netscience():
 
 
 def read_NFL():
-    file = "../NETWORKS/NFL2009_network/NFL2009_EdgeList.txt"
+    file = networks_folder + "/NFL2009_network/NFL2009_EdgeList.txt"
     elist = []
     with open(file, "r") as f:
         next(f, "")  # skip a line
@@ -300,7 +303,7 @@ def read_NFL():
 
 
 def read_org():
-    file = "../NETWORKS/organizational/Cross_Parker-Manufacturing_info.txt"
+    file = networks_folder + "/organizational/Cross_Parker-Manufacturing_info.txt"
     elist = []
     with open(file, "r") as f:
         for line in f:
@@ -313,7 +316,7 @@ def read_org():
 
 
 def read_pgp():
-    file = "../NETWORKS/pgp_trust/pgp_2004.net"
+    file = networks_folder + "/pgp_trust/pgp_2004.net"
     elist = []
     with open(file, "r") as f:
         linecount = 1
@@ -335,7 +338,7 @@ def read_pgp():
 ##    # Was unable to figure out how to use nx.read_pajek for this file,
 ##    # ended up looking at the data and doing it manually. Edgelist starts
 ##    # at line 107 and ends at line 298.
-##    file = "../NETWORKS/Sampson/Sampson.paj"
+##    file = networks_folder + "/Sampson/Sampson.paj"
 ####    G = nx.read_pajek(file)
 ##    elist = []
 ##    with open(file,"r") as f:
@@ -358,13 +361,13 @@ def read_pgp():
 
 
 def read_terrorist():
-    file = "../NETWORKS/terrorists/terrorist.pairs"
+    file = networks_folder + "/terrorists/terrorist.pairs"
     G = nx.read_edgelist(file, nodetype=int)
     return G
 
 
 def read_UC_Irvine():
-    file = "../NETWORKS/UC_Irvine2004/OClinks_w.txt"
+    file = networks_folder + "/UC_Irvine2004/OClinks_w.txt"
     elist = []
     with open(file, "r") as f:
         for line in f:
@@ -390,7 +393,7 @@ def read_Arxiv_HepTh():
     ##    with open("Arxiv_ca-HepTh/hep-th_reformatted.gml","w") as f:
     ##        f.write(new_file_string)
 
-    file = "../NETWORKS/Arxiv_ca-HepTh/hep-th_reformatted.gml"
+    file = networks_folder + "/Arxiv_ca-HepTh/hep-th_reformatted.gml"
     G = nx.read_gml(file)
     G = nx.convert_node_labels_to_integers(G, first_label=0)
 
@@ -398,7 +401,7 @@ def read_Arxiv_HepTh():
 
 
 def read_blogs():
-    file = "../NETWORKS/moreno_blogs/out.moreno_blogs_blogs"
+    file = networks_folder + "/moreno_blogs/out.moreno_blogs_blogs"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -414,7 +417,10 @@ def read_blogs():
 
 
 def read_club_membership():
-    file = "../NETWORKS/brunson_club-membership/out.brunson_club-membership_club-membership"
+    file = (
+        networks_folder
+        + "/brunson_club-membership/out.brunson_club-membership_club-membership"
+    )
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -437,7 +443,7 @@ def read_club_membership():
 
 
 def read_facebook():
-    file = "../NETWORKS/ego-facebook/out.ego-facebook"
+    file = networks_folder + "/ego-facebook/out.ego-facebook"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -452,7 +458,7 @@ def read_facebook():
 
 
 def read_gplus():
-    file = "../NETWORKS/ego-gplus/out.ego-gplus"
+    file = networks_folder + "/ego-gplus/out.ego-gplus"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -468,7 +474,7 @@ def read_gplus():
 
 def read_highland():
     # signed network -- only take positive edges
-    file = "../NETWORKS/ucidata-gama/out.ucidata-gama"
+    file = networks_folder + "/ucidata-gama/out.ucidata-gama"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -485,7 +491,7 @@ def read_highland():
 
 
 def read_highschool():
-    file = "../NETWORKS/moreno_highschool/out.moreno_highschool_highschool"
+    file = networks_folder + "/moreno_highschool/out.moreno_highschool_highschool"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -500,7 +506,7 @@ def read_highschool():
 
 
 def read_jazz():
-    file = "../NETWORKS/arenas-jazz/out.arenas-jazz"
+    file = networks_folder + "/arenas-jazz/out.arenas-jazz"
     elist = []
     with open(file, "r") as f:
         skip = next(f)  # skip a line
@@ -515,7 +521,7 @@ def read_jazz():
 
 
 def read_karate():
-    file = "../NETWORKS/ucidata-zachary/out.ucidata-zachary"
+    file = networks_folder + "/ucidata-zachary/out.ucidata-zachary"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -530,19 +536,19 @@ def read_karate():
 
 
 def read_prison():
-    file = "../NETWORKS/prison/prison.dat.txt"
+    file = networks_folder + "/prison/prison.dat.txt"
     with open(file, "r") as f:
         skip = [next(f) for _ in range(4)]
         A = f.read().strip().split()
         N = 67
         A = np.reshape(A, (N, N)).astype(int)
-        G = nx.from_numpy_matrix(A, create_using=nx.Graph())
+        G = nx.from_numpy_array(A, create_using=nx.Graph())
 
     return G
 
 
 def read_residence_oz():
-    file = "../NETWORKS/moreno_oz/out.moreno_oz_oz"
+    file = networks_folder + "/moreno_oz/out.moreno_oz_oz"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -558,7 +564,7 @@ def read_residence_oz():
 
 def read_Sampson():
     # signed network -- only take positive links
-    file = "../NETWORKS/moreno_sampson/out.moreno_sampson_sampson"
+    file = networks_folder + "/moreno_sampson/out.moreno_sampson_sampson"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -575,7 +581,7 @@ def read_Sampson():
 
 
 def read_seventh():
-    file = "../NETWORKS/moreno_seventh/out.moreno_seventh_seventh"
+    file = networks_folder + "/moreno_seventh/out.moreno_seventh_seventh"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -590,7 +596,7 @@ def read_seventh():
 
 
 def read_taro():
-    file = "../NETWORKS/moreno_taro/out.moreno_taro_taro"
+    file = networks_folder + "/moreno_taro/out.moreno_taro_taro"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
@@ -605,7 +611,7 @@ def read_taro():
 
 
 def read_twitter():
-    file = "../NETWORKS/ego-twitter/out.ego-twitter"
+    file = networks_folder + "/ego-twitter/out.ego-twitter"
     elist = []
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line

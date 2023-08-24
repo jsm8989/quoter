@@ -72,12 +72,19 @@ if __name__ == "__main__":
 
     # Test on real networks - TODO
     for name in networks_dict:
-        print(name)
+        print(f"\n{name}")
         G = read_any(name)
         ECCs = []
         for i, e in enumerate(G.edges()):
             ECCs.append(edge_clustering_coeff(G, e[0], e[1]))
-        print(len([x for x in ECCs if x == 2]) / len(G.edges()))
-        print(np.mean([x for x in ECCs if x != 2]))
+        print(
+            f"Number of ECC=2 divided by number of edges in graph: {len([x for x in ECCs if x == 2]) / len(G.edges())}"
+        )
+        print(
+            f"Mean of ECC over entire graph, ignoring anomalies: {np.mean([x for x in ECCs if x != 2])}"
+        )
     plt.hist([x for x in ECCs if x != 2])
+    plt.title("Summary of Edge Clustering Coefficient analysis")
+    plt.xlabel("ECC_value")
+    plt.ylabel("Counts for all edge pairings in network ensemble")
     plt.show()
