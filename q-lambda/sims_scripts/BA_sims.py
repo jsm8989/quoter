@@ -1,4 +1,4 @@
-import networkx as nx  # version 1.11
+import networkx as nx
 import random
 import os, sys
 import quoter_model as qm
