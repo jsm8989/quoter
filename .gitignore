@@ -12,3 +12,5 @@ untouched_experiments/
 *.sh
 __init__.py
 .mypy_cache
+src/quoter/CrossEntropy.py
+src/quoter/edge_clustering_coeff.py
