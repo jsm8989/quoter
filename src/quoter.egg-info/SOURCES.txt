@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+src/quoter/CrossEntropy.py
+src/quoter/__init__.py
+src/quoter/edge_clustering_coeff.py
+src/quoter/quoter_model.py
+src/quoter.egg-info/PKG-INFO
+src/quoter.egg-info/SOURCES.txt
+src/quoter.egg-info/dependency_links.txt
+src/quoter.egg-info/top_level.txt

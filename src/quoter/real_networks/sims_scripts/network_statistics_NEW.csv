@@ -1,0 +1,11 @@
+network,num_nodes,num_edges,avg_k,density,transitivity,ASPL,Q,assortativity
+Sampson's monastery,18,71,7.9,0.464,0.53,1.54,0.19,-0.07
+Freeman's EIES,34,415,24.4,0.74,0.82,1.26,0.07,-0.15
+Kapferer tailor,39,158,8.1,0.213,0.39,2.04,0.31,-0.18
+Hollywood music,39,219,11.2,0.296,0.56,1.86,0.2,-0.08
+Golden Age,55,564,20.5,0.38,0.53,1.64,0.44,-0.13
+Dolphins,62,159,5.1,0.084,0.31,3.36,0.52,-0.04
+Terrorist,62,152,4.9,0.08,0.36,2.95,0.51,-0.08
+Les Miserables,77,254,6.6,0.087,0.5,2.64,0.56,-0.17
+CKM physicians,110,193,3.5,0.032,0.16,4.24,0.61,0.11
+Email Spain,1133,5452,9.6,0.009,0.17,3.61,0.57,0.08

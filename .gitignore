@@ -11,3 +11,4 @@ dir-figures/
 untouched_experiments/
 *.sh
 __init__.py
+.mypy_cache
