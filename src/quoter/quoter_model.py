@@ -2,13 +2,9 @@ import networkx as nx
 import numpy as np
 import random
 import matplotlib.pyplot as plt
-
-# from CrossEntropy import timeseries_cross_entropy  # currently local module
 from ProcessEntropy.CrossEntropyPythonOnly import (
     timeseries_cross_entropy,
 )  # remote package; might have install dependency issues
-
-# from quoter.edge_clustering_coeff import edge_clustering_coeff
 from typing import Iterable, Union, Tuple
 
 
