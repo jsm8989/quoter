@@ -52,10 +52,10 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
     for e in edge_sample:
         # compute cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = words_to_tweets(
-            G.node[e[1]]["words"], G.node[e[1]]["times"]
+            G.nodes[e[1]]["words"], G.nodes[e[1]]["times"]
         )
         time_tweets_source = words_to_tweets(
-            G.node[e[0]]["words"], G.node[e[0]]["times"]
+            G.nodes[e[0]]["words"], G.nodes[e[0]]["times"]
         )
         hx = timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
@@ -140,10 +140,10 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
         f.write("node indegree outdegree C h\n")  # header
         for node in G.nodes():
             time_tweets_target = words_to_tweets(
-                G.node[node]["words"], G.node[node]["times"]
+                G.nodes[node]["words"], G.nodes[node]["times"]
             )
             time_tweets_source = words_to_tweets(
-                G.node[node]["words"], G.node[node]["times"]
+                G.nodes[node]["words"], G.nodes[node]["times"]
             )
             h = timeseries_cross_entropy(
                 time_tweets_target, time_tweets_source, please_sanitize=False
@@ -201,12 +201,12 @@ def quoter_model_sim(
         newWords = np.random.choice(
             vocab, size=startWords, replace=True, p=weights
         ).tolist()
-        G.node[node]["words"] = newWords
-        G.node[node]["times"] = [0] * len(newWords)
+        G.nodes[node]["words"] = newWords
+        G.nodes[node]["times"] = [0] * len(newWords)
 
     # simulate quoter model
     for t in range(1, T * nx.number_of_nodes(G)):
-        node = random.choice(G.nodes())
+        node = random.choice(list(G.nodes))
 
         # length of tweet
         tweetLength = np.random.poisson(lam=3)
@@ -218,7 +218,7 @@ def quoter_model_sim(
             user_copied = random.choice(nbrs)
 
             # find a valid position in the neighbor's text to quote from
-            words_friend = G.node[user_copied]["words"]
+            words_friend = G.nodes[user_copied]["words"]
             numWords_friend = len(words_friend)
             copy_pos_start = random.choice(
                 list(range(max(0, numWords_friend - tweetLength)))
@@ -231,8 +231,8 @@ def quoter_model_sim(
                 vocab, size=tweetLength, replace=True, p=weights
             ).tolist()
 
-        G.node[node]["words"].extend(newWords)
-        G.node[node]["times"].extend([t] * len(newWords))
+        G.nodes[node]["words"].extend(newWords)
+        G.nodes[node]["times"].extend([t] * len(newWords))
 
     # save data
     write_data(G, outdir, outfile)

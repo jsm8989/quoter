@@ -1,7 +1,7 @@
 import networkx as nx
 import random
 import os, sys
-import src.quoter.quoter_model as qm
+import quoter.quoter_model as qm
 import itertools
 
 
@@ -14,16 +14,16 @@ def write_data(G, outdir, outfile):
     H = nx.Graph(G)
 
     # compute edge data
-    edge_sample = random.sample(G.edges(), min(500, nx.number_of_edges(G)))
+    edge_sample = random.sample(list(G.edges()), min(500, nx.number_of_edges(G)))
 
     # compute edge data
     for e in edge_sample:
         # compute all cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = qm.words_to_tweets(
-            G.node[e[1]]["words"], G.node[e[1]]["times"]
+            G.nodes[e[1]]["words"], G.nodes[e[1]]["times"]
         )
         time_tweets_source = qm.words_to_tweets(
-            G.node[e[0]]["words"], G.node[e[0]]["times"]
+            G.nodes[e[0]]["words"], G.nodes[e[0]]["times"]
         )
         hx = qm.timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
@@ -31,7 +31,7 @@ def write_data(G, outdir, outfile):
         G[e[0]][e[1]]["hx"] = hx
 
         # also record quote probability
-        G[e[0]][e[1]]["quoteProb"] = 1 / len(G.predecessors(e[1]))
+        G[e[0]][e[1]]["quoteProb"] = 1 / len(list(G.predecessors(e[1])))
 
         # also record edge embeddeness & edge clustering coefficient
         triangles, deg0, deg1, ECC = qm.edge_clustering_coeff(
@@ -60,13 +60,13 @@ def write_data(G, outdir, outfile):
 
 
 if __name__ == "__main__":
-    try:
-        JOBNUM, NUMJOBS = map(int, sys.argv[1:])
-    except IndexError:
-        sys.exit("Usage: %s JOBNUM NUMJOBS" % sys.argv[0])
+    # try:
+    #     JOBNUM, NUMJOBS = map(int, sys.argv[1:])
+    # except IndexError:
+    #     sys.exit("Usage: %s JOBNUM NUMJOBS" % sys.argv[0])
 
-    ##    JOBNUM = 0
-    ##    NUMJOBS = 1
+    JOBNUM = 0
+    NUMJOBS = 1
 
     N = 100
     q_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9] + [0.99, 0.999, 0.9999]
@@ -89,4 +89,5 @@ if __name__ == "__main__":
         ):  # avoid re-doing & overwriting
             G0 = nx.barabasi_albert_graph(N, int(k / 2))
             G = nx.DiGraph(G0)  # convert to directed
+            print("Entering simulation...")
             qm.quoter_model_sim(G, q, T, outdir, outfile, write_data=write_data)
