@@ -67,6 +67,7 @@ if __name__ == "__main__":
 
     JOBNUM = 0
     NUMJOBS = 1
+    network_type = "ER"  # "BA", "small"
 
     N = 100
     q_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9] + [0.99, 0.999, 0.9999]
@@ -81,13 +82,35 @@ if __name__ == "__main__":
     params = [P for i, P in enumerate(params_init) if i % NUMJOBS == JOBNUM]
 
     for q, k, trial in params:  # lam,
-        outdir = "../data_BA/"
-        # outfile = "N%i_k%i_q%0.4f_lam%i_T%i_sim%i.txt" % (N, k, q, lam, T, trial)
-        outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k, q, T, trial)
-        if not os.path.isfile(
-            os.path.join(outdir, "edge", outfile)
-        ):  # avoid re-doing & overwriting
-            G0 = nx.barabasi_albert_graph(N, int(k / 2))
-            G = nx.DiGraph(G0)  # convert to directed
-            print("Entering simulation...")
-            qm.quoter_model_sim(G, q, T, outdir, outfile, write_data=write_data)
+        if network_type == "BA":
+            outdir = "../data_BA/"
+            # outfile = "N%i_k%i_q%0.4f_lam%i_T%i_sim%i.txt" % (N, k, q, lam, T, trial)
+            outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k, q, T, trial)
+            if not os.path.isfile(
+                os.path.join(outdir, "edge", outfile)
+            ):  # avoid re-doing & overwriting
+                G0 = nx.barabasi_albert_graph(N, int(k / 2))
+                G = nx.DiGraph(G0)  # convert to directed
+                print("Entering simulation...")
+                qm.quoter_model_sim(G, q, T, outdir, outfile, write_data=write_data)
+
+        elif network_type == "ER":
+            outdir = "../data_ER-NEW/"
+            outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k, q, T, trial)
+            if not os.path.isfile(
+                os.path.join(outdir, "edge", outfile)
+            ):  # avoid re-doing & overwriting
+                G0 = nx.erdos_renyi_graph(N, k / (N - 1))
+                G = nx.DiGraph(G0)  # convert to directed
+                qm.quoter_model_sim(G, q, T, outdir, outfile, write_data=write_data)
+
+        else:  # default to small networks
+            p = k  # TODO: double check original difference here
+            outdir = "../data_SW-NEW/"
+            outfile = "N%i_p%0.1f_q%0.4f_T%i_sim%i.txt" % (N, p, q, T, trial)
+            if not os.path.isfile(
+                os.path.join(outdir, "edge", outfile)
+            ):  # avoid re-doing & overwriting
+                G0 = nx.watts_strogatz_graph(n=N, k=k, p=p)
+                G = nx.DiGraph(G0)  # convert to directed
+                qm.quoter_model_sim(G, q, T, outdir, outfile, write_data=write_data)
