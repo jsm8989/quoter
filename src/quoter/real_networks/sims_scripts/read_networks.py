@@ -5,10 +5,10 @@ import re
 from networkx.algorithms import bipartite
 import community
 import sys
+import matplotlib.pyplot as plt
 
 sys.path.append("/home/jimjam/Documents/Adelaide/quoter")
 from real_networks.sims_scripts.modularity import get_modularity
-import matplotlib.pyplot as plt
 
 
 def get_giant_component(G):
@@ -92,6 +92,12 @@ def read_arxiv_GrQc():
 
 
 def read_ckm(network_num=3):
+    """
+    Read CKM physicians from file. This file is used to generate network connectivity matrices and other data structures that can be used for testing.
+
+    :param network_num: ( int ) number of network 1 2 or 3
+    :returns: ( NetworkX ) network connectivity matrices and other data
+    """
     assert network_num in [1, 2, 3], "network_num (int) must be 1, 2, or 3"
     file = networks_folder + "/CKM_physicians/ckm.txt"
     with open(file, "r") as f:
