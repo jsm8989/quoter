@@ -6,6 +6,7 @@ from networkx.algorithms import bipartite
 import community
 import matplotlib.pyplot as plt
 from itertools import product
+from pathlib import Path
 
 
 def get_giant_component(G):
@@ -46,7 +47,7 @@ def get_modularity(G, community_dict):
     """
 
     Q = 0
-    A = nx.to_scipy_sparse_matrix(G).astype(float)
+    A = nx.to_scipy_sparse_array(G).astype(float)
 
     if type(G) == nx.Graph:
         # for undirected graphs, in and out treated as the same thing
@@ -73,7 +74,7 @@ def get_modularity(G, community_dict):
     return Q / M
 
 
-networks_folder = "/home/jimjam/Documents/Adelaide/quoter/real_networks/NETWORKS"
+networks_folder = str(Path(__file__).parent) + "/NETWORKS/"
 
 
 def read_adolescent():
@@ -170,6 +171,11 @@ def read_ckm(network_num=3):
 
 
 def read_dolphins():
+    """
+    Read dolphins file and return networkx graph.
+
+    :returns: networkx graph
+    """
     file = networks_folder + "/dolphins/out.dolphins"
     elist = []
     with open(file, "r") as f:
@@ -184,6 +190,11 @@ def read_dolphins():
 
 
 def read_email():
+    """
+    Read email network and return networkx graph.
+
+    :returns: NetworkX graph with email network
+    """
     # Spain email network
     file = networks_folder + "/email_network/email.txt"
     elist = []
@@ -198,11 +209,11 @@ def read_email():
 
 
 def read_enron():
-    """10588 nodes
-    65901 edges (directed) and   54527 (undirected)
-    We use the undirected graph.
     """
+    Read and return enron network. 10588 nodes; 65901 edges (directed) and 54527 (undirected). We use the undirected graph.
 
+    :returns: Giant component of the NetworkX graph
+    """
     file = networks_folder + "/enron/enron-edgelist.txt"
 
     G = nx.read_edgelist(
@@ -214,6 +225,11 @@ def read_enron():
 
 
 def read_Eu_Core():
+    """
+    Read Eu-Core NetworkX file and return giant component.
+
+    :returns: networkx graph
+    """
     file = networks_folder + "/email-Eu-core/email-Eu-core.txt"
     G = nx.read_edgelist(file, nodetype=int)
 
@@ -221,8 +237,14 @@ def read_Eu_Core():
 
 
 def read_Freemans(network_num=1):
+    """
+    Read Freemans network
+
+    :param network_num: The index of the network to read
+    :returns: networkx graph
+    """
     assert network_num in [1, 2], "network_num (int) must be 1 or 2"
-    file = networks_folder + "/Freemans_EIES/Freemans_EIES-time%i_n48.txt" % network_num
+    file = networks_folder + f"/Freemans_EIES/Freemans_EIES-time{network_num}_n48.txt"
     elist = []
     with open(file, "r") as f:
         for line in f:
@@ -391,33 +413,6 @@ def read_pgp():
     return G
 
 
-### There is a better version of Sampson's monastery network
-##def read_Sampson_Pajek():
-##    # Was unable to figure out how to use nx.read_pajek for this file,
-##    # ended up looking at the data and doing it manually. Edgelist starts
-##    # at line 107 and ends at line 298.
-##    file = networks_folder + "/Sampson/Sampson.paj"
-####    G = nx.read_pajek(file)
-##    elist = []
-##    with open(file,"r") as f:
-##        linecount = 1
-##        while linecount <= 350:
-##            line = f.readline()
-##            if linecount >= 29:
-##                line = re.sub(r'\s+', ' ', line).strip()
-##                relation = int(line.split(" ")[2]) # only keep positive links
-##                e = set(int(x) for x in line.split(" ")[:2] if relation > -1)
-##
-##                if len(e) == 2:
-##                    elist.append(e)
-##
-##            linecount += 1
-##
-##    G = nx.Graph()
-##    G.add_edges_from(elist)
-##    return G
-
-
 def read_terrorist():
     file = networks_folder + "/terrorists/terrorist.pairs"
     G = nx.read_edgelist(file, nodetype=int)
@@ -436,9 +431,6 @@ def read_UC_Irvine():
     G.add_edges_from(elist)
 
     return get_giant_component(G)
-
-
-###------------ NEWER NETWORKS ------------###
 
 
 def read_Arxiv_HepTh():
@@ -686,27 +678,26 @@ def read_twitter():
 networks_dict = {
     "Adolescent health": read_adolescent,
     "Arxiv CondMat": read_arxiv_CondMat,
-    "Arxiv GrQc": read_arxiv_GrQc,  # unused
+    "Arxiv GrQc": read_arxiv_GrQc,
     "CKM physicians": read_ckm,
     "Dolphins": read_dolphins,
     "Email Spain": read_email,
     "Email Enron": read_enron,
-    "Email Eu Core": read_Eu_Core,  # unused
+    "Email Eu Core": read_Eu_Core,
     "Freeman's EIES": read_Freemans,
     "Golden Age": read_golden,
-    "Hypertext": read_hypertext,  # unused
+    "Hypertext": read_hypertext,
     "Kapferer tailor": read_kapf,
     "Les Miserables": read_lesmis,
-    "Marvel": read_Marvel,  # unused
+    "Marvel": read_Marvel,
     "Hollywood music": read_movies,
-    "Network science": read_netscience,  # unused
-    "NFL": read_NFL,  # unused
-    "Intra-organizational": read_org,  # unused
-    "Web of Trust": read_pgp,  # unused
-    ##                "Sampson's monastery": read_Sampson_Pajek, # unused
+    "Network science": read_netscience,
+    "NFL": read_NFL,
+    "Intra-organizational": read_org,
+    "Web of Trust": read_pgp,
     "Terrorist": read_terrorist,
-    "UC Irvine": read_UC_Irvine,  # <-- old networks end here
-    "Arxiv HepTh": read_Arxiv_HepTh,  # <-- newer networks start here
+    "UC Irvine": read_UC_Irvine,
+    "Arxiv HepTh": read_Arxiv_HepTh,
     "Blogs": read_blogs,
     "Club membership": read_club_membership,
     "Facebook": read_facebook,
@@ -864,19 +855,24 @@ def save_network_stats_table(outfile, sort_by="density"):
 
 
 if __name__ == "__main__":
-    ##    x = []
-    ##    y = []
-    ##    for network in small_networks:
-    ##        G = read_any(network)
-    ##        partition = community.best_partition(G)
-    ##        Q = get_modularity(G,partition)
-    ##        x.append(nx.transitivity(G))
-    ##        y.append(Q)
-    ##    plt.plot(x,y,'o')
-    ##    plt.xlabel("Transitivity")
-    ##    plt.ylabel("Modularity")
-    ##    plt.show()
+    ##
+    x = []
+    y = []
+    for network in small_networks:
+        G = read_any(network)
+        partition = community.best_partition(G)
+        Q = get_modularity(G, partition)
+        x.append(nx.transitivity(G))
+        y.append(Q)
+    plt.plot(x, y, "o")
+    plt.xlabel("Transitivity")
+    plt.ylabel("Modularity")
+    plt.show()
 
+    ##
+    display_network_stats()
+
+    ##
     G = read_any("Network science")
     print(G.number_of_nodes())
     pos = nx.spring_layout(G, k=0.09, iterations=25)
@@ -895,29 +891,22 @@ if __name__ == "__main__":
             cols.append("white")
 
     nodes = nx.draw_networkx_nodes(G, pos=pos, node_size=25, node_color=cols)
-    edges = nx.draw_networkx_edges(G, pos=pos, edge_width=5, edge_color="#DEB992")
-    ax = plt.axes()
-    x = "#051622"
-    ax.spines["bottom"].set_color(x)
-    ax.spines["top"].set_color(x)
-    ax.spines["left"].set_color(x)
-    ax.spines["right"].set_color(x)
-    ax.set_facecolor(x)
+    edges = nx.draw_networkx_edges(G, pos=pos, width=5, edge_color="#DEB992")
     plt.show()
 
     # save_network_stats_table("network_statistics_NEW.csv","num_nodes")
 
+    ## Construct edgelists with quoteProbs
+    for name in networks_dict:
+        G0 = read_any(name)
+        G = G0.to_directed()
+        for edge in G.edges():
+            # G[edge[0]][edge[1]] is an empty dict; edge[0] = alter, edge[1] = ego
+            G[edge[0]][edge[1]]["quoteProb"] = 1 / len(list(G.predecessors(edge[1])))
 
-##    # Construct edgelists with quoteProbs
-##    for name in networks_dict:
-##        G0  = read_any(name)
-##        G = G0.to_directed()
-##        for e in G.edges(): #e[0] = alter e[1] = ego
-##            G[e[0]][e[1]]["quoteProb"] = 1/len(G.predecessors(e[1]))
-##
-##        with open("edgelists_to_fileshare/" + name + ".txt", "w") as f:
-##            f.write("alter ego quoteProb\n")
-##            for e in G.edges():
-##                f.write("%i %i %0.8f\n" % (e[0],e[1],G[e[0]][e[1]]["quoteProb"]))
-##
-##        print(name)
+        with open(f"edgelists_{name}.txt", "w") as f:
+            f.write("alter\tego\tquoteProb\n")
+            for e in G.edges():
+                f.write(f"{e[0]}\t{e[1]}\t\t{G[e[0]][e[1]]['quoteProb']}\n")
+
+        print(name)
