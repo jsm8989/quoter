@@ -1,7 +1,7 @@
 import networkx as nx
 import random
 import os, sys
-import quoter_model as qm
+import src.quoter.quoter_model as qm
 import itertools
 
 

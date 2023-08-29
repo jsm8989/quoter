@@ -6,7 +6,7 @@ import numpy as np
 import networkx as nx
 
 sys.path.append("/home/jimjam/Documents/Adelaide/quoter")
-import quoter_model as qm
+import src.quoter.quoter_model as qm
 import community
 from modularity import get_modularity
 

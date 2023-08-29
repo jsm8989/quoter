@@ -8,7 +8,7 @@ import itertools
 sys.path.append(
     "/home/jimjam/Documents/Adelaide/quoter"
 )  # regrettably using this quick fix
-import quoter_model as qm
+import src.quoter.quoter_model as qm
 from real_networks.sims_scripts.modularity import get_modularity
 
 
