@@ -33,7 +33,78 @@
 <h1>Welcome to quoter’s documentation!<a class="headerlink" href="#welcome-to-quoter-s-documentation" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<p>Not sure how this works lets see when built</p>
+<p><em>Table of contents to be added later</em></p>
+<p>See below for the function references inside the <cite>quoter</cite> package.</p>
+<section id="module-quoter.quoter_model">
+<span id="quoter-model-module"></span><h2>quoter_model module<a class="headerlink" href="#module-quoter.quoter_model" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="quoter.quoter_model.edge_clustering_coeff">
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">edge_clustering_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.edge_clustering_coeff" title="Link to this definition">¶</a></dt>
+<dd><p>Compute ECC between two nodes u and v, defined as the number of triangles containing both u and v divided by min(degrees(u,v))-1</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>G: NetworkX graph to be analysed. Must be directed
+u: node index of first node
+v: node index of second node
+return_info: if True return information about the algorithm
+draw: choose whether to visualise the graph</p>
+</dd>
+<dt>Returns:</dt><dd><p>triangles deg_u deg_v ECC (if return_info)
+ECC</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quoter.quoter_model.quoter_model_sim">
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">quoter_model_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G:</span> <span class="pre">~networkx.classes.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_data=&lt;function</span> <span class="pre">write_all_data&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dunbar:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.quoter_model_sim" title="Link to this definition">¶</a></dt>
+<dd><p>Simulate the quoter model on a graph G. Nodes take turns generating content according to two
+mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
+from a neighbor’s past text.</p>
+<p>[1] Bagrow, J. P., &amp; Mitchell, L. (2018). The quoter model: A paradigmatic model of the social
+flow of written information. Chaos: An Interdisciplinary Journal of Nonlinear Science, 28(7),
+075304.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>G (nx.Graph): Directed graph to simulate quoter model on
+q (float): Quote probability
+T (int): Number of time-steps to simulate for. T=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have ‘tweeted’ ~1000 times
+outdir (string): Name of directory for data to be stored in
+outfile (string): Name of file for this simulation
+write_data (function): Can specify what data to compute &amp; write.
+dunbar (int or None): If int, limit in-degree to dunbar’s number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quoter.quoter_model.words_to_tweets">
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">words_to_tweets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.words_to_tweets" title="Link to this definition">¶</a></dt>
+<dd><p>Convert (words,times) array to a smaller array of (tweets,times)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>words</strong> – A list of words. Each word is a list of word tokens.</p></li>
+<li><p><strong>times</strong> – A list of times. Each time it is called the words will be compared to each other to see if they are the same.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tuples where each tuple is a tweet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quoter.quoter_model.write_all_data">
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">write_all_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.write_all_data" title="Link to this definition">¶</a></dt>
+<dd><p>Compute and write data from quoter model simulations.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>G (nx.Graph): _description_
+outdir (str): _description_
+outfile (str): _description_</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>

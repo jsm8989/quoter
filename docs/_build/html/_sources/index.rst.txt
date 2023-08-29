@@ -8,9 +8,16 @@ Welcome to quoter's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-Not sure how this works lets see when built
+*Table of contents to be added later*
+
+See below for the function references inside the `quoter` package.
+
+quoter_model module
+-------------------
+
+.. automodule:: quoter.quoter_model
+   :members:
 
 Indices and tables
 ==================
