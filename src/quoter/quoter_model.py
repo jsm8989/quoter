@@ -1,27 +1,28 @@
 import networkx as nx
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 # from CrossEntropy import timeseries_cross_entropy  # currently local module
 from ProcessEntropy.CrossEntropyPythonOnly import (
     timeseries_cross_entropy,
 )  # remote package; might have install dependency issues
-from edge_clustering_coeff import edge_clustering_coeff
+
+# from quoter.edge_clustering_coeff import edge_clustering_coeff
 from typing import Iterable, Union, Tuple
 
 
 def words_to_tweets(words: Iterable, times: Iterable):
-    """Convert (words,times) array to a smaller array of (tweets,times)
+    """
+    Convert (words,times) array to a smaller array of (tweets,times)
 
-    Args:
-        words (Iterable): _description_
-        times (Iterable): _description_
-
-    Returns:
-        _type_: _description_
+    :param words: A list of words. Each word is a list of word tokens.
+    :param times: A list of times. Each time it is called the words will be compared to each other to see if they are the same.
+    :returns: A list of tuples where each tuple is a tweet
     """
     unique_times = list(sorted(set(times)))
     tweets = []
+    # Add a tweet to the list of unique times
     for unq_t in unique_times:
         tweet = [w for w, t in zip(words, times) if t == unq_t]
         tweets.append(tweet)
@@ -167,7 +168,7 @@ def quoter_model_sim(
     dunbar: Union[int, None] = None,
 ):
     """Simulate the quoter model on a graph G. Nodes take turns generating content according to two
-    mechanisms: (i) creating new content from a specified vocabulary distribution (ii) quoting
+    mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
     from a neighbor's past text.
 
     [1] Bagrow, J. P., & Mitchell, L. (2018). The quoter model: A paradigmatic model of the social
@@ -175,16 +176,14 @@ def quoter_model_sim(
     075304.
 
     Args:
-        G (nx.Graph) -- Directed graph to simulate quoter model on
-        q (float) -- Quote probability
-        T (int) -- Number of time-steps to simulate for. T=1000 really means 1000*nx.number_of_nodes(G),
-                i.e. each node will have 'tweeted' ~1000 times
-        outdir (string) -- Name of directory for data to be stored in
-        outfile (string) -- Name of file for this simulation
-        write_data (function) -- Can specify what data to compute & write.
-        dunbar (int or None) -- If int, limit in-degree to dunbar's number
+        G (nx.Graph): Directed graph to simulate quoter model on
+        q (float): Quote probability
+        T (int): Number of time-steps to simulate for. T=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have 'tweeted' ~1000 times
+        outdir (string): Name of directory for data to be stored in
+        outfile (string): Name of file for this simulation
+        write_data (function): Can specify what data to compute & write.
+        dunbar (int or None): If int, limit in-degree to dunbar's number
     """
-
     # vocabulary distribution
     alpha = 1.5
     z = 1000
@@ -241,3 +240,46 @@ def quoter_model_sim(
 
     # save data
     write_data(G, outdir, outfile)
+
+
+# taken from other file to minimise import risks
+def edge_clustering_coeff(
+    G: nx.Graph, u: int, v: int, return_info: bool = False, draw: bool = False
+):
+    """
+    Compute ECC between two nodes u and v, defined as the number of triangles containing both u and v divided by min(degrees(u,v))-1
+
+    Args:
+        G: NetworkX graph to be analysed. Must be directed
+        u: node index of first node
+        v: node index of second node
+        return_info: if True return information about the algorithm
+        draw: choose whether to visualise the graph
+
+    Returns:
+        triangles deg_u deg_v ECC (if return_info)
+        ECC
+    """
+    u_nbrs = nx.neighbors(G, u)
+    v_nbrs = nx.neighbors(G, v)
+    uv_nbrs = set(u_nbrs) & set(v_nbrs)
+    triangles = len(uv_nbrs)  # could be replaced by nx.triangles(G, [u,v]) or similar
+
+    deg_u = nx.degree(G)[u]  # len(u_nbrs)
+    deg_v = nx.degree(G)[v]  # len(v_nbrs)
+
+    if min(deg_u - 1, deg_v - 1) == 0:  # undefined?
+        ECC: float = 0
+    else:
+        ECC = triangles / min(deg_u - 1, deg_v - 1)
+
+    if draw:
+        pos = nx.spring_layout(G)
+        labels = nx.draw_networkx_labels(G, pos)
+        nx.draw(G, pos)
+        plt.show()
+
+    if return_info:
+        return triangles, deg_u, deg_v, ECC
+    else:
+        return ECC

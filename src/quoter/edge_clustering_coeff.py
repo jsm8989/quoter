@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
-from real_networks.sims_scripts.read_networks import (
+from quoter.real_networks.sims_scripts.read_networks import (
     read_any,
     networks_dict,
     small_networks,
