@@ -48,7 +48,7 @@ Many of the docstrings are produced using docify so may need double checking. We
 ## Requirements
 Works with
 + Python 3.6+
-+ Networkx 1.11
++ [Networkx 1.11] Initially ran on this; now on 3.1 but in case you have any issues this would be why
 
 See the `requirements.txt` file for further dependencies.
 
@@ -58,6 +58,7 @@ See the `requirements.txt` file for further dependencies.
 + Make documentation available online
 + Upload to PyPI
 + Add more typing to functiona args
++ Add verbose output to quoter_model_sim()
 
 ## References
 [1] Bagrow, J. P., & Mitchell, L. (2018). The quoter model: A paradigmatic model of the social flow of written information. *Chaos: An Interdisciplinary Journal of Nonlinear Science*, 28(7), 075304.
