@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quoter-model"
+version = "1.0"
+authors = [
+  { name="jsm8989", email="jsm89@cantab.ac.uk" },
+]
+description = "A package for simulating the quoter model of information flow on networks"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jsm8989/quoter"
+"Bug Tracker" = "https://github.com/jsm8989/quoter/issues"
