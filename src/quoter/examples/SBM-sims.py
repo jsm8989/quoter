@@ -5,7 +5,7 @@ import random
 import itertools
 import quoter.quoter_model as qm
 from quoter.real_networks.sims_scripts.modularity import get_modularity
-from quoter.examples.quote_memory.sims_scripts_SBM.make_SBM import make_SBM_simple
+from processing.make_SBM import make_SBM_simple
 
 
 def write_data(G, outdir, outfile):
