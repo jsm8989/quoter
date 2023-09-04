@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quoter-model"
-version = "0.0.1"
+version = "1.0"
 authors = [
-  { name="Jamie", email="jsm89@cantab.ac.uk" },
+  { name="jsm8989", email="jsm89@cantab.ac.uk" },
 ]
 description = "A package for simulating the quoter model of information flow on networks"
 readme = "README.md"

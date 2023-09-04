@@ -55,7 +55,7 @@ Works with
 See the `requirements.txt` file for further dependencies.
 
 ## TODO
-+ Make sure all docstrings are in reST format
++ Make sure all docstrings are in reST/sphinx format
 + Add more helpful comments
 + Make documentation better and available online
 + Upload to PyPI
