@@ -10,17 +10,8 @@ def get_modularity(G, community_dict):
     """
     Calculate the modularity. Edge weights are ignored. From https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py
 
-    Undirected:
-    .. math:: Q = \frac{1}{2m}\sum_{i,j} \(A_ij - \frac{k_i k_j}{2m}\) * \detal_(c_i, c_j)
-
-    Directed:
-    .. math:: Q = \frac{1}{m}\sum_{i,j} \(A_ij - \frac{k_i^{in} k_j^{out}}{m}\) * \detal_{c_i, c_j}
-
-    Parameters
-    ----------
     :param G: NetworkX graph to be analysed
     :param community_dict: A dict to store the membership of each node. Key is node and value is community index
-
     :returns: (float) The modularity of `G` given `community_dict`
     """
 
