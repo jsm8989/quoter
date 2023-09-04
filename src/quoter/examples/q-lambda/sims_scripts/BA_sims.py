@@ -11,39 +11,39 @@ def write_data(G, outdir, outfile):
     TODO compare to similar functions in other files.
     """
 
-    # graph skeleton for calculating clustering, transitivity, ASPL, etc.
     H = nx.Graph(G)
 
-    # compute edge data
     edge_sample = random.sample(list(G.edges()), min(500, nx.number_of_edges(G)))
 
     # compute edge data
-    for e in edge_sample:
-        # compute all cross entropies. e[0] = alter, e[1] = ego
+    for edge in edge_sample:
+        # compute all cross entropies. edge[0] = alter, edge[1] = ego
         time_tweets_target = qm.words_to_tweets(
-            G.nodes[e[1]]["words"], G.nodes[e[1]]["times"]
+            G.nodes[edge[1]]["words"], G.nodes[edge[1]]["times"]
         )
         time_tweets_source = qm.words_to_tweets(
-            G.nodes[e[0]]["words"], G.nodes[e[0]]["times"]
+            G.nodes[edge[0]]["words"], G.nodes[edge[0]]["times"]
         )
         hx = qm.timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
-        G[e[0]][e[1]]["hx"] = hx
 
-        # also record quote probability
-        G[e[0]][e[1]]["quoteProb"] = 1 / len(list(G.predecessors(e[1])))
+        # record cross-entropy
+        G[edge[0]][edge[1]]["hx"] = hx
 
-        # also record edge embeddeness & edge clustering coefficient
+        # record quote probability
+        G[edge[0]][edge[1]]["quoteProb"] = 1 / len(list(G.predecessors(edge[1])))
+
+        # record edge embeddeness & edge clustering coefficient
         triangles, deg0, deg1, ECC = qm.edge_clustering_coeff(
-            H, e[0], e[1], return_info=True
+            H, edge[0], edge[1], return_info=True
         )
-        G[e[0]][e[1]]["tri"] = triangles
-        G[e[0]][e[1]]["deg0"] = deg0
-        G[e[0]][e[1]]["deg1"] = deg1
+        G[edge[0]][edge[1]]["tri"] = triangles
+        G[edge[0]][edge[1]]["deg0"] = deg0
+        G[edge[0]][edge[1]]["deg1"] = deg1
 
     # write edge data
-    with open(outdir + "edge/" + outfile, "w") as f:
+    with open(f"{outdir}edge/{outfile}", "w") as f:
         f.write("alter ego quoteProb hx triangles alter_deg ego_deg\n")  # header
         for e in edge_sample:
             f.write(
