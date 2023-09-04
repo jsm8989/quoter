@@ -1,15 +1,11 @@
-import os, sys
+import os
 import networkx as nx
 import numpy as np
-from make_SBM import make_SBM_simple
 import random
 import itertools
-
-sys.path.append(
-    "/home/jimjam/Documents/Adelaide/quoter"
-)  # regrettably using this quick fix
-import src.quoter.quoter_model as qm
-from real_networks.sims_scripts.modularity import get_modularity
+import quoter.quoter_model as qm
+from quoter.real_networks.sims_scripts.modularity import get_modularity
+from quoter.examples.quote_memory.sims_scripts_SBM.make_SBM import make_SBM_simple
 
 
 def write_data(G, outdir, outfile):
@@ -167,19 +163,11 @@ def write_data(G, outdir, outfile):
             f.write("%i %i %i %0.8f %0.8f\n" % (node, indeg, outdeg, C, h))
 
 
-##    # write edgelist for SBM
-##    nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
+## write edgelist for SBM
+# nx.write_edgelist(G, os.path.join(outdir, "edgelist_" + outfile), delimiter=" ", data=False)
 
 
 if __name__ == "__main__":
-    try:
-        JOBNUM, NUMJOBS = map(int, sys.argv[1:])
-    except IndexError:
-        sys.exit("Usage: %s JOBNUM NUMJOBS" % sys.argv[0])
-
-    ##    JOBNUM = 0
-    ##    NUMJOBS = 1
-
     N = 200
     M = 1000
     q = 0.5
@@ -188,7 +176,7 @@ if __name__ == "__main__":
     trials_list = range(200)
 
     params_init = itertools.product(mu_list, trials_list)
-    params = [P for i, P in enumerate(params_init) if i % NUMJOBS == JOBNUM]
+    params = [P for i, P in enumerate(params_init)]
 
     for mu, trial in params:
         outdir = "../data_SBM/"
