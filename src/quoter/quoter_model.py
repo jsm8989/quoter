@@ -173,7 +173,7 @@ def quoter_model_sim(
 
     Args:
         G (nx.Graph): Directed graph to simulate quoter model on
-        q (float): Quote probability
+        q (float): Quote probability as defined in [1]
         T (int): Number of time-steps to simulate for. T=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have 'tweeted' ~1000 times
         outdir (string): Name of directory for data to be stored in
         outfile (string): Name of file for this simulation
