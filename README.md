@@ -27,6 +27,8 @@ pip install numba numpy nltk
 ```
 Alternatively you can modify the source code inside `quoter/quoter_model` to use the local version of `CrossEntropy`. 
 
+Once you have run a reasonable number of simulations (in modules with a `-sims` suffix), you can run the corresponding `-process` scripts to generate some summary csv output (these and other helper modules are found in `examples/processing/`). Currently, all simulation and processing output will go into a folder `output/` relative to your running directory (**which you may need to create - I had some exceptions raised during testing**), this is likely to change in future versions.
+
 ## Example networks
 Inside [src/quoter/real_networks](src/quoter/real_networks) are many examples of real networks, along with a module for parsing them into an appropriate format, that can be used to run simulations on. 
 
@@ -57,8 +59,9 @@ See the `requirements.txt` file for further dependencies.
 + Add more helpful comments
 + Make documentation available online
 + Upload to PyPI
-+ Add more typing to functiona args
++ Add more typing to function args
 + Add verbose output to quoter_model_sim()
++ Better syncing between simulation and processing scripts in the examples
 
 ## References
 [1] Bagrow, J. P., & Mitchell, L. (2018). The quoter model: A paradigmatic model of the social flow of written information. *Chaos: An Interdisciplinary Journal of Nonlinear Science*, 28(7), 075304.
