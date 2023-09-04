@@ -154,6 +154,48 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
             f.write("%i %i %i %0.8f %0.8f\n" % (node, indeg, outdeg, C, h))
 
 
+def edge_clustering_coeff(
+    G: nx.Graph, u: int, v: int, return_info: bool = False, draw: bool = False
+):
+    """
+    Compute ECC between two nodes u and v, defined as the number of triangles containing both u and v divided by min(degrees(u,v))-1
+
+    Args:
+        G: NetworkX graph to be analysed. Must be directed
+        u: node index of first node
+        v: node index of second node
+        return_info: if True return information about the algorithm
+        draw: choose whether to visualise the graph
+
+    Returns:
+        triangles deg_u deg_v ECC (if return_info)
+        ECC
+    """
+    u_nbrs = nx.neighbors(G, u)
+    v_nbrs = nx.neighbors(G, v)
+    uv_nbrs = set(u_nbrs) & set(v_nbrs)
+    triangles = len(uv_nbrs)  # could be replaced by nx.triangles(G, [u,v]) or similar
+
+    deg_u = nx.degree(G)[u]  # len(u_nbrs)
+    deg_v = nx.degree(G)[v]  # len(v_nbrs)
+
+    if min(deg_u - 1, deg_v - 1) == 0:  # undefined?
+        ECC: float = 0
+    else:
+        ECC = triangles / min(deg_u - 1, deg_v - 1)
+
+    if draw:
+        pos = nx.spring_layout(G)
+        labels = nx.draw_networkx_labels(G, pos)
+        nx.draw(G, pos)
+        plt.show()
+
+    if return_info:
+        return triangles, deg_u, deg_v, ECC
+    else:
+        return ECC
+
+
 def quoter_model_sim(
     G: nx.Graph,
     q: float,
@@ -236,46 +278,3 @@ def quoter_model_sim(
 
     # save data
     write_data(G, outdir, outfile)
-
-
-# taken from other file to minimise import risks
-def edge_clustering_coeff(
-    G: nx.Graph, u: int, v: int, return_info: bool = False, draw: bool = False
-):
-    """
-    Compute ECC between two nodes u and v, defined as the number of triangles containing both u and v divided by min(degrees(u,v))-1
-
-    Args:
-        G: NetworkX graph to be analysed. Must be directed
-        u: node index of first node
-        v: node index of second node
-        return_info: if True return information about the algorithm
-        draw: choose whether to visualise the graph
-
-    Returns:
-        triangles deg_u deg_v ECC (if return_info)
-        ECC
-    """
-    u_nbrs = nx.neighbors(G, u)
-    v_nbrs = nx.neighbors(G, v)
-    uv_nbrs = set(u_nbrs) & set(v_nbrs)
-    triangles = len(uv_nbrs)  # could be replaced by nx.triangles(G, [u,v]) or similar
-
-    deg_u = nx.degree(G)[u]  # len(u_nbrs)
-    deg_v = nx.degree(G)[v]  # len(v_nbrs)
-
-    if min(deg_u - 1, deg_v - 1) == 0:  # undefined?
-        ECC: float = 0
-    else:
-        ECC = triangles / min(deg_u - 1, deg_v - 1)
-
-    if draw:
-        pos = nx.spring_layout(G)
-        labels = nx.draw_networkx_labels(G, pos)
-        nx.draw(G, pos)
-        plt.show()
-
-    if return_info:
-        return triangles, deg_u, deg_v, ECC
-    else:
-        return ECC
