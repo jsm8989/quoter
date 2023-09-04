@@ -188,11 +188,10 @@ if __name__ == "__main__":
     params = [P for i, P in enumerate(params_init)]
 
     for mu, trial in params:
-        outdir = "./data_SBM/"
+        outdir = "output/"
         outfile = "N%i_mu%0.4f_M%i_q%0.2f_T%i_sim%i.txt" % (N, mu, M, q, T, trial)
 
         if not os.path.isfile(os.path.join(outdir, "edge/", outfile)):
             G0 = make_SBM_simple(N, mu, M)
             G = nx.DiGraph(G0)  # convert to directed
-            print("running...")
             qm.quoter_model_sim(G, q, T, outdir, outfile, write_data)
