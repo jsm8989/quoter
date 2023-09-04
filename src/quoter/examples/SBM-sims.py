@@ -39,11 +39,11 @@ def write_data(G, outdir, outfile):
     b_sample = list()
     i = 0
     while len(b_sample) < 250 and i < len(edges):
-        e = edges[i]
-        if (e[0] in A and e[1] in A) or (e[0] in B and e[1] in B):
+        e_i = edges[i]
+        if (e_i[0] in A and e_i[1] in A) or (e_i[0] in B and e[1] in B):
             pass
         else:
-            b_sample.append(e)
+            b_sample.append(e_i)
         i += 1
 
     full_sample = w_sample + b_sample
@@ -52,7 +52,7 @@ def write_data(G, outdir, outfile):
     targets = []
     quoteProba_list = []
     hx_list = []
-    ##    dist_list = []
+    dist_list = []
     triangles_list = []
     deg0_list = []
     deg1_list = []
@@ -62,8 +62,12 @@ def write_data(G, outdir, outfile):
         sources.append(s)
         targets.append(t)
 
-        time_tweets_source = qm.words_to_tweets(G.node[s]["words"], G.node[s]["times"])
-        time_tweets_target = qm.words_to_tweets(G.node[t]["words"], G.node[t]["times"])
+        time_tweets_source = qm.words_to_tweets(
+            G.nodes[s]["words"], G.nodes[s]["times"]
+        )
+        time_tweets_target = qm.words_to_tweets(
+            G.nodes[t]["words"], G.nodes[t]["times"]
+        )
         hx = qm.timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
@@ -71,17 +75,17 @@ def write_data(G, outdir, outfile):
 
         # also record quote probability
         if s in G.predecessors(t):
-            quoteProba = 1 / len(G.predecessors(t))
+            quoteProba = 1 / len(list(G.predecessors(t)))
         else:
             quoteProba = 0
         quoteProba_list.append(quoteProba)
 
-        ##        # also record distance between nodes
-        ##        try:
-        ##            dist = nx.shortest_path_length(G,source=s,target=t)
-        ##        except:
-        ##            dist = 0
-        ##        dist_list.append(dist)
+        # also record distance between nodes
+        try:
+            dist = nx.shortest_path_length(G, source=s, target=t)
+        except:
+            dist = 0
+        dist_list.append(dist)
 
         # also record edge embeddeness & edge clustering coefficient
         triangles, deg0, deg1, _ = qm.edge_clustering_coeff(
@@ -96,7 +100,7 @@ def write_data(G, outdir, outfile):
         f.write("alter ego quoteProb hx triangles alter_deg ego_deg\n")  # header
         for i in range(len(targets)):
             f.write(
-                "%i %i %0.8f %0.8f %i %i %i\n"
+                "%i %i %0.8f %0.8f %i %i %i %i\n"
                 % (
                     sources[i],
                     targets[i],
@@ -105,6 +109,7 @@ def write_data(G, outdir, outfile):
                     triangles_list[i],
                     deg0_list[i],
                     deg1_list[i],
+                    dist_list[i],
                 )
             )
     # compute graph data
@@ -183,7 +188,7 @@ if __name__ == "__main__":
     params = [P for i, P in enumerate(params_init)]
 
     for mu, trial in params:
-        outdir = "../data_SBM/"
+        outdir = "./data_SBM/"
         outfile = "N%i_mu%0.4f_M%i_q%0.2f_T%i_sim%i.txt" % (N, mu, M, q, T, trial)
 
         if not os.path.isfile(os.path.join(outdir, "edge/", outfile)):

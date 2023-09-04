@@ -232,7 +232,7 @@ def quoter_model_sim(
     # limit IN-DEGREE to just dunbar's number
     if dunbar:
         for node in G.nodes():
-            nbrs = G.predecessors(node)
+            nbrs = list(G.predecessors(node))
             if len(nbrs) > dunbar:
                 nbrs_rmv = random.sample(nbrs, len(nbrs) - dunbar)
                 G.remove_edges_from([(nbr, node) for nbr in nbrs_rmv])
@@ -254,7 +254,7 @@ def quoter_model_sim(
         tweetLength = np.random.poisson(lam=3)
 
         # quote with probability q, provided ego has alters to quote from
-        nbrs = G.predecessors(node)
+        nbrs = list(G.predecessors(node))
         if random.random() < q and len(nbrs) > 0:
             # pick a neighbor to quote from (simplifying assumption: uniformly at random from all neighbors)
             user_copied = random.choice(nbrs)
