@@ -25,7 +25,7 @@ def get_modularity(G, community_dict):
     """
 
     Q = 0
-    A = nx.to_scipy_sparse_matrix(G).astype(float)
+    A = nx.to_scipy_sparse_array(G).astype(float)
 
     if type(G) == nx.Graph:
         # for undirected graphs, in and out treated as the same thing
@@ -195,7 +195,7 @@ def make_growing_SBM(N, p, mu_seq, trial):
     G.add_edges_from(eb + ew)
     nx.write_edgelist(
         G,
-        "edgelist/N%i_p%0.2f_mu%0.4f_trial%i.txt" % (N, p, mu_seq[0], trial),
+        "output/edgelist/N%i_p%0.2f_mu%0.4f_trial%i.txt" % (N, p, mu_seq[0], trial),
         delimiter=" ",
         data=False,
     )
@@ -207,11 +207,11 @@ def make_growing_SBM(N, p, mu_seq, trial):
         eb_remaining = (set(eb_remaining) | set([x[::-1] for x in eb_remaining])) & set(
             eb
         )
-        e = random.sample(eb_remaining, edges_to_add)
+        e = random.sample(sorted(eb_remaining), edges_to_add)
         G.add_edges_from(e)
         nx.write_edgelist(
             G,
-            "edgelist/N%i_p%0.2f_mu%0.4f_trial%i.txt" % (N, p, mu_seq[i], trial),
+            "output/edgelist/N%i_p%0.2f_mu%0.4f_trial%i.txt" % (N, p, mu_seq[i], trial),
             delimiter=" ",
             data=False,
         )
@@ -220,36 +220,39 @@ def make_growing_SBM(N, p, mu_seq, trial):
 
 
 if __name__ == "__main__":
-    ##    N=100
-    ##    M=750
-    ##    for i,mu in enumerate([.03,.12,.3]):
-    ##        G = make_SBM_simple(N,mu,M)
-    ##        pos=nx.spring_layout(G,k=.25,iterations=40)
     ##
-    ##        plt.subplot(1,3,i+1)
-    ##        nodes=nx.draw_networkx_nodes(G,pos,node_size=10,node_color="C1")
-    ##        edges=nx.draw_networkx_edges(G,pos,width=0.5)
-    ##        limits=plt.axis('off')
-    ##        plt.title(r"$\mu = %0.2f$" % mu)
+    N = 100
+    M = 750
+    for i, mu in enumerate([0.03, 0.12, 0.3]):
+        G = make_SBM_simple(N, mu, M)
+        pos = nx.spring_layout(G, k=0.25, iterations=40)
+
+        plt.subplot(1, 3, i + 1)
+        nodes = nx.draw_networkx_nodes(G, pos, node_size=10, node_color="C1")
+        edges = nx.draw_networkx_edges(G, pos, width=0.5)
+        limits = plt.axis("off")
+        plt.title(r"$\mu = %0.2f$" % mu)
+
+    plt.tight_layout()
+    plt.show()
+
     ##
-    ##    plt.tight_layout()
-    ##    plt.show()
+    N = 100
+    m = N // 2
+    p = 0.6
+    mu = 0.15
+    G = make_SBM3(N, p, mu)
+    A = range(0, m)
+    B = range(m, N)
+    comm_dict = {x: 0 for x in A}
+    comm_dict.update({x: 1 for x in B})
+    Q = get_modularity(G, comm_dict)
+    print(f"modularity of SBM3 model: {Q}")
+    L = p * m * (m - 1) + mu * m**2
+    k = m * (p * (m - 1) + mu * m)
+    # print(2 * (p * m * (m - 1) / (2 * L) - (k / (2 * L)) ** 2))
 
-    ##    N = 100
-    ##    m = N//2
-    ##    p = 0.6
-    ##    mu = 0.15
-    ##    G = make_SBM3(N,p,mu)
-    ##    A = range(0,m)
-    ##    B = range(m,N)
-    ##    comm_dict = {x:0 for x in A}
-    ##    comm_dict.update({x:1 for x in B})
-    ##    Q = get_modularity(G,comm_dict)
-    ##    print(Q)
-    ##    L = (p*m*(m-1) + mu*m**2)
-    ##    k = m*(p*(m-1) + mu*m)
-    ##    print(2*(p*m*(m-1)/(2*L) - (k/(2*L))**2))
-
+    ##
     N = 1000
     m = N // 2
     A = range(0, m)
@@ -278,24 +281,32 @@ if __name__ == "__main__":
         0.361543,
         0.3996,
     ]
-    for trial in range(1000):
+    for trial in range(2):  # arbitrary number of simulations
         G = make_growing_SBM(N, p, mu_seq, trial)
 
-##    for i in range(len(mu_seq)):
-##        print("i: ", i)
-##        # edges between
-##        eb = itertools.product(A,B)
-##        # edges within
-##        ew = itertools.chain(itertools.combinations(A,2),itertools.combinations(B,2))
-##
-##        G = nx.read_edgelist("N%i_p%0.3f_mu%0.3f_%i.txt" % (N,p,mu_seq[i],i), nodetype=int)
-##
-##        eb_pres = set(eb) | set([x[::-1] for x in eb])
-##        eb_pres = eb_pres & (set(G.edges()) | set([x[::-1] for x in list(G.edges())]))
-##        print("between density: ", len(eb_pres)/m**2)
-####        print("within A density: ", nx.density(G.subgraph(A)))
-####        print("within B density: ", nx.density(G.subgraph(B)))
-##        comm_dict = {x:0 for x in A}
-##        comm_dict.update({x:1 for x in B})
-##        Q = get_modularity(G,comm_dict)
-##        print("modularity:", Q, "\n")
+        for i in range(len(mu_seq)):
+            print("i: ", i)
+            # edges between
+            eb = itertools.product(A, B)
+            # edges within
+            ew = itertools.chain(
+                itertools.combinations(A, 2), itertools.combinations(B, 2)
+            )
+
+            G = nx.read_edgelist(
+                "output/edgelist/N%i_p%0.2f_mu%0.4f_trial%i.txt"
+                % (N, p, mu_seq[i], trial),
+                nodetype=int,
+            )
+
+            eb_pres = set(eb) | set([x[::-1] for x in eb])
+            eb_pres = eb_pres & (
+                set(G.edges()) | set([x[::-1] for x in list(G.edges())])
+            )
+            print("between density: ", len(eb_pres) / m**2)
+            print("within A density: ", nx.density(G.subgraph(A)))
+            print("within B density: ", nx.density(G.subgraph(B)))
+            comm_dict = {x: 0 for x in A}
+            comm_dict.update({x: 1 for x in B})
+            Q = get_modularity(G, comm_dict)
+            print("modularity:", Q, "\n")

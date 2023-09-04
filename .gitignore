@@ -16,4 +16,4 @@ src/quoter/real_networks/processing
 src/quoter/real_networks/sims_scripts
 *.egg-info/
 build/
-src/quoter/examples/output/
+*output/

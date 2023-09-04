@@ -17,7 +17,7 @@ if __name__ == "__main__":
         print(mu)
         hx_AA, hx_BB, hx_AB, hx_BA = [], [], [], []
         for trial in trials_list:
-            efile = "../output/edge/N%i_mu%0.4f_M%i_q%0.2f_T%i_sim%i.txt" % (
+            efile = "output/edge/N%i_mu%0.4f_M%i_q%0.2f_T%i_sim%i.txt" % (
                 N,
                 mu,
                 M,

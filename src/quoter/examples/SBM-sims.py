@@ -97,7 +97,7 @@ def write_data(G, outdir, outfile):
 
     # write edge data
     with open(f"{outdir}edge/{outfile}", "w") as f:
-        f.write("alter ego quoteProb hx triangles alter_deg ego_deg\n")  # header
+        f.write("alter ego quoteProb hx triangles alter_deg ego_deg dist\n")  # header
         for i in range(len(targets)):
             f.write(
                 "%i %i %0.8f %0.8f %i %i %i %i\n"
@@ -116,8 +116,8 @@ def write_data(G, outdir, outfile):
     nnodes = nx.number_of_nodes(H)
     nedges = nx.number_of_edges(H)
     dens = nedges / (nnodes * (nnodes - 1) / 2)
-    indegs = list(G.in_degree(G.nodes()).values())
-    outdegs = list(G.out_degree(G.nodes()).values())
+    indegs = list(dict(G.in_degree(G.nodes())).values())
+    outdegs = list(dict(G.out_degree(G.nodes())).values())
     ccs = sorted(nx.connected_components(H), key=len, reverse=True)
     comm_dict = {x: 0 for x in A}
     comm_dict.update({x: 1 for x in B})
@@ -158,10 +158,10 @@ def write_data(G, outdir, outfile):
         f.write("node indegree outdegree C h\n")  # header
         for node in G.nodes():
             time_tweets_target = qm.words_to_tweets(
-                G.node[node]["words"], G.node[node]["times"]
+                G.nodes[node]["words"], G.nodes[node]["times"]
             )
             time_tweets_source = qm.words_to_tweets(
-                G.node[node]["words"], G.node[node]["times"]
+                G.nodes[node]["words"], G.nodes[node]["times"]
             )
             h = qm.timeseries_cross_entropy(
                 time_tweets_target, time_tweets_source, please_sanitize=False

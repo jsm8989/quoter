@@ -47,6 +47,7 @@ def write_data(G, outdir, outfile):
         G[edge[0]][edge[1]]["deg1"] = deg1
 
     # write edge data
+    print(f"writing to {outdir}edge/{outfile}")
     with open(f"{outdir}edge/{outfile}", "w") as f:
         f.write("alter ego quoteProb hx triangles alter_deg ego_deg\n")  # header
         for e in edge_sample:
@@ -80,7 +81,7 @@ if __name__ == "__main__":
     params = [P for i, P in enumerate(params_init)]
 
     for q, k, trial in params:  # lam,
-        outdir = f"./data_{network_type}/"
+        outdir = "output/"
         # outfile = "N%i_k%i_q%0.4f_lam%i_T%i_sim%i.txt" % (N, k, q, lam, T, trial)
         outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k, q, T, trial)
 

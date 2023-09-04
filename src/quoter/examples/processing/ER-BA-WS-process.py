@@ -21,7 +21,7 @@ if __name__ == "__main__":
                 print("k%i q%0.4f lambda%i" % (k, q, lam))
                 hx_list = []
                 for trial in trials_list:
-                    efile = f"./data_{network_type}/edge/*.txt"  # add appropriate filename from previous simulations
+                    efile = f"output/edge/*.txt"  # add appropriate filename from previous simulations
 
                     if os.path.isfile(efile):
                         edata = pd.read_csv(efile, sep=" ")
