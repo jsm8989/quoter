@@ -29,7 +29,7 @@ if __name__ == "__main__":
             try:
                 edata = pd.read_csv(efile, sep=" ")
             except:
-                print("No data", mu, trial)
+                print(f"No data for mu={mu}, trial={trial}")
 
             else:
                 block1 = list(range(0, int(N / 2)))
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     df.to_csv("hx_SBM.csv", index=False)
 
     # PLOT
-    data = pd.read_csv("hx_SBM.csv")
+    data = pd.read_csv("output/summaries/hx_SBM.csv")
     plt.plot(data["mu"].values, data["hx_w"].values, label="within")
     plt.plot(data["mu"].values, data["hx_b"].values, label="between")
     plt.legend()

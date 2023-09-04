@@ -73,7 +73,7 @@ if __name__ == "__main__":
     # lam_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     k_list = [6, 20]
     T = 1000
-    trials_list = list(range(100))
+    trials_list = list(range(10))
 
     params_init = itertools.product(
         q_list, k_list, trials_list
