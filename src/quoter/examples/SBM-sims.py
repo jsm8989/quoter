@@ -4,64 +4,17 @@ import numpy as np
 import random
 import itertools
 import quoter.quoter_model as qm
-from processing.make_SBM import make_SBM_simple
-
-
-def get_modularity(G, community_dict):
-    """
-    Calculate the modularity. Edge weights are ignored. From https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py
-
-    Undirected:
-    .. math:: Q = \frac{1}{2m}\sum_{i,j} \(A_ij - \frac{k_i k_j}{2m}\) * \detal_(c_i, c_j)
-
-    Directed:
-    .. math:: Q = \frac{1}{m}\sum_{i,j} \(A_ij - \frac{k_i^{in} k_j^{out}}{m}\) * \detal_{c_i, c_j}
-
-    Parameters
-    ----------
-    network : nx.Graph or nx.DiGraph
-        The network of interest
-    community_dict : dict
-        A dictionary to store the membership of each node
-        Key is node and value is community index
-
-    Returns
-    -------
-    float
-        The modularity of `network` given `community_dict`
-    """
-
-    Q = 0
-    A = nx.to_scipy_sparse_matrix(G).astype(float)
-
-    if type(G) == nx.Graph:
-        # for undirected graphs, in and out treated as the same thing
-        out_degree = in_degree = dict(nx.degree(G))
-        M = 2.0 * (G.number_of_edges())
-        print("Calculating modularity for undirected graph")
-    elif type(G) == nx.DiGraph:
-        in_degree = dict(G.in_degree())
-        out_degree = dict(G.out_degree())
-        M = 1.0 * G.number_of_edges()
-        print("Calculating modularity for directed graph")
-    else:
-        print("Invalid graph type")
-        raise TypeError
-
-    nodes = list(G)
-    Q = np.sum(
-        [
-            A[i, j] - in_degree[nodes[i]] * out_degree[nodes[j]] / M
-            for i, j in itertools.product(range(len(nodes)), range(len(nodes)))
-            if community_dict[nodes[i]] == community_dict[nodes[j]]
-        ]
-    )
-    return Q / M
+from processing.make_SBM import make_SBM_simple, get_modularity
 
 
 def write_data(G, outdir, outfile):
     """
     Compute and write data from quoter model simulations.
+    TODO compare to similar functions in other files.
+
+    :param G: NetworkX graph to be analysed
+    :param outdir: Path to output directory for data to be written
+    :param outfile: Path to output file for data to be written
     """
 
     # graph skeleton for calculating clustering, transitivity, ASPL, etc.
@@ -139,7 +92,7 @@ def write_data(G, outdir, outfile):
         deg1_list.append(deg1)
 
     # write edge data
-    with open(outdir + "edge/" + outfile, "w") as f:
+    with open(f"{outdir}edge/{outfile}", "w") as f:
         f.write("alter ego quoteProb hx triangles alter_deg ego_deg\n")  # header
         for i in range(len(targets)):
             f.write(
@@ -183,7 +136,7 @@ def write_data(G, outdir, outfile):
     )  # note avg_in == avg_out, so we only need to record one
 
     # write graph data
-    with open(outdir + "graph/" + outfile, "w") as f:
+    with open(f"{outdir}graph/{outfile}", "w") as f:
         f.write(
             "nodes edges density average_degree min_indegree max_indegree "
             + "min_outdegree max_outdegree transitivity average_clustering "
@@ -196,7 +149,7 @@ def write_data(G, outdir, outfile):
         )
 
     # write node data
-    with open(outdir + "node/" + outfile, "w") as f:
+    with open(f"{outdir}node/{outfile}", "w") as f:
         f.write("node indegree outdegree C h\n")  # header
         for node in G.nodes():
             time_tweets_target = qm.words_to_tweets(
@@ -236,4 +189,5 @@ if __name__ == "__main__":
         if not os.path.isfile(os.path.join(outdir, "edge/", outfile)):
             G0 = make_SBM_simple(N, mu, M)
             G = nx.DiGraph(G0)  # convert to directed
+            print("running...")
             qm.quoter_model_sim(G, q, T, outdir, outfile, write_data)

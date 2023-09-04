@@ -5,10 +5,51 @@ import matplotlib.pyplot as plt
 import itertools
 import sys
 
-sys.path.append(
-    "/home/jimjam/Documents/Adelaide/quoter"
-)  # regrettably using this quick fix
-from real_networks.sims_scripts.modularity import get_modularity
+
+def get_modularity(G, community_dict):
+    """
+    Calculate the modularity. Edge weights are ignored. From https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py
+
+    Undirected:
+    .. math:: Q = \frac{1}{2m}\sum_{i,j} \(A_ij - \frac{k_i k_j}{2m}\) * \detal_(c_i, c_j)
+
+    Directed:
+    .. math:: Q = \frac{1}{m}\sum_{i,j} \(A_ij - \frac{k_i^{in} k_j^{out}}{m}\) * \detal_{c_i, c_j}
+
+    Parameters
+    ----------
+    :param G: NetworkX graph to be analysed
+    :param community_dict: A dict to store the membership of each node. Key is node and value is community index
+
+    :returns: (float) The modularity of `G` given `community_dict`
+    """
+
+    Q = 0
+    A = nx.to_scipy_sparse_matrix(G).astype(float)
+
+    if type(G) == nx.Graph:
+        # for undirected graphs, in and out treated as the same thing
+        out_degree = in_degree = dict(nx.degree(G))
+        M = 2.0 * (G.number_of_edges())
+        print("Calculating modularity for undirected graph")
+    elif type(G) == nx.DiGraph:
+        in_degree = dict(G.in_degree())
+        out_degree = dict(G.out_degree())
+        M = 1.0 * G.number_of_edges()
+        print("Calculating modularity for directed graph")
+    else:
+        print("Invalid graph type")
+        raise TypeError
+
+    nodes = list(G)
+    Q = np.sum(
+        [
+            A[i, j] - in_degree[nodes[i]] * out_degree[nodes[j]] / M
+            for i, j in itertools.product(range(len(nodes)), range(len(nodes)))
+            if community_dict[nodes[i]] == community_dict[nodes[j]]
+        ]
+    )
+    return Q / M
 
 
 def make_SBM_general(sizes, p, return_blocks=False):
@@ -179,7 +220,6 @@ def make_growing_SBM(N, p, mu_seq, trial):
 
 
 if __name__ == "__main__":
-    pass
     ##    N=100
     ##    M=750
     ##    for i,mu in enumerate([.03,.12,.3]):
