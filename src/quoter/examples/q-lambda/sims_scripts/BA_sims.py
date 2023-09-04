@@ -9,6 +9,10 @@ def write_data(G, outdir, outfile):
     """
     Compute and write data from quoter model simulations.
     TODO compare to similar functions in other files.
+
+    :param G: NetworkX graph to be analysed
+    :param outdir: Path to output directory for data to be written
+    :param outfile: Path to output file for data to be written
     """
 
     H = nx.Graph(G)
