@@ -15,3 +15,5 @@ src/quoter/CrossEntropy.py
 src/quoter/edge_clustering_coeff.py
 src/quoter/real_networks/processing
 src/quoter/real_networks/sims_scripts
+*.egg-info/
+build/
