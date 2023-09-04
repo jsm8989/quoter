@@ -64,6 +64,17 @@ See the `requirements.txt` file for further dependencies.
 + Better syncing between simulation and processing scripts in the examples
 + get_modularity is currently defined in two different files [redundant]
 
+## Repository structure
+`dist/` contains the distribution archives generated using `python3 -m build`, and are an alternative way of installing the package for local use
+
+`docs/` contains the auto-generated docs, as previously mentioned
+
+`src/` contains the actual package. I'm not too sure why it needs to be two levels down, but seems to work in any case
+
+`tests/` contains future tests for the package. As you can see, it is currently empty
+
+All the files in the base directory (this one) are fairly self explanatory (except maybe `pyproject.toml` - at least it wasn't to me before I compiled this package - it is where `pip` gets its package metadata from).
+
 ## References
 [1] Bagrow, J. P., & Mitchell, L. (2018). The quoter model: A paradigmatic model of the social flow of written information. *Chaos: An Interdisciplinary Journal of Nonlinear Science*, 28(7), 075304.
 
