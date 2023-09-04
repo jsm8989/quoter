@@ -57,11 +57,12 @@ See the `requirements.txt` file for further dependencies.
 ## TODO
 + Make sure all docstrings are in reST format
 + Add more helpful comments
-+ Make documentation available online
++ Make documentation better and available online
 + Upload to PyPI
 + Add more typing to function args
 + Add verbose output to quoter_model_sim()
 + Better syncing between simulation and processing scripts in the examples
++ get_modularity is currently defined in two different files [redundant]
 
 ## References
 [1] Bagrow, J. P., & Mitchell, L. (2018). The quoter model: A paradigmatic model of the social flow of written information. *Chaos: An Interdisciplinary Journal of Nonlinear Science*, 28(7), 075304.
