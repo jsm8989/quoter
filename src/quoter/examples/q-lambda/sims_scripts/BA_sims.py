@@ -1,6 +1,6 @@
 import networkx as nx
 import random
-import os, sys
+import os
 import quoter.quoter_model as qm
 import itertools
 
@@ -8,6 +8,7 @@ import itertools
 def write_data(G, outdir, outfile):
     """
     Compute and write data from quoter model simulations.
+    TODO compare to similar functions in other files.
     """
 
     # graph skeleton for calculating clustering, transitivity, ASPL, etc.
