@@ -8,11 +8,14 @@ The quoter model offers an idealistic mechanism for how people communicate writt
 We can then apply the *cross-entropy* (an information-theoretic measure which satisfies temporal precedence, referred to as `hx` in the code) to quantify information flow between each pair of users text. 
 
 ## Installation and usage
-Currently: clone the repository, and in the project root run 
+```
+pip install quoter-model
+```
+Alternatively: clone the repository, and in the project root run 
 ```
 pip install .
 ```
-This will appear in your list of installed packages as `quoter-model`, but included in a python script by `import quoter`. The package will soon be added to pypi as `quoter-model` to avoid any conflicts with similar-sounding package names.
+This will appear in your list of installed packages as `quoter-model`, but included in a python script by `import quoter`.
 
 The most relevant usage of this package, as shown in the examples, would be to run something like 
 ```
@@ -58,7 +61,6 @@ See the `requirements.txt` file for further dependencies.
 + Make sure all docstrings are in reST/sphinx format
 + Add more helpful comments
 + Make documentation better and available online
-+ Upload to PyPI
 + Add more typing to function args
 + Add verbose output to quoter_model_sim()
 + Better syncing between simulation and processing scripts in the examples
