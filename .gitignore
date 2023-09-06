@@ -8,7 +8,7 @@ __pycache__
 hx_distribution/
 dir-figures/
 .vscode
-untouched_experiments/
+experiments_dir/untouched_experiments/
 *.sh
 .mypy_cache
 src/quoter/edge_clustering_coeff.py
