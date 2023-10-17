@@ -3,7 +3,7 @@
 
 from numba import jit, prange
 import numpy as np
-from ProcessEntropy.Preprocessing import tweet_to_hash_array
+from ProcessEntropyPreprocessing import tweet_to_hash_array
 
 
 @jit(nopython=True)

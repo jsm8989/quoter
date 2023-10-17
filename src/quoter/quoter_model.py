@@ -4,7 +4,8 @@ import random
 import matplotlib.pyplot as plt
 from ProcessEntropy.CrossEntropyPythonOnly import (
     timeseries_cross_entropy,
-)  # remote package; might have install dependency issues
+)  # remote package; might have install dependency issues. If so use the following:
+# from CrossEntropy import timeseries_cross_entropy
 from typing import Iterable, Union, Tuple
 
 
