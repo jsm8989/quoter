@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quoter-model"
-version = "1.1"
+version = "1.1.0"
 authors = [
   { name="jsm8989", email="jsm89@cantab.ac.uk" },
 ]
@@ -34,4 +34,5 @@ classifiers = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-"quoter.real_networks.NETWORKS" = ["*"]
+#"quoter.real_networks.NETWORKS" = ["*"]
+"*" = ["*"]
