@@ -30,3 +30,16 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/jsm8989/quoter"
 "Bug Tracker" = "https://github.com/jsm8989/quoter/issues"
+
+#[tool.setuptools]
+#include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+#"*" = ["*"]
+"quoter.real_networks.NETWORKS" = ["*"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["__pycache__"]
