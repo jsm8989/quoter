@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quoter-model"
-version = "1.0"
+version = "1.1"
 authors = [
   { name="jsm8989", email="jsm89@cantab.ac.uk" },
 ]
