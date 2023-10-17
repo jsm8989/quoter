@@ -4,7 +4,8 @@ import random
 import matplotlib.pyplot as plt
 from ProcessEntropy.CrossEntropyPythonOnly import (
     timeseries_cross_entropy,
-)  # remote package; might have install dependency issues
+)  # remote package; might have install dependency issues. If so use the following:
+# from CrossEntropy import timeseries_cross_entropy
 from typing import Iterable, Union, Tuple
 
 
@@ -40,7 +41,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
     H = G.to_undirected()
 
     # compute edge data
-    edges = random.sample(G.edges(), min(500, nx.number_of_edges(G)))
+    edges = random.sample(list(G.edges()), min(500, nx.number_of_edges(G)))
     nonedges = random.sample(
         list(nx.non_edges(G)), min(500, len(list(nx.non_edges(G))))
     )

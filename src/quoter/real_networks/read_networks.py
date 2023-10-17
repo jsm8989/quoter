@@ -59,7 +59,7 @@ def get_modularity(G, community_dict):
     return Q / M
 
 
-networks_folder = str(Path(__file__).parent) + "/NETWORKS/"
+networks_folder = str(Path(__file__).parent) + "/NETWORKS"
 
 
 def read_adolescent():

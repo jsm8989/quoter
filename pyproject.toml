@@ -4,13 +4,22 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quoter-model"
-version = "1.0"
+version = "1.1"
 authors = [
   { name="jsm8989", email="jsm89@cantab.ac.uk" },
 ]
 description = "A package for simulating the quoter model of information flow on networks"
 readme = "README.md"
 requires-python = ">=3.7"
+dependencies = ["networkx==3.1", 
+		"numba==0.57.0", 
+		"numpy==1.24.3", 
+		"matplotlib==3.7.1", 
+		"pandas==1.5.3",
+		"python-louvain==0.16",
+		"nltk==3.8.1", 
+		#"ProcessEntropy"
+		]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -20,3 +29,9 @@ classifiers = [
 [project.urls]
 "Homepage" = "https://github.com/jsm8989/quoter"
 "Bug Tracker" = "https://github.com/jsm8989/quoter/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"quoter.real_networks.NETWORKS" = ["*"]
