@@ -41,7 +41,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
     H = G.to_undirected()
 
     # compute edge data
-    edges = random.sample(G.edges(), min(500, nx.number_of_edges(G)))
+    edges = random.sample(list(G.edges()), min(500, nx.number_of_edges(G)))
     nonedges = random.sample(
         list(nx.non_edges(G)), min(500, len(list(nx.non_edges(G))))
     )
