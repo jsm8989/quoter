@@ -205,6 +205,7 @@ def quoter_model_sim(
     outfile: str,
     write_data=write_all_data,
     dunbar: Union[int, None] = None,
+    verbose: bool=True,
 ):
     """Simulate the quoter model on a graph G. Nodes take turns generating content according to two
     mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
@@ -223,6 +224,9 @@ def quoter_model_sim(
         write_data (function): Can specify what data to compute & write.
         dunbar (int or None): If int, limit in-degree to dunbar's number
     """
+    if verbose:
+        print(f"G has {len(G.nodes())} nodes and {len(G.edges())} edges")
+    
     # vocabulary distribution
     alpha = 1.5
     z = 1000
@@ -247,8 +251,14 @@ def quoter_model_sim(
         G.nodes[node]["words"] = newWords
         G.nodes[node]["times"] = [0] * len(newWords)
 
+    if verbose:
+        print("Initial vocab created; starting simulation")
+
     # simulate quoter model
     for t in range(1, T * nx.number_of_nodes(G)):
+        if verbose:
+            print(t)
+            
         node = random.choice(list(G.nodes))
 
         # length of tweet
@@ -278,4 +288,6 @@ def quoter_model_sim(
         G.nodes[node]["times"].extend([t] * len(newWords))
 
     # save data
+    if verbose:
+        print("writing data")
     write_data(G, outdir, outfile)
