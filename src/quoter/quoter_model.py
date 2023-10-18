@@ -27,7 +27,7 @@ def words_to_tweets(words: Iterable, times: Iterable):
     return [(t, w) for t, w in zip(unique_times, tweets)]
 
 
-def write_all_data(G: nx.Graph, outdir: str, outfile: str):
+def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
     """Compute and write data from quoter model simulations.
 
 
@@ -50,7 +50,13 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
     alter_list, ego_list, qp_list, hx_list, dist_list = [], [], [], [], []
     tri_list, alter_degs, ego_degs = [], [], []
 
+    if verbose:
+        print("initialised for writing")
+
     for e in edge_sample:
+        if verbose:
+            print(f"Calculating cross-entropy for edge: {e}")
+        
         # compute cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = words_to_tweets(
             G.nodes[e[1]]["words"], G.nodes[e[1]]["times"]
@@ -84,6 +90,8 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
         dist_list.append(dist)
 
     # compute graph data
+    if verbose:
+        print("Done all edges; computing graph data")
     nnodes = nx.number_of_nodes(H)
     nedges = nx.number_of_edges(H)
     dens = nedges / (nnodes * (nnodes - 1) / 2)
@@ -108,6 +116,8 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
     )  # note avg_in == avg_out, so we only need to record one
 
     # write graph data
+    if verbose:
+        print(f"Writing graph data to {outdir + "graph/" + outfile}")
     with open(outdir + "graph/" + outfile, "w") as f:
         f.write(
             "nodes edges density average_degree min_indegree max_indegree "
@@ -119,6 +129,8 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
         f.write("%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i" % data_tuple)
 
     # write edge data
+    if verbose:
+        print(f"Writing edge data to {outdir + "edge/" + outfile}")
     with open(outdir + "edge/" + outfile, "w") as f:
         f.write(
             "alter ego quoteProb hx distance triangles alter_deg ego_deg\n"
@@ -137,6 +149,8 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str):
             f.write("%i %i %0.8f %0.8f %i %i %i %i\n" % data_tuple)
 
     # write node data
+    if verbose:
+        print(f"Writing node data to {outdir + "node/" + outfile}")
     with open(outdir + "node/" + outfile, "w") as f:
         f.write("node indegree outdegree C h\n")  # header
         for node in G.nodes():
@@ -201,8 +215,8 @@ def quoter_model_sim(
     G: nx.Graph,
     q: float,
     T: int,
-    outdir: str,
-    outfile: str,
+    outdir: str=".",
+    outfile: str="test_output.txt",
     write_data=write_all_data,
     dunbar: Union[int, None] = None,
     verbose: bool=False,
