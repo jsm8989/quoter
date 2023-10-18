@@ -250,7 +250,7 @@ def quoter_model_sim(
         # TODO would be useful to add summary statistics of provided networks in documentation
         print(f"G has {len(G.nodes())} nodes and {len(G.edges())} edges")
     
-    # vocabulary distribution
+    # vocabulary distribution - NOTE: currently just uniform distribution of integers. Would like to choose optional distribution, including importing them or generating from LLMs
     alpha = 1.5
     z = 1000
     vocab = np.arange(1, z + 1)
