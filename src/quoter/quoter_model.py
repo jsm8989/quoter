@@ -177,15 +177,15 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
 
 
 def edge_clustering_coeff(
-    G: nx.Graph, u: int, v: int, return_info: bool = False, draw: bool = False
+    G: nx.Graph, node_u: int, node_v: int, return_info: bool = False, draw: bool = False
 ):
     """
-    Compute ECC between two nodes u and v, defined as the number of triangles containing both u and v divided by min(degrees(u,v))-1
+    Compute ECC between two nodes node_u and node_v, defined as the number of triangles containing both node_u and node_v divided by min(degrees(node_u,node_v))-1
 
     Args:
         G: NetworkX graph to be analysed. Must be directed
-        u: node index of first node
-        v: node index of second node
+        node_u: node index of first node
+        node_v: node index of second node
         return_info: if True return information about the algorithm
         draw: choose whether to visualise the graph
 
@@ -193,13 +193,13 @@ def edge_clustering_coeff(
         triangles deg_u deg_v ECC (if return_info)
         ECC
     """
-    u_nbrs = nx.neighbors(G, u)
-    v_nbrs = nx.neighbors(G, v)
+    u_nbrs = nx.neighbors(G, node_u)
+    v_nbrs = nx.neighbors(G, node_v)
     uv_nbrs = set(u_nbrs) & set(v_nbrs)
-    triangles = len(uv_nbrs)  # could be replaced by nx.triangles(G, [u,v]) or similar
+    triangles = len(uv_nbrs)  # could be replaced by nx.triangles(G, [node_u,node_v]) or similar
 
-    deg_u = nx.degree(G)[u]  # len(u_nbrs)
-    deg_v = nx.degree(G)[v]  # len(v_nbrs)
+    deg_u = nx.degree(G)[node_u]  # len(u_nbrs)
+    deg_v = nx.degree(G)[node_v]  # len(v_nbrs)
 
     if min(deg_u - 1, deg_v - 1) == 0:  # undefined?
         ECC: float = 0
@@ -220,8 +220,8 @@ def edge_clustering_coeff(
 
 def quoter_model_sim(
     G: nx.Graph,
-    q: float,
-    T: int,
+    quote_prob: float,
+    timesteps: int,
     outdir: str="./",
     outfile: str="test_output.txt",
     write_data=write_all_data,
@@ -238,8 +238,8 @@ def quoter_model_sim(
 
     Args:
         G (nx.Graph): Directed graph to simulate quoter model on
-        q (float): Quote probability as defined in [1]
-        T (int): Number of time-steps to simulate for. T=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have 'tweeted' ~1000 times
+        quote_prob (float): Quote probability q as defined in [1]
+        timesteps (int): Number of time-steps to simulate for. timesteps=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have 'tweeted' ~1000 times
         outdir (string): Name of directory for data to be stored in
         outfile (string): Name of file for this simulation
         write_data (function): Can specify what data to compute & write.
@@ -278,18 +278,18 @@ def quoter_model_sim(
         print("Initial vocab created; starting simulation")
 
     # simulate quoter model
-    for t in range(1, T * nx.number_of_nodes(G)):
+    for timestep_ in range(1, timesteps * nx.number_of_nodes(G)):
         if verbose:
-            print(t)
+            print(timestep_)
             
         node = random.choice(list(G.nodes))
 
         # length of tweet
         tweetLength = np.random.poisson(lam=3)
 
-        # quote with probability q, provided ego has alters to quote from
+        # quote with probability quote_prob, provided ego has alters to quote from
         nbrs = list(G.predecessors(node))
-        if random.random() < q and len(nbrs) > 0:
+        if random.random() < quote_prob and len(nbrs) > 0:
             # pick a neighbor to quote from (simplifying assumption: uniformly at random from all neighbors)
             user_copied = random.choice(nbrs)
 
@@ -308,7 +308,7 @@ def quoter_model_sim(
             ).tolist()
 
         G.nodes[node]["words"].extend(newWords)
-        G.nodes[node]["times"].extend([t] * len(newWords))
+        G.nodes[node]["times"].extend([timestep_] * len(newWords))
 
     # save data
     if verbose:
