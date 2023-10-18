@@ -28,7 +28,7 @@ def words_to_tweets(words: Iterable, times: Iterable):
 
 
 def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
-    """Compute and write data from quoter model simulations.
+    """Compute and write data from quoter model simulations. This feels like it should be split up more.
 
 
     Args:
@@ -67,13 +67,13 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
         hx = timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
-        hx_list.append(hx)
+        hx_list.append(hx) # TODO: can swap pairs of edges based on this value when exploring network structural effects
         alter_list.append(e[0])
         ego_list.append(e[1])
 
         # also record quote probability
         try:
-            qp_list.append(1 / len(list(G.predecessors(e[1]))))
+            qp_list.append(1 / len(list(G.predecessors(e[1])))) # TODO: double check why defined this way
         except:
             if verbose:
                 print("no predecessors for this node, assigning qp=0")
