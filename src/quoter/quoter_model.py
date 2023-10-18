@@ -117,7 +117,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
 
     # write graph data
     if verbose:
-        print(f"Writing graph data to {outdir + "graph/" + outfile}")
+        print(f"Writing graph data to {outdir}graph/{outfile}")
     with open(outdir + "graph/" + outfile, "w") as f:
         f.write(
             "nodes edges density average_degree min_indegree max_indegree "
@@ -130,7 +130,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
 
     # write edge data
     if verbose:
-        print(f"Writing edge data to {outdir + "edge/" + outfile}")
+        print(f"Writing edge data to {outdir}edge/{outfile}")
     with open(outdir + "edge/" + outfile, "w") as f:
         f.write(
             "alter ego quoteProb hx distance triangles alter_deg ego_deg\n"
@@ -150,7 +150,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
 
     # write node data
     if verbose:
-        print(f"Writing node data to {outdir + "node/" + outfile}")
+        print(f"Writing node data to {outdir}node/{outfile}")
     with open(outdir + "node/" + outfile, "w") as f:
         f.write("node indegree outdegree C h\n")  # header
         for node in G.nodes():
