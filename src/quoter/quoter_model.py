@@ -72,7 +72,12 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
         ego_list.append(e[1])
 
         # also record quote probability
-        qp_list.append(1 / len(list(G.predecessors(e[1]))))
+        try:
+            qp_list.append(1 / len(list(G.predecessors(e[1]))))
+        except:
+            if verbose:
+                print("no predecessors for this node, assigning qp=0")
+            qp_list.append(0)
 
         # also record edge embeddeness & edge clustering coefficient
         triangles, deg0, deg1, ECC = edge_clustering_coeff(
@@ -306,4 +311,4 @@ def quoter_model_sim(
     # save data
     if verbose:
         print("writing data")
-    write_data(G, outdir, outfile)
+    write_data(G, outdir, outfile, verbose)
