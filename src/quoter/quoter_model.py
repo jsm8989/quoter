@@ -220,7 +220,7 @@ def quoter_model_sim(
     G: nx.Graph,
     q: float,
     T: int,
-    outdir: str=".",
+    outdir: str="./",
     outfile: str="test_output.txt",
     write_data=write_all_data,
     dunbar: Union[int, None] = None,
