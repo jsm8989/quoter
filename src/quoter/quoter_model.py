@@ -100,8 +100,8 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
     nnodes = nx.number_of_nodes(H)
     nedges = nx.number_of_edges(H)
     dens = nedges / (nnodes * (nnodes - 1) / 2)
-    indegs = list(G.in_degree(G.nodes()).values())
-    outdegs = list(G.out_degree(G.nodes()).values())
+    indegs = dict(G.in_degree(G.nodes()).values())
+    outdegs = dict(G.out_degree(G.nodes()).values())
     ccs = sorted(nx.connected_components(H), key=len, reverse=True)
 
     data_tuple: Tuple = (
