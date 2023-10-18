@@ -94,36 +94,38 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
             dist = -1
         dist_list.append(dist)
 
-    # compute graph data
-    if verbose:
-        print("Done all edges; computing graph data")
-    nnodes = nx.number_of_nodes(H)
-    nedges = nx.number_of_edges(H)
-    dens = nedges / (nnodes * (nnodes - 1) / 2)
-    indegs = list(dict(G.in_degree(G.nodes())).values())
-    outdegs = list(dict(G.out_degree(G.nodes())).values())
-    ccs = sorted(nx.connected_components(H), key=len, reverse=True)
-
-    data_tuple: Tuple = (
-        nnodes,
-        nedges,
-        dens,
-        np.mean(indegs),
-        np.min(indegs),
-        np.max(indegs),
-        np.min(outdegs),
-        np.max(outdegs),
-        nx.transitivity(H),
-        nx.average_clustering(H),
-        nx.degree_assortativity_coefficient(H),
-        len(ccs),
-        len(ccs[0]),
-    )  # note avg_in == avg_out, so we only need to record one
 
     # write graph data
     if verbose:
         print(f"Writing graph data to {outdir}graph/{outfile}")
     with open(outdir + "graph/" + outfile, "w") as f:
+
+        # compute graph data
+        if verbose:
+            print("Done all edges; computing graph data")
+        nnodes = nx.number_of_nodes(H)
+        nedges = nx.number_of_edges(H)
+        dens = nedges / (nnodes * (nnodes - 1) / 2)
+        indegs = list(dict(G.in_degree(G.nodes())).values())
+        outdegs = list(dict(G.out_degree(G.nodes())).values())
+        ccs = sorted(nx.connected_components(H), key=len, reverse=True)
+    
+        data_tuple: Tuple = (
+            nnodes,
+            nedges,
+            dens,
+            np.mean(indegs),
+            np.min(indegs),
+            np.max(indegs),
+            np.min(outdegs),
+            np.max(outdegs),
+            nx.transitivity(H),
+            nx.average_clustering(H),
+            nx.degree_assortativity_coefficient(H),
+            len(ccs),
+            len(ccs[0]),
+        )  # note avg_in == avg_out, so we only need to record one
+        
         f.write(
             "nodes edges density average_degree min_indegree max_indegree "
             + "min_outdegree max_outdegree transitivity average_clustering "
