@@ -58,13 +58,14 @@ def process_results(
         for i, q in enumerate(q_list):
             hx_list = []
             for trial in trials_list:
-                efile = "output/edge/N%i_k%i_q%0.4f_T%i_sim%i.txt" % (
+                outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (
                     N,
                     k,
                     q,
                     T,
                     trial,
                 )
+                efile = f"{outdir}edge-{outfile}"
 
                 if os.path.isfile(efile):
                     edata = pd.read_csv(efile, sep=" ")
@@ -77,6 +78,8 @@ def process_results(
 
         df = pd.DataFrame(data=data)
         df.to_csv(f"{outdir}hx_{network_type}_k{k}.csv", header=False, index=False)
+
+    # TODO: add plotting, like in SBM case
 
 
 if __name__ == "__main__":
