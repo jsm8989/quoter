@@ -325,6 +325,7 @@ def quoter_model_sim(
     dunbar: Union[int, None] = None,
     verbose: bool = False,  # TODO: cleaner implementation with logging module. This is more for testing
     SBM_graph: bool = False,
+    poisson_lambda: Union[float, int] = 3,
 ):
     """Simulate the quoter model on a graph G. Nodes take turns generating content according to two
     mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
@@ -343,7 +344,13 @@ def quoter_model_sim(
         write_data (function): Can specify what data to compute & write.
         dunbar (int or None): If int, limit in-degree to dunbar's number
         verbose: <temp> giving useful output during testing
+
+    TODO: add args from other previous experiments, such as
+        lambda (quote length > 0) - from q-lambda [added as poisson_lambda]
+        alpha_alter, alpha_ego - from theory_link
+    and potentially others
     """
+
     if verbose:
         # TODO would be useful to add summary statistics of provided networks in documentation
         print(f"G has {len(G.nodes())} nodes and {len(G.edges())} edges")
@@ -383,7 +390,7 @@ def quoter_model_sim(
         node = random.choice(list(G.nodes))
 
         # length of tweet
-        tweetLength = np.random.poisson(lam=3)
+        tweetLength = np.random.poisson(lam=poisson_lambda)
 
         # quote with probability quote_prob, provided ego has alters to quote from
         nbrs = list(G.predecessors(node))
