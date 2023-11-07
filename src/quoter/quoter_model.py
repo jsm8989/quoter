@@ -2,11 +2,13 @@ import networkx as nx
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+import itertools
 from ProcessEntropy.CrossEntropyPythonOnly import (
     timeseries_cross_entropy,
 )  # remote package; might have install dependency issues. If so use the following:
+
 # from CrossEntropy import timeseries_cross_entropy
-from typing import Iterable, Union, Tuple
+from typing import Iterable, Union, Tuple, List
 
 
 def words_to_tweets(words: Iterable, times: Iterable):
@@ -27,7 +29,9 @@ def words_to_tweets(words: Iterable, times: Iterable):
     return [(t, w) for t, w in zip(unique_times, tweets)]
 
 
-def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
+def write_all_data(
+    G: nx.Graph, outdir: str, outfile: str, SBM: bool = False, verbose: bool = False
+):
     """Compute and write data from quoter model simulations. This feels like it should be split up more.
 
 
@@ -40,13 +44,44 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
     # graph skeleton for calculating clustering, transitivity, ASPL, etc.
     H = G.to_undirected()
 
-    # compute edge data
-    edges = random.sample(list(G.edges()), min(500, nx.number_of_edges(G)))
-    nonedges = random.sample(
-        list(nx.non_edges(G)), min(500, len(list(nx.non_edges(G))))
-    )
+    if SBM:  # not sure if needed, kept now for completeness
+        N = nx.number_of_nodes(G)
+        m = int(N / 2)
+        A = range(0, m)
+        B = range(m, N)
 
-    edge_sample = edges + nonedges
+        edges = list(G.edges())
+        random.shuffle(edges)
+
+        w_sample: List = []
+        i = 0
+        while len(w_sample) < 250 and i < len(edges):
+            e = edges[i]
+            if (e[0] in A and e[1] in A) or (e[0] in B and e[1] in B):
+                w_sample.append(e)
+            i += 1
+
+        b_sample: List = []
+        i = 0
+        while len(b_sample) < 250 and i < len(edges):
+            e_i = edges[i]
+            if (e_i[0] in A and e_i[1] in A) or (e_i[0] in B and e[1] in B):
+                pass
+            else:
+                b_sample.append(e_i)
+            i += 1
+
+        edge_sample = w_sample + b_sample
+
+    else:
+        # compute edge data
+        edges = random.sample(list(G.edges()), min(500, nx.number_of_edges(G)))
+        nonedges = random.sample(
+            list(nx.non_edges(G)), min(500, len(list(nx.non_edges(G))))
+        )
+
+        edge_sample = edges + nonedges
+
     alter_list, ego_list, qp_list, hx_list, dist_list = [], [], [], [], []
     tri_list, alter_degs, ego_degs = [], [], []
 
@@ -56,7 +91,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
     for e in edge_sample:
         if verbose:
             print(f"Calculating cross-entropy for edge: {e}")
-        
+
         # compute cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = words_to_tweets(
             G.nodes[e[1]]["words"], G.nodes[e[1]]["times"]
@@ -67,13 +102,17 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
         hx = timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
-        hx_list.append(hx) # TODO: can swap pairs of edges based on this value when exploring network structural effects
+        hx_list.append(
+            hx
+        )  # TODO: can swap pairs of edges based on this value when exploring network structural effects
         alter_list.append(e[0])
         ego_list.append(e[1])
 
         # also record quote probability
         try:
-            qp_list.append(1 / len(list(G.predecessors(e[1])))) # TODO: double check why defined this way
+            qp_list.append(
+                1 / len(list(G.predecessors(e[1])))
+            )  # TODO: double check why defined this way
         except:
             if verbose:
                 print("no predecessors for this node, assigning qp=0")
@@ -94,12 +133,10 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
             dist = -1
         dist_list.append(dist)
 
-
     # write graph data
     if verbose:
         print(f"Writing graph data to {outdir}graph-{outfile}")
     with open(f"{outdir}graph-{outfile}", "w") as f:
-
         # compute graph data
         if verbose:
             print("Done all edges; computing graph data")
@@ -109,7 +146,11 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
         indegs = list(dict(G.in_degree(G.nodes())).values())
         outdegs = list(dict(G.out_degree(G.nodes())).values())
         ccs = sorted(nx.connected_components(H), key=len, reverse=True)
-    
+        if SBM:
+            comm_dict = {x: 0 for x in A}
+            comm_dict.update({x: 1 for x in B})
+            Q = get_modularity(H, comm_dict)
+
         data_tuple: Tuple = (
             nnodes,
             nedges,
@@ -125,7 +166,7 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
             len(ccs),
             len(ccs[0]),
         )  # note avg_in == avg_out, so we only need to record one
-        
+
         f.write(
             "nodes edges density average_degree min_indegree max_indegree "
             + "min_outdegree max_outdegree transitivity average_clustering "
@@ -176,6 +217,43 @@ def write_all_data(G: nx.Graph, outdir: str, outfile: str, verbose: bool=False):
             f.write("%i %i %i %0.8f %0.8f\n" % (node, indeg, outdeg, C, h))
 
 
+def get_modularity(G, community_dict):
+    """
+    Calculate the modularity. Edge weights are ignored. From https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py
+
+    :param G: NetworkX graph to be analysed
+    :param community_dict: A dict to store the membership of each node. Key is node and value is community index
+    :returns: (float) The modularity of `G` given `community_dict`
+    """
+
+    Q = 0
+    A = nx.to_scipy_sparse_array(G).astype(float)
+
+    if type(G) == nx.Graph:
+        # for undirected graphs, in and out treated as the same thing
+        out_degree = in_degree = dict(nx.degree(G))
+        M = 2.0 * (G.number_of_edges())
+        print("Calculating modularity for undirected graph")
+    elif type(G) == nx.DiGraph:
+        in_degree = dict(G.in_degree())
+        out_degree = dict(G.out_degree())
+        M = 1.0 * G.number_of_edges()
+        print("Calculating modularity for directed graph")
+    else:
+        print("Invalid graph type")
+        raise TypeError
+
+    nodes = list(G)
+    Q = np.sum(
+        [
+            A[i, j] - in_degree[nodes[i]] * out_degree[nodes[j]] / M
+            for i, j in itertools.product(range(len(nodes)), range(len(nodes)))
+            if community_dict[nodes[i]] == community_dict[nodes[j]]
+        ]
+    )
+    return Q / M
+
+
 def edge_clustering_coeff(
     G: nx.Graph, node_u: int, node_v: int, return_info: bool = False, draw: bool = False
 ):
@@ -196,7 +274,9 @@ def edge_clustering_coeff(
     u_nbrs = nx.neighbors(G, node_u)
     v_nbrs = nx.neighbors(G, node_v)
     uv_nbrs = set(u_nbrs) & set(v_nbrs)
-    triangles = len(uv_nbrs)  # could be replaced by nx.triangles(G, [node_u,node_v]) or similar
+    triangles = len(
+        uv_nbrs
+    )  # could be replaced by nx.triangles(G, [node_u,node_v]) or similar
 
     deg_u = nx.degree(G)[node_u]  # len(u_nbrs)
     deg_v = nx.degree(G)[node_v]  # len(v_nbrs)
@@ -222,11 +302,11 @@ def quoter_model_sim(
     G: nx.Graph,
     quote_prob: float,
     timesteps: int,
-    outdir: str="./",
-    outfile: str="test_output.txt",
+    outdir: str = "./",
+    outfile: str = "test_output.txt",
     write_data=write_all_data,
     dunbar: Union[int, None] = None,
-    verbose: bool=False,
+    verbose: bool = False,  # TODO: cleaner implementation with logging module. This is more for testing
 ):
     """Simulate the quoter model on a graph G. Nodes take turns generating content according to two
     mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
@@ -249,7 +329,7 @@ def quoter_model_sim(
     if verbose:
         # TODO would be useful to add summary statistics of provided networks in documentation
         print(f"G has {len(G.nodes())} nodes and {len(G.edges())} edges")
-    
+
     # vocabulary distribution - NOTE: currently just uniform distribution of integers. Would like to choose optional distribution, including importing them or generating from LLMs
     alpha = 1.5
     z = 1000
@@ -281,7 +361,7 @@ def quoter_model_sim(
     for timestep_ in range(1, timesteps * nx.number_of_nodes(G)):
         if verbose:
             print(timestep_)
-            
+
         node = random.choice(list(G.nodes))
 
         # length of tweet
