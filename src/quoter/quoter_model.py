@@ -30,7 +30,14 @@ def words_to_tweets(words: Iterable, times: Iterable):
 
 
 def write_all_data(
-    G: nx.Graph, outdir: str, outfile: str, SBM: bool = False, verbose: bool = False
+    G: nx.Graph,
+    outdir: str,
+    outfile: str,
+    SBM: bool = False,
+    verbose: bool = False,
+    skip_edges: bool = False,
+    skip_nodes: bool = False,
+    skip_graph: bool = False,
 ):
     """Compute and write data from quoter model simulations.
     TODO: This feels like it should be split up more.
@@ -136,92 +143,95 @@ def write_all_data(
             dist = -1
         dist_list.append(dist)
 
-    # write edge data
-    if verbose:
-        print(f"Writing edge data to {outdir}edge-{outfile}")
-    with open(f"{outdir}edge-{outfile}", "w") as f:
-        f.write(
-            "alter ego quoteProb hx distance triangles alter_deg ego_deg\n"
-        )  # header
-        for i in range(len(hx_list)):
-            edge_data_tuple = (
-                alter_list[i],
-                ego_list[i],
-                qp_list[i],
-                hx_list[i],
-                dist_list[i],
-                tri_list[i],
-                alter_degs[i],
-                ego_degs[i],
-            )
-            f.write("%i %i %0.8f %0.8f %i %i %i %i\n" % edge_data_tuple)
-
-    # write graph data
-    if verbose:
-        print(f"Writing graph data to {outdir}graph-{outfile}")
-    with open(f"{outdir}graph-{outfile}", "w") as f:
-        # compute graph data
+    if not skip_edges:
+        # write edge data
         if verbose:
-            print("Done all edges; computing graph data")
-        nnodes = nx.number_of_nodes(H)
-        nedges = nx.number_of_edges(H)
-        dens = nedges / (nnodes * (nnodes - 1) / 2)
-        indegs = list(dict(G.in_degree(G.nodes())).values())
-        outdegs = list(dict(G.out_degree(G.nodes())).values())
-        ccs = sorted(nx.connected_components(H), key=len, reverse=True)
+            print(f"Writing edge data to {outdir}edge-{outfile}")
+        with open(f"{outdir}edge-{outfile}", "w") as f:
+            f.write(
+                "alter ego quoteProb hx distance triangles alter_deg ego_deg\n"
+            )  # header
+            for i in range(len(hx_list)):
+                edge_data_tuple = (
+                    alter_list[i],
+                    ego_list[i],
+                    qp_list[i],
+                    hx_list[i],
+                    dist_list[i],
+                    tri_list[i],
+                    alter_degs[i],
+                    ego_degs[i],
+                )
+                f.write("%i %i %0.8f %0.8f %i %i %i %i\n" % edge_data_tuple)
 
-        comm_dict = {x: 0 for x in A}
-        comm_dict.update({x: 1 for x in B})
-        modularity = get_modularity(H, comm_dict)
+    if not skip_graph:
+        # write graph data
+        if verbose:
+            print(f"Writing graph data to {outdir}graph-{outfile}")
+        with open(f"{outdir}graph-{outfile}", "w") as f:
+            # compute graph data
+            if verbose:
+                print("Done all edges; computing graph data")
+            nnodes = nx.number_of_nodes(H)
+            nedges = nx.number_of_edges(H)
+            dens = nedges / (nnodes * (nnodes - 1) / 2)
+            indegs = list(dict(G.in_degree(G.nodes())).values())
+            outdegs = list(dict(G.out_degree(G.nodes())).values())
+            ccs = sorted(nx.connected_components(H), key=len, reverse=True)
 
-        graph_data_tuple: Tuple = (
-            nnodes,
-            nedges,
-            dens,
-            np.mean(indegs),
-            np.min(indegs),
-            np.max(indegs),
-            np.min(outdegs),
-            np.max(outdegs),
-            nx.transitivity(H),
-            nx.average_clustering(H),
-            nx.degree_assortativity_coefficient(H),
-            len(ccs),
-            len(ccs[0]),
-            modularity,
-        )  # note avg_in == avg_out, so we only need to record one
+            comm_dict = {x: 0 for x in A}
+            comm_dict.update({x: 1 for x in B})
+            modularity = get_modularity(H, comm_dict)
 
-        f.write(
-            "nodes edges density average_degree min_indegree max_indegree "
-            + "min_outdegree max_outdegree transitivity average_clustering "
-            + "assortativity "
-            + "number_of_components largest_component modularity\n"
-        )  # header
+            graph_data_tuple: Tuple = (
+                nnodes,
+                nedges,
+                dens,
+                np.mean(indegs),
+                np.min(indegs),
+                np.max(indegs),
+                np.min(outdegs),
+                np.max(outdegs),
+                nx.transitivity(H),
+                nx.average_clustering(H),
+                nx.degree_assortativity_coefficient(H),
+                len(ccs),
+                len(ccs[0]),
+                modularity,
+            )  # note avg_in == avg_out, so we only need to record one
 
-        f.write(
-            "%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i %0.6f"
-            % graph_data_tuple
-        )
+            f.write(
+                "nodes edges density average_degree min_indegree max_indegree "
+                + "min_outdegree max_outdegree transitivity average_clustering "
+                + "assortativity "
+                + "number_of_components largest_component modularity\n"
+            )  # header
 
-    # write node data
-    if verbose:
-        print(f"Writing node data to {outdir}node-{outfile}")
-    with open(f"{outdir}node-{outfile}", "w") as f:
-        f.write("node indegree outdegree C h\n")  # header
-        for node in G.nodes():
-            time_tweets_target = words_to_tweets(
-                G.nodes[node]["words"], G.nodes[node]["times"]
+            f.write(
+                "%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i %0.6f"
+                % graph_data_tuple
             )
-            time_tweets_source = words_to_tweets(
-                G.nodes[node]["words"], G.nodes[node]["times"]
-            )
-            h = timeseries_cross_entropy(
-                time_tweets_target, time_tweets_source, please_sanitize=False
-            )
-            indeg = G.in_degree(node)
-            outdeg = G.out_degree(node)
-            C = nx.clustering(H, node)
-            f.write("%i %i %i %0.8f %0.8f\n" % (node, indeg, outdeg, C, h))
+
+    if not skip_nodes:
+        # write node data
+        if verbose:
+            print(f"Writing node data to {outdir}node-{outfile}")
+        with open(f"{outdir}node-{outfile}", "w") as f:
+            f.write("node indegree outdegree C h\n")  # header
+            for node in G.nodes():
+                time_tweets_target = words_to_tweets(
+                    G.nodes[node]["words"], G.nodes[node]["times"]
+                )
+                time_tweets_source = words_to_tweets(
+                    G.nodes[node]["words"], G.nodes[node]["times"]
+                )
+                h = timeseries_cross_entropy(
+                    time_tweets_target, time_tweets_source, please_sanitize=False
+                )
+                indeg = G.in_degree(node)
+                outdeg = G.out_degree(node)
+                C = nx.clustering(H, node)
+                f.write("%i %i %i %0.8f %0.8f\n" % (node, indeg, outdeg, C, h))
 
 
 def get_modularity(G, community_dict):
