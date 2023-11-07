@@ -46,12 +46,13 @@ def process_results(
     mu_list=np.arange(0.05, 0.51, 0.05),
     trials_list=range(200),
     outdir="output/",
+    plot: bool = True,
 ):
     W = np.zeros(len(mu_list))
     B = np.zeros(len(mu_list))
 
     for i, mu in enumerate(mu_list):
-        print(mu)
+        # print(mu)
         hx_AA, hx_BB, hx_AB, hx_BA = [], [], [], []
         for trial in trials_list:
             outfile = "N%i_mu%0.4f_M%i_q%0.2f_T%i_sim%i.txt" % (N, mu, M, q, T, trial)
@@ -95,19 +96,35 @@ def process_results(
         B[i] = np.mean(hx_AB + hx_BA)
 
     df = pd.DataFrame(data={"mu": mu_list, "hx_w": W, "hx_b": B})
-    df.to_csv("hx_SBM.csv", index=False)
+    df.to_csv(f"{outdir}hx_SBM.csv", index=False)
 
-    # PLOT
-    data = pd.read_csv("hx_SBM.csv")
-    plt.plot(data["mu"].values, data["hx_w"].values, label="within")
-    plt.plot(data["mu"].values, data["hx_b"].values, label="between")
-    plt.legend()
-    plt.xlabel(r"$\mu$")
-    plt.ylabel(r"$\langle h_\times \rangle$")
-    plt.show()
+    if plot:
+        data = pd.read_csv(f"{outdir}hx_SBM.csv")
+        plt.plot(data["mu"].values, data["hx_w"].values, label="within")
+        plt.plot(data["mu"].values, data["hx_b"].values, label="between")
+        plt.legend()
+        plt.xlabel(r"$\mu$")
+        plt.ylabel(r"$\langle h_\times \rangle$")
+        plt.show()
 
 
 if __name__ == "__main__":
-    simulation()
+    simulation(
+        N=20,
+        M=10,
+        q=0.5,
+        T=100,
+        mu_list=np.arange(0.05, 0.51, 0.05),
+        trials_list=range(5),
+        outdir="output/SBMS/",
+    )
 
-    # process_results()
+    process_results(
+        N=20,
+        M=10,
+        q=0.5,
+        T=100,
+        mu_list=np.arange(0.05, 0.51, 0.05),
+        trials_list=range(5),
+        outdir="output/SBMS/",
+    )
