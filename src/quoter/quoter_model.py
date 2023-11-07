@@ -32,7 +32,8 @@ def words_to_tweets(words: Iterable, times: Iterable):
 def write_all_data(
     G: nx.Graph, outdir: str, outfile: str, SBM: bool = False, verbose: bool = False
 ):
-    """Compute and write data from quoter model simulations. This feels like it should be split up more.
+    """Compute and write data from quoter model simulations.
+    TODO: This feels like it should be split up more.
 
 
     Args:
@@ -44,12 +45,13 @@ def write_all_data(
     # graph skeleton for calculating clustering, transitivity, ASPL, etc.
     H = G.to_undirected()
 
-    if SBM:  # not sure if needed, kept now for completeness
-        N = nx.number_of_nodes(G)
-        m = int(N / 2)
-        A = range(0, m)
-        B = range(m, N)
+    # TODO: change from single-letter variables
+    N = nx.number_of_nodes(G)
+    m = int(N / 2)
+    A = range(0, m)
+    B = range(m, N)
 
+    if SBM:  # not sure if needed, kept now for completeness
         edges = list(G.edges())
         random.shuffle(edges)
 
@@ -74,7 +76,6 @@ def write_all_data(
         edge_sample = w_sample + b_sample
 
     else:
-        # compute edge data
         edges = random.sample(list(G.edges()), min(500, nx.number_of_edges(G)))
         nonedges = random.sample(
             list(nx.non_edges(G)), min(500, len(list(nx.non_edges(G))))
@@ -88,6 +89,7 @@ def write_all_data(
     if verbose:
         print("initialised for writing")
 
+    # compute edge data
     for e in edge_sample:
         if verbose:
             print(f"Calculating cross-entropy for edge: {e}")
@@ -133,6 +135,26 @@ def write_all_data(
             dist = -1
         dist_list.append(dist)
 
+    # write edge data
+    if verbose:
+        print(f"Writing edge data to {outdir}edge-{outfile}")
+    with open(f"{outdir}edge-{outfile}", "w") as f:
+        f.write(
+            "alter ego quoteProb hx distance triangles alter_deg ego_deg\n"
+        )  # header
+        for i in range(len(hx_list)):
+            edge_data_tuple = (
+                alter_list[i],
+                ego_list[i],
+                qp_list[i],
+                hx_list[i],
+                dist_list[i],
+                tri_list[i],
+                alter_degs[i],
+                ego_degs[i],
+            )
+            f.write("%i %i %0.8f %0.8f %i %i %i %i\n" % edge_data_tuple)
+
     # write graph data
     if verbose:
         print(f"Writing graph data to {outdir}graph-{outfile}")
@@ -146,12 +168,12 @@ def write_all_data(
         indegs = list(dict(G.in_degree(G.nodes())).values())
         outdegs = list(dict(G.out_degree(G.nodes())).values())
         ccs = sorted(nx.connected_components(H), key=len, reverse=True)
-        if SBM:
-            comm_dict = {x: 0 for x in A}
-            comm_dict.update({x: 1 for x in B})
-            Q = get_modularity(H, comm_dict)
 
-        data_tuple: Tuple = (
+        comm_dict = {x: 0 for x in A}
+        comm_dict.update({x: 1 for x in B})
+        modularity = get_modularity(H, comm_dict)
+
+        graph_data_tuple: Tuple = (
             nnodes,
             nedges,
             dens,
@@ -165,36 +187,20 @@ def write_all_data(
             nx.degree_assortativity_coefficient(H),
             len(ccs),
             len(ccs[0]),
+            modularity,
         )  # note avg_in == avg_out, so we only need to record one
 
         f.write(
             "nodes edges density average_degree min_indegree max_indegree "
             + "min_outdegree max_outdegree transitivity average_clustering "
             + "assortativity "
-            + "number_of_components largest_component\n"
+            + "number_of_components largest_component modularity\n"
         )  # header
 
-        f.write("%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i" % data_tuple)
-
-    # write edge data
-    if verbose:
-        print(f"Writing edge data to {outdir}edge-{outfile}")
-    with open(f"{outdir}edge-{outfile}", "w") as f:
         f.write(
-            "alter ego quoteProb hx distance triangles alter_deg ego_deg\n"
-        )  # header
-        for i in range(len(hx_list)):
-            data_tuple = (
-                alter_list[i],
-                ego_list[i],
-                qp_list[i],
-                hx_list[i],
-                dist_list[i],
-                tri_list[i],
-                alter_degs[i],
-                ego_degs[i],
-            )
-            f.write("%i %i %0.8f %0.8f %i %i %i %i\n" % data_tuple)
+            "%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i %0.6f"
+            % graph_data_tuple
+        )
 
     # write node data
     if verbose:
@@ -307,6 +313,7 @@ def quoter_model_sim(
     write_data=write_all_data,
     dunbar: Union[int, None] = None,
     verbose: bool = False,  # TODO: cleaner implementation with logging module. This is more for testing
+    SBM_graph: bool = False,
 ):
     """Simulate the quoter model on a graph G. Nodes take turns generating content according to two
     mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
@@ -393,4 +400,4 @@ def quoter_model_sim(
     # save data
     if verbose:
         print("writing data")
-    write_data(G, outdir, outfile, verbose)
+    write_data(G, outdir, outfile, SBM_graph, verbose)
