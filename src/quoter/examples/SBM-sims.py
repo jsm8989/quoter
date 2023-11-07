@@ -4,7 +4,7 @@ import numpy as np
 import random
 import itertools
 import quoter.quoter_model as qm
-from processing.make_SBM import make_SBM_simple
+from quoter.examples.make_SBM import make_SBM_simple
 import matplotlib.pyplot as plt
 import pandas as pd
 
