@@ -34,6 +34,7 @@ def write_all_data(
 ):
     """Compute and write data from quoter model simulations.
     TODO: This feels like it should be split up more.
+    Also make sure the outdir exists or create it if needed.
 
 
     Args:
