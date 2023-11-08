@@ -431,9 +431,9 @@ def quoter_model_sim(
         G.nodes[node]["times"].extend([timestep_] * len(newWords))
 
     # save data
-    if verbose:
-        print("writing data")
     if write_data is not None:
+        if verbose:
+            print("writing data")
         write_data(G, outdir, outfile, SBM_graph, verbose)
 
     return G
