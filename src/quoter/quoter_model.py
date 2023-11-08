@@ -94,6 +94,7 @@ def write_all_data(
 
     alter_list, ego_list, qp_list, hx_list, dist_list = [], [], [], [], []
     tri_list, alter_degs, ego_degs = [], [], []
+    swap_list = []
 
     if verbose:
         print("initialised for writing")
@@ -119,8 +120,13 @@ def write_all_data(
             hx_swapped = timeseries_cross_entropy(
                 time_tweets_source, time_tweets_target, please_sanitize=False
             )
-            print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
+            #print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
             # TODO: how often to keep the new hx ie what to do now?
+            hx = min(hx_original, hx_swapped)
+            if (hx_swapped < hx_original): #watch for case where swap_edges_lower_hx=False
+                swap_list.append(1)
+            else:
+                swap_list.append(0)
         
         hx_list.append(hx)
         alter_list.append(e[0])
@@ -160,7 +166,7 @@ def write_all_data(
             print(f"Writing edge data to {outdir}edge-{outfile}")
         with open(f"{outdir}edge-{outfile}", "w") as f:
             f.write(
-                "alter ego quoteProb hx distance triangles alter_deg ego_deg\n"
+                "alter ego quoteProb hx distance triangles alter_deg ego_deg swapped_hx\n"
             )  # header
             for i in range(len(hx_list)):
                 edge_data_tuple = (
@@ -172,8 +178,9 @@ def write_all_data(
                     tri_list[i],
                     alter_degs[i],
                     ego_degs[i],
+                    swap_list[i]
                 )
-                f.write("%i %i %0.8f %0.8f %i %i %i %i\n" % edge_data_tuple)
+                f.write("%i %i %0.8f %0.8f %i %i %i %i %i\n" % edge_data_tuple)
 
     if not skip_graph:
         # write graph data
