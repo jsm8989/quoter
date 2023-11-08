@@ -359,7 +359,11 @@ def quoter_model_sim(
     TODO: add args from other previous experiments, such as
         lambda (quote length > 0) - from q-lambda [added as poisson_lambda]
         alpha_alter, alpha_ego - from theory_link
-    and potentially others
+        and potentially others
+
+    Returns:
+        G, once the simulation has been run, to pass to some other writing/calculation function
+    
     """
 
     if verbose:
@@ -429,4 +433,7 @@ def quoter_model_sim(
     # save data
     if verbose:
         print("writing data")
-    write_data(G, outdir, outfile, SBM_graph, verbose)
+    if write_data is not None:
+        write_data(G, outdir, outfile, SBM_graph, verbose)
+
+    return G
