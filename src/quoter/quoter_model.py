@@ -385,7 +385,7 @@ def quoter_model_sim(
 
     # simulate quoter model
     for timestep_ in range(1, timesteps * nx.number_of_nodes(G)):
-        if verbose and (timestep % 1000 == 0):
+        if verbose and (timestep_ % 1000 == 0):
             print(f"timestep={timestep_}")
 
         node = random.choice(list(G.nodes))
