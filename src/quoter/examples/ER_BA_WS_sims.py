@@ -77,7 +77,7 @@ def process_results(
             mean_hx_data[i] = np.mean(hx_list)
 
         df = pd.DataFrame(data={"q":q_list, "mean_hx":mean_hx_data})
-        df.to_csv(f"{outdir}hx_{network_type}_k{k}.csv", header=False, index=False)
+        df.to_csv(f"{outdir}hx_{network_type}_k{k}.csv", index=False)
 
     # TODO: add plotting, like in SBM case
 
