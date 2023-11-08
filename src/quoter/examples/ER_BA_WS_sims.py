@@ -74,7 +74,7 @@ def process_results(
                 else:
                     print(f"file not found for k={k}, q={q}, trial={trial}")
 
-                data[i] = np.mean(hx_list)
+            data[i] = np.mean(hx_list)
 
         df = pd.DataFrame(data=data)
         df.to_csv(f"{outdir}hx_{network_type}_k{k}.csv", header=False, index=False)
