@@ -98,9 +98,10 @@ def write_all_data(
         print("initialised for writing")
 
     # compute edge data
+    if verbose:
+        print(f"Calculating cross-entropies etc for edge_sample: {edge_sample}")
     for e in edge_sample:
-        if verbose:
-            print(f"Calculating cross-entropy for edge: {e}")
+        
 
         # compute cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = words_to_tweets(
@@ -384,8 +385,8 @@ def quoter_model_sim(
 
     # simulate quoter model
     for timestep_ in range(1, timesteps * nx.number_of_nodes(G)):
-        if verbose:
-            print(timestep_)
+        if verbose and (timestep % 1000 == 0):
+            print(f"timestep={timestep_}")
 
         node = random.choice(list(G.nodes))
 
