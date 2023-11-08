@@ -99,7 +99,7 @@ def write_all_data(
 
     # compute edge data
     if verbose:
-        print(f"Calculating cross-entropies etc for edge_sample: {edge_sample}")
+        print(f"Calculating cross-entropies etc for edge_sample of length: {len(edge_sample)}")
     for e in edge_sample:
         
 
