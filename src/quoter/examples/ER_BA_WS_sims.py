@@ -54,7 +54,7 @@ def process_results(
 ):
     # average hx vs average degree
     for k in k_list:
-        data = np.zeros((len(q_list)))  # , len(lam_list)))
+        mean_hx_data = np.zeros((len(q_list)))  # , len(lam_list)))
         for i, q in enumerate(q_list):
             hx_list = []
             for trial in trials_list:
@@ -74,9 +74,9 @@ def process_results(
                 else:
                     print(f"file not found for k={k}, q={q}, trial={trial}")
 
-            data[i] = np.mean(hx_list)
+            mean_hx_data[i] = np.mean(hx_list)
 
-        df = pd.DataFrame(data=data)
+        df = pd.DataFrame(data={"q":q_list, "mean_hx":mean_hx_data})
         df.to_csv(f"{outdir}hx_{network_type}_k{k}.csv", header=False, index=False)
 
     # TODO: add plotting, like in SBM case
