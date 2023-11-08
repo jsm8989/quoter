@@ -35,6 +35,7 @@ def write_all_data(
     outfile: str,
     SBM: bool = False,
     verbose: bool = False,
+    swap_edges_lower_hx: bool = False,
     skip_edges: bool = False,
     skip_nodes: bool = False,
     skip_graph: bool = False,
@@ -102,7 +103,7 @@ def write_all_data(
         print(f"Calculating cross-entropies etc for edge_sample of length: {len(edge_sample)}")
     for e in edge_sample:
         
-
+        #
         # compute cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = words_to_tweets(
             G.nodes[e[1]]["words"], G.nodes[e[1]]["times"]
@@ -113,12 +114,19 @@ def write_all_data(
         hx = timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
-        hx_list.append(
-            hx
-        )  # TODO: can swap pairs of edges based on this value when exploring network structural effects
+        if swap_edges_lower_hx:
+            hx_original = hx
+            hx_swapped = timeseries_cross_entropy(
+                time_tweets_source, time_tweets_target, please_sanitize=False
+            )
+            print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
+            # TODO: how often to keep the new hx ie what to do now?
+        
+        hx_list.append(hx)
         alter_list.append(e[0])
         ego_list.append(e[1])
 
+        #
         # also record quote probability
         try:
             qp_list.append(
@@ -129,6 +137,7 @@ def write_all_data(
                 print("no predecessors for this node, assigning qp=0")
             qp_list.append(0)
 
+        #
         # also record edge embeddeness & edge clustering coefficient
         triangles, deg0, deg1, ECC = edge_clustering_coeff(
             H, e[0], e[1], return_info=True
@@ -137,6 +146,7 @@ def write_all_data(
         alter_degs.append(deg0)
         ego_degs.append(deg1)
 
+        #
         # also record distance between nodes
         try:
             dist = nx.shortest_path_length(G, source=e[0], target=e[1])
