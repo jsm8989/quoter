@@ -51,6 +51,7 @@ def process_results(
     T=1000,
     trials_list=list(range(200)),
     outdir="output/ER/",
+    plot: bool = False,
 ):
     # average hx vs average degree
     for k in k_list:
@@ -80,6 +81,14 @@ def process_results(
         df.to_csv(f"{outdir}hx_{network_type}_k{k}.csv", index=False)
 
     # TODO: add plotting, like in SBM case
+    if plot:
+        for k in k_list:
+            data_k = pd.read_csv(f"{outdir}hx_{network_type}_k{k}.csv")
+            plt.plot(data_k["q"].values, data_k["mean_hx"].values, label=f"k={k}")
+        plt.legend()
+        plt.xlabel(r"$q$")
+        plt.ylabel(r"$\langle h_\times \rangle$")
+        plt.show()
 
 
 if __name__ == "__main__":
