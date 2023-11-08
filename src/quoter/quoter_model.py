@@ -123,10 +123,12 @@ def write_all_data(
             #print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
             # TODO: how often to keep the new hx ie what to do now?
             hx = min(hx_original, hx_swapped)
-            if (hx_swapped < hx_original): #watch for case where swap_edges_lower_hx=False
+            if (hx_swapped < hx_original): 
                 swap_list.append(1)
             else:
                 swap_list.append(0)
+        else: # to deal with case where swap_edges_lower_hx=False
+            swap_list.append(0)
         
         hx_list.append(hx)
         alter_list.append(e[0])
