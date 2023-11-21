@@ -6,6 +6,7 @@ import itertools
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import pickle
 
 
 def simulation(
@@ -16,6 +17,7 @@ def simulation(
     T=1000,
     trials_list=list(range(200)),
     outdir="output/ER/",
+    check_simulation_output=False,
 ):
     params_init = itertools.product(q_list, k_list, trials_list)
     params = [P for i, P in enumerate(params_init)]
@@ -32,14 +34,100 @@ def simulation(
                 p = k  # TODO: double check original difference here
                 G0 = nx.watts_strogatz_graph(n=N, k=k, p=p)
 
-            G = nx.DiGraph(G0)
+            G = nx.DiGraph(G0)  # assume this just gives a symmetric DiGraph...
             print("Entering simulation...")
             qm.quoter_model_sim(
                 G, q, T, outdir, outfile, write_data=qm.write_all_data, verbose=True
             )
+
+            if check_simulation_output:
+                graph_data = pd.read_csv(
+                    f"{outdir}graph-{outfile}",
+                    sep=" ",
+                )  # probably more useful in later processing steps
+
+                node_data = pd.read_csv(
+                    f"{outdir}node-{outfile}",
+                    sep=" ",
+                )
+
+                plt.plot(
+                    node_data["node"], node_data["h"], label="entropy rate of node text"
+                )
+                plt.plot(node_data["node"], node_data["indegree"], label="in degree")
+                plt.plot(node_data["node"], node_data["outdegree"], label="out degree")
+                plt.plot(
+                    node_data["node"], node_data["C"], label="clustering coefficient"
+                )
+                plt.xlabel("Node")
+                plt.legend()
+                # plt.show()
+
+                # find hx distribution across the graph:
+                ## then code two possible ways of "total info flow":
+                ## -- the distribution across all nodes(solo-entropy rate)/edges (cross-entropy)
+                ## -- the overall entropy of all written text from all nodes
+
+                # first: 2D edge hx distribution
+                edge_data = pd.read_csv(
+                    f"{outdir}edge-{outfile}",
+                    sep=" ",
+                )
+
+                with open(
+                    f"{outdir}graph-{outfile[:-3]}pkl",  # note this is not robust to people using output files with a file extension of length != 3
+                    "rb",
+                ) as f:
+                    G = pickle.load(f)
+
+                fig = plt.figure()
+                ax1 = fig.add_subplot(projection="3d")
+
+                x, y, z = edge_data["ego"], edge_data["alter"], edge_data["hx"]
+                ax1.stem(x, y, z, basefmt=" ")
+                # TODO: now would like to distinguish between hx where an edge exists vs where it doesnt
+
+                ax1.set_title("hx edge distribution over a sample of edges")
+                # add some more informative caption or output, eg quantify the distribution
+                # would be SO cool to see this evolve in real time as quoter_model continues
+                ax1.set_xlabel("ego")
+                plt.xticks(G.nodes())
+                plt.yticks(G.nodes())
+                ax1.set_ylabel("alter")
+
+                ## now calculate "global information flow" in the graph
+
+                time_tweets_global = []
+                for node in G.nodes:
+                    time_tweets_global.extend(
+                        qm.words_to_tweets(
+                            G.nodes[node]["words"], G.nodes[node]["times"]
+                        )
+                    )
+                global_entropy_rate = qm.timeseries_cross_entropy(
+                    time_tweets_global, time_tweets_global, please_sanitize=False
+                )  # might take a long time to calculate, and TODO: NEEDS CHECKING. Should overwrite into saved graph file
+
+                fig1 = plt.figure()
+                nx.draw_networkx(G)
+                plt.title(
+                    f"Global entropy rate on all combined words for this graph = {global_entropy_rate}"
+                )
+
+                plt.show()
         else:
             print(
                 f"The experiment has already been run with these parameters in the proposed save location: {outfile}"
+            )
+            simulation(
+                network_type,
+                N,
+                q_list,
+                k_list,
+                T,
+                trials_list=[trials_list[-1] + 1],
+                outdir=outdir,
+                check_simulation_output=check_simulation_output,
             )
 
 
