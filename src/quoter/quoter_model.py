@@ -101,9 +101,10 @@ def write_all_data(
 
     # compute edge data
     if verbose:
-        print(f"Calculating cross-entropies etc for edge_sample of length: {len(edge_sample)}")
+        print(
+            f"Calculating cross-entropies etc for edge_sample of length: {len(edge_sample)}"
+        )
     for e in edge_sample:
-        
         #
         # compute cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = words_to_tweets(
@@ -120,29 +121,28 @@ def write_all_data(
             hx_swapped = timeseries_cross_entropy(
                 time_tweets_source, time_tweets_target, please_sanitize=False
             )
-            #print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
+            # print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
             # TODO: how often to keep the new hx ie what to do now?
             hx = min(hx_original, hx_swapped)
-            if (hx_swapped < hx_original): 
+            if hx_swapped < hx_original:
                 swap_list.append(1)
             else:
                 swap_list.append(0)
-        else: # to deal with case where swap_edges_lower_hx=False
+        else:
             swap_list.append(0)
-        
+
         hx_list.append(hx)
         alter_list.append(e[0])
         ego_list.append(e[1])
 
         #
-        # also record quote probability
+        # also record quote probability -- in this case it is the chance,
+        # if the ego decides to quote in a given timestep, that it will quote from this particular alter
         try:
-            qp_list.append(
-                1 / len(list(G.predecessors(e[1])))
-            )  # TODO: double check why defined this way
+            qp_list.append(1 / len(list(G.predecessors(e[1]))))
         except:
             if verbose:
-                print("no predecessors for this node, assigning qp=0")
+                print("no predecessors for this node => nothing to quote from => qp=0")
             qp_list.append(0)
 
         #
@@ -180,7 +180,7 @@ def write_all_data(
                     tri_list[i],
                     alter_degs[i],
                     ego_degs[i],
-                    swap_list[i]
+                    swap_list[i],
                 )
                 f.write("%i %i %0.8f %0.8f %i %i %i %i %i\n" % edge_data_tuple)
 
@@ -263,8 +263,7 @@ def get_modularity(G, community_dict):
     :returns: (float) The modularity of `G` given `community_dict`
     """
 
-    Q = 0
-    A = nx.to_scipy_sparse_array(G).astype(float)
+    graph_array = nx.to_scipy_sparse_array(G).astype(float)
 
     if type(G) == nx.Graph:
         # for undirected graphs, in and out treated as the same thing
@@ -283,7 +282,7 @@ def get_modularity(G, community_dict):
     nodes = list(G)
     Q = np.sum(
         [
-            A[i, j] - in_degree[nodes[i]] * out_degree[nodes[j]] / M
+            graph_array[i, j] - in_degree[nodes[i]] * out_degree[nodes[j]] / M
             for i, j in itertools.product(range(len(nodes)), range(len(nodes)))
             if community_dict[nodes[i]] == community_dict[nodes[j]]
         ]
@@ -372,7 +371,7 @@ def quoter_model_sim(
 
     Returns:
         G, once the simulation has been run, to pass to some other writing/calculation function
-    
+
     """
 
     if verbose:
