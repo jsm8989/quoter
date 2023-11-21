@@ -181,7 +181,7 @@ def write_all_data(
                 f.write("%i %i %0.8f %0.8f %i %i %i %i %i\n" % edge_data_tuple)
 
     if not skip_graph:
-        # write graph data - TODO: might be more useful to just pickle graph object
+        # write graph data - TODO: embed calculated attributes in pickled graph object
         if verbose:
             print(f"Writing graph data to {outdir}graph-{outfile}")
         with open(f"{outdir}graph-{outfile}", "w") as f:
@@ -193,7 +193,7 @@ def write_all_data(
             dens = nedges / (nnodes * (nnodes - 1) / 2)
             indegs = list(dict(G.in_degree(G.nodes())).values())
             outdegs = list(dict(G.out_degree(G.nodes())).values())
-            ccs = sorted(nx.connected_components(H), key=len, reverse=True)
+            ccs = nx.connected_components(H)
 
             community_dict = {x: 0 for x in A}
             community_dict.update({x: 1 for x in B})
@@ -211,8 +211,8 @@ def write_all_data(
                 nx.transitivity(H),
                 nx.average_clustering(H),
                 nx.degree_assortativity_coefficient(H),
-                len(ccs),
-                len(ccs[0]),
+                len([ccs]),
+                len(max(ccs, key=len)),
                 modularity,
             )  # note avg_in == avg_out, so we only need to record one
 
@@ -227,7 +227,8 @@ def write_all_data(
                 "%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i %0.6f"
                 % graph_data_tuple
             )
-        with open(f"{outdir}graph-{outfile.split('.')[0]}.pkl", "wb") as f_pickle:
+        with open(f"{outdir}graph-{outfile[:-3]}pkl", "wb") as f_pickle:
+            # note this is not robust to people using output files with a file extension of length != 3
             pickle.dump(G, f_pickle)
 
     if not skip_nodes:
@@ -237,7 +238,7 @@ def write_all_data(
         with open(f"{outdir}node-{outfile}", "w") as f:
             f.write("node indegree outdegree C h\n")  # header
             for node in G.nodes():
-                # NOTE: source and target are currently the same
+                # NOTE: source and target are the same, so just returns the true entropy rate of the solo text
                 time_tweets_target = words_to_tweets(
                     G.nodes[node]["words"], G.nodes[node]["times"]
                 )
@@ -402,7 +403,7 @@ def quoter_model_sim(
     if verbose:
         print("Initial vocab created; starting simulation")
 
-    verbose_node = 0
+    verbose_node = 1
 
     # simulate quoter model
     for timestep_ in range(1, timesteps * nx.number_of_nodes(G)):
@@ -420,9 +421,6 @@ def quoter_model_sim(
             # pick a neighbor to quote from (simplifying assumption: uniformly at random from all neighbors)
             user_copied = random.choice(nbrs)
 
-            if verbose and (node == verbose_node):
-                print(f"quoted from node {user_copied}!")
-
             # find a valid position in the neighbor's text to quote from
             words_friend = G.nodes[user_copied]["words"]
             numWords_friend = len(words_friend)
@@ -431,6 +429,11 @@ def quoter_model_sim(
             )
             copy_pos_end = min(numWords_friend - 1, copy_pos_start + tweetLength)
             newWords = words_friend[copy_pos_start:copy_pos_end]
+
+            if verbose and (node == verbose_node):
+                print(
+                    f"quoted words [{copy_pos_start}:{copy_pos_end}] from node {user_copied}!"
+                )
 
         else:  # new content
             if verbose and (node == verbose_node):
@@ -443,8 +446,8 @@ def quoter_model_sim(
         G.nodes[node]["times"].extend([timestep_] * len(newWords))
         if verbose:
             print(timestep_)
-            print(f"G.nodes[0][words] = {G.nodes[0]['words']}")
-            print(f"G.nodes[0][times] = {G.nodes[0]['times']}")
+            print(f"G.nodes[verbose_node][words] = {G.nodes[verbose_node]['words']}")
+            print(f"G.nodes[verbose_node][times] = {G.nodes[verbose_node]['times']}")
             input("Are you ready for the next timestep: ")
 
     # save data
