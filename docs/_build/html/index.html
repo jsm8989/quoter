@@ -41,12 +41,12 @@ The package’s repository can be found at <a class="reference external" href="h
 <span id="quoter-model-module"></span><h2>quoter_model module<a class="headerlink" href="#module-quoter.quoter_model" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.edge_clustering_coeff">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">edge_clustering_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.edge_clustering_coeff" title="Link to this definition">¶</a></dt>
-<dd><p>Compute ECC between two nodes u and v, defined as the number of triangles containing both u and v divided by min(degrees(u,v))-1</p>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">edge_clustering_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.edge_clustering_coeff" title="Link to this definition">¶</a></dt>
+<dd><p>Compute ECC between two nodes node_u and node_v, defined as the number of triangles containing both node_u and node_v divided by min(degrees(node_u,node_v))-1</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>G: NetworkX graph to be analysed. Must be directed
-u: node index of first node
-v: node index of second node
+node_u: node index of first node
+node_v: node index of second node
 return_info: if True return information about the algorithm
 draw: choose whether to visualise the graph</p>
 </dd>
@@ -57,8 +57,25 @@ ECC</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="quoter.quoter_model.get_modularity">
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">get_modularity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.get_modularity" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the modularity. Edge weights are ignored. From <a class="reference external" href="https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py">https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>G</strong> – NetworkX graph to be analysed</p></li>
+<li><p><strong>community_dict</strong> – A dict to store the membership of each node. Key is node and value is community index</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(float) The modularity of <cite>G</cite> given <cite>community_dict</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.quoter_model_sim">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">quoter_model_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G:</span> <span class="pre">~networkx.classes.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_data=&lt;function</span> <span class="pre">write_all_data&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dunbar:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.quoter_model_sim" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">quoter_model_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G:</span> <span class="pre">~networkx.classes.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quote_prob:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timesteps:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'test_output.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_data=&lt;function</span> <span class="pre">write_all_data&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dunbar:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SBM_graph:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poisson_lambda:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.quoter_model_sim" title="Link to this definition">¶</a></dt>
 <dd><p>Simulate the quoter model on a graph G. Nodes take turns generating content according to two
 mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
 from a neighbor’s past text.</p>
@@ -67,12 +84,19 @@ flow of written information. Chaos: An Interdisciplinary Journal of Nonlinear Sc
 075304.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>G (nx.Graph): Directed graph to simulate quoter model on
-q (float): Quote probability as defined in [1]
-T (int): Number of time-steps to simulate for. T=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have ‘tweeted’ ~1000 times
+quote_prob (float): Quote probability q as defined in [1]
+timesteps (int): Number of time-steps to simulate for. timesteps=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have ‘tweeted’ ~1000 times
 outdir (string): Name of directory for data to be stored in
 outfile (string): Name of file for this simulation
 write_data (function): Can specify what data to compute &amp; write.
-dunbar (int or None): If int, limit in-degree to dunbar’s number</p>
+dunbar (int or None): If int, limit in-degree to dunbar’s number
+verbose: &lt;temp&gt; giving useful output during testing</p>
+</dd>
+<dt>TODO: add args from other previous experiments, such as</dt><dd><p>lambda (quote length &gt; 0) - from q-lambda [added as poisson_lambda]
+alpha_alter, alpha_ego - from theory_link
+and potentially others</p>
+</dd>
+<dt>Returns:</dt><dd><p>G, once the simulation has been run, to pass to some other writing/calculation function</p>
 </dd>
 </dl>
 </dd></dl>
@@ -96,8 +120,10 @@ dunbar (int or None): If int, limit in-degree to dunbar’s number</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.write_all_data">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">write_all_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.write_all_data" title="Link to this definition">¶</a></dt>
-<dd><p>Compute and write data from quoter model simulations.</p>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">write_all_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SBM</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_edges_lower_hx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.write_all_data" title="Link to this definition">¶</a></dt>
+<dd><p>Compute and write data from quoter model simulations.
+TODO: This feels like it should be split up more.
+Also make sure the outdir exists or create it if needed.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>G (nx.Graph): _description_
 outdir (str): _description_
@@ -248,96 +274,6 @@ link existed at any time).</p>
 <section id="crossentropy-module">
 <h2>CrossEntropy module<a class="headerlink" href="#crossentropy-module" title="Link to this heading">¶</a></h2>
 <p>This should not be needed, but is included as a local solution in case of issues with installing the remote package.</p>
-<dl class="py function" id="module-quoter.CrossEntropy">
-<dt class="sig sig-object py" id="quoter.CrossEntropy.find_lambda_jit">
-<span class="sig-prename descclassname"><span class="pre">quoter.CrossEntropy.</span></span><span class="sig-name descname"><span class="pre">find_lambda_jit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.CrossEntropy.find_lambda_jit" title="Link to this definition">¶</a></dt>
-<dd><p>Finds the longest subsequence of the target array,
-starting from index 0, that is contained in the source array.
-Returns the length of that subsequence + 1.
-i.e. returns the length of the shortest subsequence starting at 0
-that has not previously appeared.
-Args:</p>
-<blockquote>
-<div><p>target: NumPy array, perferable of type int.
-source: NumPy array, perferable of type int.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>Returns:</dt><dd><p>Integer of the length.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="quoter.CrossEntropy.get_all_lambdas">
-<span class="sig-prename descclassname"><span class="pre">quoter.CrossEntropy.</span></span><span class="sig-name descname"><span class="pre">get_all_lambdas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambdas</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.CrossEntropy.get_all_lambdas" title="Link to this definition">¶</a></dt>
-<dd><p>Finds all the the longest subsequences of the target,
-that are contained in the sequence of the source,
-with the source cutoff at the location set in relative_pos.
-See function find_lambda_jit for description of</p>
-<blockquote>
-<div><p>Lambda_i(target|source)</p>
-</div></blockquote>
-<dl>
-<dt>Args:</dt><dd><p>target: Array of ints, usually corresponding to hashed words.
-source: Arry of ints, usually corresponding to hashed words.
-relative_pos: list of integers with the same length as target denoting the</p>
-<blockquote>
-<div><p>relative time ordering of target vs. source. These integers tell us the
-position relative_pos[x] = i in source such that all symbols in source[:i]
-occurred before the x-th word in target.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>lambdas: A premade array of length(target), usually filled with zeros.</dt><dd><p>Used for efficiency reasons.</p>
-</dd>
-</dl>
-</dd>
-<dt>Return:</dt><dd><p>A list of ints, denoting the value for Lambda for each index in the target.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="quoter.CrossEntropy.timeseries_cross_entropy">
-<span class="sig-prename descclassname"><span class="pre">quoter.CrossEntropy.</span></span><span class="sig-name descname"><span class="pre">timeseries_cross_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_tweets_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_tweets_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">please_sanitize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lambdas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.CrossEntropy.timeseries_cross_entropy" title="Link to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>Finds the cross entropy H_cross(target|source) where the processes are embedded in time.
-i.e. How many bits we would need to encode the data in target
-using information in the source that is before the current time.
-This is described mathematically in [1] as,
-T = target
-S = source
-$$
-hat{h}_{   imes}(T | S)=</p>
-</div></blockquote>
-<dl>
-<dt>rac{N_{T} log _{2} N_{S}}{sum_{i=1}^{N_{T}} Lambda_{i}(T | S)}</dt><dd><p>$$
-Args:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>time_tweets_target: A list of tuples with (time, tweet_content).</dt><dd><p>This is the stream of new information that we can testing the ability to encode.
-If please_sanitize = True (default) then tweet_content can be a string.</p>
-</dd>
-<dt>time_tweets_source: A list of tuples with (time, tweet_content).</dt><dd><p>This is the stream of previous information from which we try to encode the target.</p>
-</dd>
-<dt>please_sanitize: Option to have the tweet string converted to numpy int arrays for speed.</dt><dd><p>If False, please santize tweet into a list of tokenzied words, ideally converting these to ints,
-via a hash.</p>
-</dd>
-<dt>get_lambdas: Boolean choice to return the list of all calculated Lambda values for each point</dt><dd><p>in target. Usually used for debugging.</p>
-</dd>
-</dl>
-</div></blockquote>
-<dl class="simple">
-<dt>Return:</dt><dd><p>The cross entropy as a float</p>
-</dd>
-</dl>
-<p>[1] I. Kontoyiannis, P.H. Algoet, Yu.M. Suhov, and A.J. Wyner. Nonparametric entropy
-esti mation for stationary processes and random fields, with applications to English text.
-IEEE Transactions on Information Theory, 44(3):1319–1327, May 1998.
-Credit to Bagrow and Mitchell for code ideas that I’ve stolen for this function.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="examples-using-the-quoter-model-package">
 <h2>Examples using the quoter-model package<a class="headerlink" href="#examples-using-the-quoter-model-package" title="Link to this heading">¶</a></h2>
