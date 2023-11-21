@@ -77,7 +77,7 @@ def process_results(
 
             mean_hx_data[i] = np.mean(hx_list)
 
-        df = pd.DataFrame(data={"q":q_list, "mean_hx":mean_hx_data})
+        df = pd.DataFrame(data={"q": q_list, "mean_hx": mean_hx_data})
         df.to_csv(f"{outdir}hx_{network_type}_k{k}.csv", index=False)
 
     # TODO: add plotting, like in SBM case
@@ -89,6 +89,20 @@ def process_results(
         plt.xlabel(r"$q$")
         plt.ylabel(r"$\langle h_\times \rangle$")
         plt.show()
+
+
+def explore_file_outputs(filename):
+    outdir = "./output/output_swap/"
+    # TODO: for multiple runs since they are "the same"
+
+    if os.path.isfile(outdir + filename):
+        output_data = pd.read_csv(outdir + filename, sep=" ")
+    else:
+        raise Exception(f"{filename} does not exist inside {outdir}")
+    plt.plot(output_data["quoteProb"], output_data["hx"], "o")
+    plt.xlabel("quoteProb")
+    plt.ylabel("hx for edge")
+    plt.show()
 
 
 if __name__ == "__main__":
