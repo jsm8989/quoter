@@ -442,11 +442,11 @@ def quoter_model_sim(
 
         G.nodes[node]["words"].extend(newWords)
         G.nodes[node]["times"].extend([timestep_] * len(newWords))
-        if verbose:
-            print(timestep_)
-            print(f"G.nodes[verbose_node][words] = {G.nodes[verbose_node]['words']}")
-            print(f"G.nodes[verbose_node][times] = {G.nodes[verbose_node]['times']}")
-            input("Are you ready for the next timestep: ")
+        # if verbose:
+        #     print(timestep_)
+        #     print(f"G.nodes[verbose_node][words] = {G.nodes[verbose_node]['words']}")
+        #     print(f"G.nodes[verbose_node][times] = {G.nodes[verbose_node]['times']}")
+        #     input("Are you ready for the next timestep: ")
 
     # save data
     if write_data is not None:

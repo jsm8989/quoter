@@ -12,32 +12,34 @@ import pandas as pd
 
 if __name__ == "__main__":
     network_type = "BA"
-    N = 10
+    N = 50
     q_list = [
         0.5,
     ]
     k_list = [3]
-    T = 100
+    T = 1000
     trials_list = list(range(1))
     outdir = "./output/simple_swap/"
 
-    run_sim = True
-    process_results = False
+    G0 = nx.DiGraph(nx.barabasi_albert_graph(N, int(k_list[0] / 2)))
 
-    G_post_sim = ERBA.simulation(
-        network_type=network_type,
-        N=N,
-        q_list=q_list,
-        k_list=k_list,
-        T=T,
-        trials_list=trials_list,
+    fig1 = plt.figure("original graph")
+    nx.draw_networkx(G0)
+    # plt.show()
+
+    trial = trials_list[0]
+    outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k_list[0], q_list[0], T, trial)
+    # watch; this will always start at trial 0
+
+    G_post_sim = qm.quoter_model_sim(
+        G0,
+        quote_prob=q_list[0],
+        timesteps=T,
         outdir=outdir,
-        check_simulation_output=False,
-    )
-
-    fig1 = plt.figure("global graph")
-    nx.draw_networkx(G_post_sim)
-    plt.show()
+        outfile=outfile,
+        verbose=True,
+    )  # ideally do multiple and average the global entropy
+    print("created G_post_sim")
 
     ## now calculate "global information flow" in the graph
     time_tweets_global = []
@@ -50,22 +52,27 @@ if __name__ == "__main__":
     global_entropy_rate = qm.timeseries_cross_entropy(
         time_tweets_global, time_tweets_global, please_sanitize=False
     )  # might take a long time to calculate, and TODO: NEEDS CHECKING. Should overwrite into saved graph file
-    print(f"initial global entropy rate = {global_entropy_rate:0.4f}")
+    print(f"global entropy rate for trial {trial} = {global_entropy_rate:0.4f}")
 
     # to avoid saving different filenames, will in this case use trial number as index for how many pairs of edges have attempted to be swapped.
-    while str(input("Do you want to continue? (n): ")) != "n":
-        trial = trials_list[0]
+    # while str(input("Do you want to continue? (n): ")) != "n":
+    for _ in range(100):
         outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k_list[0], q_list[0], T, trial)
 
         if not os.path.isfile(f"{outdir}edge-{outfile}"):
-            qm.write_all_data(G_post_sim, outdir, outfile)
-
             # random edge swapping step
-            potential_new_G = nx.double_edge_swap(G_post_sim)
+            potential_new_G = nx.double_edge_swap(G0.to_undirected()).to_directed()
+            potential_new_G_post_sim = qm.quoter_model_sim(
+                potential_new_G,
+                quote_prob=q_list[0],
+                timesteps=T,
+                outdir=outdir,
+                outfile=outfile,
+            )
             # TODO: calculate new cross entropies
             ## now calculate "global information flow" in the graph
             time_tweets_instance = []
-            for node in potential_new_G.nodes:
+            for node in potential_new_G_post_sim.nodes:
                 time_tweets_instance.extend(
                     qm.words_to_tweets(
                         potential_new_G.nodes[node]["words"],
@@ -76,15 +83,22 @@ if __name__ == "__main__":
                 time_tweets_instance, time_tweets_instance, please_sanitize=False
             )  # might take a long time to calculate, and TODO: NEEDS CHECKING. Should overwrite into saved graph file
 
+            # fig1 = plt.figure(f"previous graph of entropy {global_entropy_rate}")
+            # nx.draw_networkx(G0)
+
             if new_global_entropy < global_entropy_rate:
-                G_post_sim = potential_new_G
+                G0 = potential_new_G
                 global_entropy_rate = new_global_entropy
-            print(
-                f"New global entropy after swapping step {trial} is {global_entropy_rate}"
-            )
+                # could output the swapped edge here
+
+            print(f"global entropy {trial} = {global_entropy_rate:0.4f}")
         else:
-            trial += 1
-            print("trial skipped, pls continue")
+            print(f"trial {trial} skipped, pls continue")
+        trial += 1
+
+    fig2 = plt.figure(f"new graph of entropy {global_entropy_rate:0.4f}")
+    nx.draw_networkx(G0)
+    plt.show()
 
     exit(0)
 
