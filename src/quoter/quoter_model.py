@@ -36,7 +36,7 @@ def write_all_data(
     outfile: str,
     SBM: bool = False,
     verbose: bool = False,
-    swap_edges_lower_hx: bool = False,
+    swap_quote_direction_lower_hx: bool = False,
     skip_edges: bool = False,
     skip_nodes: bool = False,
     skip_graph: bool = False,
@@ -112,7 +112,8 @@ def write_all_data(
         hx = timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
-        if swap_edges_lower_hx:
+        if swap_quote_direction_lower_hx:
+            outfile.append("_sqd")
             hx_original = hx
             hx_swapped = timeseries_cross_entropy(
                 time_tweets_source, time_tweets_target, please_sanitize=False
