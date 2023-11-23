@@ -37,8 +37,9 @@ def simulation(
             G = nx.DiGraph(G0)  # assume this just gives a symmetric DiGraph...
             print("Entering simulation...")
             qm.quoter_model_sim(
-                G, q, T, outdir, outfile, write_data=qm.write_all_data, verbose=True
+                G, q, T, outdir, outfile, write_data=qm.write_all_data, verbose=False
             )
+            print("simulation done and data written")
 
             if check_simulation_output:
                 graph_data = pd.read_csv(
@@ -74,6 +75,11 @@ def simulation(
                     sep=" ",
                 )
 
+                node_data = pd.read_csv(
+                    f"{outdir}node-{outfile}",
+                    sep=" ",
+                )
+
                 with open(
                     f"{outdir}graph-{outfile[:-3]}pkl",  # note this is not robust to people using output files with a file extension of length != 3
                     "rb",
@@ -83,20 +89,53 @@ def simulation(
                 fig = plt.figure()
                 ax1 = fig.add_subplot(projection="3d")
 
-                x, y, z = edge_data["ego"], edge_data["alter"], edge_data["hx"]
-                ax1.stem(x, y, z, basefmt=" ")
-                # TODO: now would like to distinguish between hx where an edge exists vs where it doesnt
+                def hx_z(x, y):
+                    # for nodes x,y as ego, alter; create function for drawing semi-continuous 3d surface
+                    # if x != y:
+                    z_out = edge_data.loc[
+                        edge_data["ego"] == x and edge_data["alter"] == y
+                    ]["hx"]
+                    print(z_out)
+                    return z_out
+                    # elif x == y:
+                    #     return node_data.loc[node_data["node"] == x]["h"]
+                    X = np.arange(len(G.nodes()))
+                    print(X)
+                    Y = X
 
-                ax1.set_title("hx edge distribution over a sample of edges")
-                # add some more informative caption or output, eg quantify the distribution
+                    X, Y = np.meshgrid(X, Y)
+                    print(X)
+                    Z = hx_z(X, Y)
+
+                x, y, z = edge_data["ego"], edge_data["alter"], edge_data["hx"]
+
+                # ax1.plot_surface(X, Y, Z)
+                # TODO: now would like to distinguish between hx where an edge exists vs where it doesnt
+                x_node, z_node = node_data["node"], node_data["h"]
+                ax1.stem(x, y, z, basefmt=" ")
+                ax1.stem(x_node, x_node, z_node, linefmt="r", basefmt=" ")
+                # ax1.bar3d(x_node, x_node, z_node, "r")
+                mean_hx = np.mean(list(z) + list(z_node))
+                var_hx = np.var(list(z) + list(z_node))
+
+                ax1.set_title(
+                    f"2D hx distribution. Mean={mean_hx:0.4f}, var={var_hx:0.4f}"
+                )
                 # would be SO cool to see this evolve in real time as quoter_model continues
                 ax1.set_xlabel("ego")
                 plt.xticks(G.nodes())
                 plt.yticks(G.nodes())
                 ax1.set_ylabel("alter")
 
-                ## now calculate "global information flow" in the graph
+                fig_1d_dist = plt.figure()
+                plt.hist(z)
+                plt.title(
+                    f"1D hx distribution. Mean={np.mean(z):0.4f}, var={np.var(z):0.4f}"
+                )
+                plt.xlabel("h_x")
+                plt.ylabel("frequency")
 
+                ## now calculate "global information flow" in the graph
                 time_tweets_global = []
                 for node in G.nodes:
                     time_tweets_global.extend(
@@ -111,8 +150,16 @@ def simulation(
                 fig1 = plt.figure()
                 nx.draw_networkx(G)
                 plt.title(
-                    f"Global entropy rate on all combined words for this graph = {global_entropy_rate}"
+                    f"Global entropy rate on all combined words for this graph = {global_entropy_rate:0.4f}"
                 )
+
+                fig_degree = plt.figure()
+                plt.plot(nx.degree_histogram(G.to_undirected()))
+                plt.title(
+                    "Degree distribution of the original (undirected) graph post quoter-model"
+                )
+                plt.xlabel("degree")
+                plt.ylabel("frequency")
 
                 plt.show()
         else:
