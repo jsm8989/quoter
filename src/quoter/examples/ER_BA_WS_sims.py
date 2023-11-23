@@ -36,7 +36,7 @@ def simulation(
 
             G = nx.DiGraph(G0)  # assume this just gives a symmetric DiGraph...
             print("Entering simulation...")
-            qm.quoter_model_sim(
+            G_post_sim = qm.quoter_model_sim(
                 G, q, T, outdir, outfile, write_data=qm.write_all_data, verbose=False
             )
             print("simulation done and data written")
@@ -51,7 +51,7 @@ def simulation(
                     f"{outdir}node-{outfile}",
                     sep=" ",
                 )
-
+                fig_initial = plt.figure("Node summary")
                 plt.plot(
                     node_data["node"], node_data["h"], label="entropy rate of node text"
                 )
@@ -75,18 +75,13 @@ def simulation(
                     sep=" ",
                 )
 
-                node_data = pd.read_csv(
-                    f"{outdir}node-{outfile}",
-                    sep=" ",
-                )
-
                 with open(
                     f"{outdir}graph-{outfile[:-3]}pkl",  # note this is not robust to people using output files with a file extension of length != 3
                     "rb",
                 ) as f:
                     G = pickle.load(f)
 
-                fig = plt.figure()
+                fig = plt.figure("2D_hx")
                 ax1 = fig.add_subplot(projection="3d")
 
                 def hx_z(x, y):
@@ -127,7 +122,7 @@ def simulation(
                 plt.yticks(G.nodes())
                 ax1.set_ylabel("alter")
 
-                fig_1d_dist = plt.figure()
+                fig_1d_dist = plt.figure("1D_hx")
                 plt.hist(z)
                 plt.title(
                     f"1D hx distribution. Mean={np.mean(z):0.4f}, var={np.var(z):0.4f}"
@@ -147,21 +142,22 @@ def simulation(
                     time_tweets_global, time_tweets_global, please_sanitize=False
                 )  # might take a long time to calculate, and TODO: NEEDS CHECKING. Should overwrite into saved graph file
 
-                fig1 = plt.figure()
+                fig1 = plt.figure("global graph")
                 nx.draw_networkx(G)
                 plt.title(
                     f"Global entropy rate on all combined words for this graph = {global_entropy_rate:0.4f}"
                 )
 
-                fig_degree = plt.figure()
+                fig_degree = plt.figure("degree distribution")
                 plt.plot(nx.degree_histogram(G.to_undirected()))
                 plt.title(
                     "Degree distribution of the original (undirected) graph post quoter-model"
                 )
                 plt.xlabel("degree")
                 plt.ylabel("frequency")
-
-                plt.show()
+                print(f"global entropy rate = {global_entropy_rate:0.4f}")
+                # plt.show()
+            return G_post_sim
         else:
             print(
                 f"The experiment has already been run with these parameters in the proposed save location: {outfile}"
