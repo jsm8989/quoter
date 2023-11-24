@@ -1,36 +1,109 @@
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Welcome to the documentation for the quoter-model package &#8212; quoter 0.0 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
-    <script src="_static/documentation_options.js?v=837179f8"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to the documentation for the quoter-model package &mdash; quoter 0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=837179f8"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
 
-  </head><body>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
+          
+          <a href="#" class="icon icon-home">
+            quoter
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to the documentation for the quoter-model package</a><ul>
+<li><a class="reference internal" href="#module-quoter.quoter_model">quoter_model module</a><ul>
+<li><a class="reference internal" href="#quoter.quoter_model.edge_clustering_coeff"><code class="docutils literal notranslate"><span class="pre">edge_clustering_coeff()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.quoter_model.get_modularity"><code class="docutils literal notranslate"><span class="pre">get_modularity()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.quoter_model.quoter_model_sim"><code class="docutils literal notranslate"><span class="pre">quoter_model_sim()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.quoter_model.words_to_tweets"><code class="docutils literal notranslate"><span class="pre">words_to_tweets()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.quoter_model.write_all_data"><code class="docutils literal notranslate"><span class="pre">write_all_data()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-quoter.real_networks.read_networks">real_networks.read_networks module</a><ul>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.get_giant_component"><code class="docutils literal notranslate"><span class="pre">get_giant_component()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.get_modularity"><code class="docutils literal notranslate"><span class="pre">get_modularity()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_Eu_Core"><code class="docutils literal notranslate"><span class="pre">read_Eu_Core()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_Freemans"><code class="docutils literal notranslate"><span class="pre">read_Freemans()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_adolescent"><code class="docutils literal notranslate"><span class="pre">read_adolescent()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_arxiv_CondMat"><code class="docutils literal notranslate"><span class="pre">read_arxiv_CondMat()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_arxiv_GrQc"><code class="docutils literal notranslate"><span class="pre">read_arxiv_GrQc()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_ckm"><code class="docutils literal notranslate"><span class="pre">read_ckm()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_dolphins"><code class="docutils literal notranslate"><span class="pre">read_dolphins()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_email"><code class="docutils literal notranslate"><span class="pre">read_email()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_enron"><code class="docutils literal notranslate"><span class="pre">read_enron()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.real_networks.read_networks.read_hypertext"><code class="docutils literal notranslate"><span class="pre">read_hypertext()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#crossentropylocal-module">CrossEntropyLocal module</a><ul>
+<li><a class="reference internal" href="#quoter.CrossEntropyLocal.find_lambda_jit"><code class="docutils literal notranslate"><span class="pre">find_lambda_jit()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.CrossEntropyLocal.get_all_lambdas"><code class="docutils literal notranslate"><span class="pre">get_all_lambdas()</span></code></a></li>
+<li><a class="reference internal" href="#quoter.CrossEntropyLocal.timeseries_cross_entropy"><code class="docutils literal notranslate"><span class="pre">timeseries_cross_entropy()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#examples-using-the-quoter-model-package">Examples using the quoter-model package</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
 
-          <div class="body" role="main">
-            
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">quoter</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to the documentation for the quoter-model package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="welcome-to-the-documentation-for-the-quoter-model-package">
-<h1>Welcome to the documentation for the quoter-model package<a class="headerlink" href="#welcome-to-the-documentation-for-the-quoter-model-package" title="Link to this heading">¶</a></h1>
+<h1>Welcome to the documentation for the quoter-model package<a class="headerlink" href="#welcome-to-the-documentation-for-the-quoter-model-package" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <p><em>Table of contents to be added later</em></p>
@@ -38,10 +111,10 @@
 <p>See below for the function references inside the <cite>quoter</cite> package (listed as quoter-model on pypi).
 The package’s repository can be found at <a class="reference external" href="https://github.com/jsm8989/quoter/">https://github.com/jsm8989/quoter/</a></p>
 <section id="module-quoter.quoter_model">
-<span id="quoter-model-module"></span><h2>quoter_model module<a class="headerlink" href="#module-quoter.quoter_model" title="Link to this heading">¶</a></h2>
+<span id="quoter-model-module"></span><h2>quoter_model module<a class="headerlink" href="#module-quoter.quoter_model" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.edge_clustering_coeff">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">edge_clustering_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.edge_clustering_coeff" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">edge_clustering_coeff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_u</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_v</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_info</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.edge_clustering_coeff" title="Link to this definition"></a></dt>
 <dd><p>Compute ECC between two nodes node_u and node_v, defined as the number of triangles containing both node_u and node_v divided by min(degrees(node_u,node_v))-1</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>G: NetworkX graph to be analysed. Must be directed
@@ -58,7 +131,7 @@ ECC</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.get_modularity">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">get_modularity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.get_modularity" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">get_modularity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.get_modularity" title="Link to this definition"></a></dt>
 <dd><p>Calculate the modularity. Edge weights are ignored. From <a class="reference external" href="https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py">https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -75,7 +148,7 @@ ECC</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.quoter_model_sim">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">quoter_model_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G:</span> <span class="pre">~networkx.classes.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quote_prob:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timesteps:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'test_output.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_data=&lt;function</span> <span class="pre">write_all_data&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dunbar:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SBM_graph:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poisson_lambda:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startWords=20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.quoter_model_sim" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">quoter_model_sim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G:</span> <span class="pre">~networkx.classes.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quote_prob:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timesteps:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'test_output.txt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_data=&lt;function</span> <span class="pre">write_all_data&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dunbar:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SBM_graph:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poisson_lambda:</span> <span class="pre">float</span> <span class="pre">|</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startWords=20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.quoter_model_sim" title="Link to this definition"></a></dt>
 <dd><p>Simulate the quoter model on a graph G. Nodes take turns generating content according to two
 mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
 from a neighbor’s past text.</p>
@@ -103,7 +176,7 @@ and potentially others</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.words_to_tweets">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">words_to_tweets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.words_to_tweets" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">words_to_tweets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.words_to_tweets" title="Link to this definition"></a></dt>
 <dd><p>Convert (words,times) array to a smaller array of (tweets,times)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -120,7 +193,7 @@ and potentially others</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.quoter_model.write_all_data">
-<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">write_all_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SBM</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_quote_direction_lower_hx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.write_all_data" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.quoter_model.</span></span><span class="sig-name descname"><span class="pre">write_all_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SBM</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swap_quote_direction_lower_hx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_edges</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_nodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_graph</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.quoter_model.write_all_data" title="Link to this definition"></a></dt>
 <dd><p>Compute and write data from quoter model simulations.
 TODO: This feels like it should be split up more.
 Also make sure the outdir exists or create it if needed.</p>
@@ -134,10 +207,10 @@ outfile (str): _description_</p>
 
 </section>
 <section id="module-quoter.real_networks.read_networks">
-<span id="real-networks-read-networks-module"></span><h2>real_networks.read_networks module<a class="headerlink" href="#module-quoter.real_networks.read_networks" title="Link to this heading">¶</a></h2>
+<span id="real-networks-read-networks-module"></span><h2>real_networks.read_networks module<a class="headerlink" href="#module-quoter.real_networks.read_networks" title="Link to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.get_giant_component">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">get_giant_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.get_giant_component" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">get_giant_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.get_giant_component" title="Link to this definition"></a></dt>
 <dd><p>Returns the giant component of a graph. Giant components are nodes that are connected to each other in the graph.</p>
 <p>&#64;param G - NetworkX graph to be analysed. It must be directed.</p>
 <p>&#64;return G with only the giant component removed. This is a copy of G</p>
@@ -145,7 +218,7 @@ outfile (str): _description_</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.get_modularity">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">get_modularity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.get_modularity" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">get_modularity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">community_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.get_modularity" title="Link to this definition"></a></dt>
 <dd><p>Calculate the modularity. Edge weights are ignored. From <a class="reference external" href="https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py">https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -162,7 +235,7 @@ outfile (str): _description_</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_Eu_Core">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_Eu_Core</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_Eu_Core" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_Eu_Core</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_Eu_Core" title="Link to this definition"></a></dt>
 <dd><p>Read Eu-Core NetworkX file and return giant component.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -173,7 +246,7 @@ outfile (str): _description_</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_Freemans">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_Freemans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_Freemans" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_Freemans</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_Freemans" title="Link to this definition"></a></dt>
 <dd><p>Read Freemans network</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -187,7 +260,7 @@ outfile (str): _description_</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_adolescent">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_adolescent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_adolescent" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_adolescent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_adolescent" title="Link to this definition"></a></dt>
 <dd><p>Read adolescent_health file and return networkx graph.
 This file is used to determine the health of the network and should contain a list of tuples ( node_id node_name )
 where node_id is the node id of the node that is connected to the node with the same node_name.</p>
@@ -199,7 +272,7 @@ where node_id is the node id of the node that is connected to the node with the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_arxiv_CondMat">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_arxiv_CondMat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_arxiv_CondMat" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_arxiv_CondMat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_arxiv_CondMat" title="Link to this definition"></a></dt>
 <dd><p>Read Arxiv Cond Mat file and return Giant component.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>Graph with components as node ids</p>
@@ -209,7 +282,7 @@ where node_id is the node id of the node that is connected to the node with the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_arxiv_GrQc">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_arxiv_GrQc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_arxiv_GrQc" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_arxiv_GrQc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_arxiv_GrQc" title="Link to this definition"></a></dt>
 <dd><p>Read GrQc file and return giant component. It is assumed that the file is in arxiv format</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>networkx graph with components as node ids</p>
@@ -219,7 +292,7 @@ where node_id is the node id of the node that is connected to the node with the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_ckm">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_ckm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_ckm" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_ckm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_ckm" title="Link to this definition"></a></dt>
 <dd><p>Read CKM physicians from file. This file is used to generate network connectivity matrices and other data structures that can be used for testing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -233,7 +306,7 @@ where node_id is the node id of the node that is connected to the node with the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_dolphins">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_dolphins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_dolphins" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_dolphins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_dolphins" title="Link to this definition"></a></dt>
 <dd><p>Read dolphins file and return networkx graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -244,7 +317,7 @@ where node_id is the node id of the node that is connected to the node with the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_email">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_email" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_email</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_email" title="Link to this definition"></a></dt>
 <dd><p>Read email network and return networkx graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -255,7 +328,7 @@ where node_id is the node id of the node that is connected to the node with the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_enron">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_enron</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_enron" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_enron</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_enron" title="Link to this definition"></a></dt>
 <dd><p>Read and return enron network. 10588 nodes; 65901 edges (directed) and 54527 (undirected). We use the undirected graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -266,26 +339,109 @@ where node_id is the node id of the node that is connected to the node with the 
 
 <dl class="py function">
 <dt class="sig sig-object py" id="quoter.real_networks.read_networks.read_hypertext">
-<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_hypertext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_hypertext" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">quoter.real_networks.read_networks.</span></span><span class="sig-name descname"><span class="pre">read_hypertext</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#quoter.real_networks.read_networks.read_hypertext" title="Link to this definition"></a></dt>
 <dd><p>This network is a DYNAMIC network (edges are timestamped).
 We are treating it as static (a link is present if a
 link existed at any time).</p>
 </dd></dl>
 
 </section>
-<section id="crossentropy-module">
-<h2>CrossEntropy module<a class="headerlink" href="#crossentropy-module" title="Link to this heading">¶</a></h2>
+<section id="crossentropylocal-module">
+<h2>CrossEntropyLocal module<a class="headerlink" href="#crossentropylocal-module" title="Link to this heading"></a></h2>
 <p>This should not be needed, but is included as a local solution in case of issues with installing the remote package.</p>
+<dl class="py function" id="module-quoter.CrossEntropyLocal">
+<dt class="sig sig-object py" id="quoter.CrossEntropyLocal.find_lambda_jit">
+<span class="sig-prename descclassname"><span class="pre">quoter.CrossEntropyLocal.</span></span><span class="sig-name descname"><span class="pre">find_lambda_jit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.CrossEntropyLocal.find_lambda_jit" title="Link to this definition"></a></dt>
+<dd><p>Finds the longest subsequence of the target array,
+starting from index 0, that is contained in the source array.
+Returns the length of that subsequence + 1.
+i.e. returns the length of the shortest subsequence starting at 0
+that has not previously appeared.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>target: NumPy array, perferable of type int.
+source: NumPy array, perferable of type int.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Integer of the length.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quoter.CrossEntropyLocal.get_all_lambdas">
+<span class="sig-prename descclassname"><span class="pre">quoter.CrossEntropyLocal.</span></span><span class="sig-name descname"><span class="pre">get_all_lambdas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambdas</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.CrossEntropyLocal.get_all_lambdas" title="Link to this definition"></a></dt>
+<dd><p>Finds all the the longest subsequences of the target,
+that are contained in the sequence of the source,
+with the source cutoff at the location set in relative_pos.
+See function find_lambda_jit for description of Lambda_i(target|source)
+Args:</p>
+<blockquote>
+<div><p>target: Array of ints, usually corresponding to hashed words.
+source: Arry of ints, usually corresponding to hashed words.
+relative_pos: list of integers with the same length as target denoting the</p>
+<blockquote>
+<div><p>relative time ordering of target vs. source. These integers tell us the
+position relative_pos[x] = i in source such that all symbols in source[:i]
+occurred before the x-th word in target.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>lambdas: A premade array of length(target), usually filled with zeros.</dt><dd><p>Used for efficiency reasons.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>Return:</dt><dd><p>A list of ints, denoting the value for Lambda for each index in the target.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="quoter.CrossEntropyLocal.timeseries_cross_entropy">
+<span class="sig-prename descclassname"><span class="pre">quoter.CrossEntropyLocal.</span></span><span class="sig-name descname"><span class="pre">timeseries_cross_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_tweets_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_tweets_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">please_sanitize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_lambdas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#quoter.CrossEntropyLocal.timeseries_cross_entropy" title="Link to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Finds the cross entropy H_cross(target|source) where the processes are embedded in time.
+i.e. How many bits we would need to encode the data in target
+using information in the source that is before the current time.
+This is described mathematically in [1] as,
+T = target
+S = source</p>
+<p>hat{h}_{   imes}(T | S)=</p>
+</div></blockquote>
+<p>rac{N_{T} log _{2} N_{S}}{sum_{i=1}^{N_{T}} Lambda_{i}(T | S)}</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>time_tweets_target: A list of tuples with (time, tweet_content).</dt><dd><p>This is the stream of new information that we can testing the ability to encode.
+If please_sanitize = True (default) then tweet_content can be a string.</p>
+</dd>
+<dt>time_tweets_source: A list of tuples with (time, tweet_content).</dt><dd><p>This is the stream of previous information from which we try to encode the target.</p>
+</dd>
+<dt>please_sanitize: Option to have the tweet string converted to numpy int arrays for speed.</dt><dd><p>If False, please santize tweet into a list of tokenzied words, ideally converting these to ints,
+via a hash.</p>
+</dd>
+<dt>get_lambdas: Boolean choice to return the list of all calculated Lambda values for each point</dt><dd><p>in target. Usually used for debugging.</p>
+</dd>
+</dl>
+</dd>
+<dt>Return:</dt><dd><p>The cross entropy as a float</p>
+</dd>
+</dl>
+<p>[1] I. Kontoyiannis, P.H. Algoet, Yu.M. Suhov, and A.J. Wyner. Nonparametric entropy
+esti mation for stationary processes and random fields, with applications to English text.
+IEEE Transactions on Information Theory, 44(3):1319–1327, May 1998.
+Credit to Bagrow and Mitchell for code ideas that I’ve stolen for this function.</p>
+</div></blockquote>
+</dd></dl>
+
 </section>
 <section id="examples-using-the-quoter-model-package">
-<h2>Examples using the quoter-model package<a class="headerlink" href="#examples-using-the-quoter-model-package" title="Link to this heading">¶</a></h2>
+<h2>Examples using the quoter-model package<a class="headerlink" href="#examples-using-the-quoter-model-package" title="Link to this heading"></a></h2>
 <p>Possible ways of simulating the quoter model on networks can be found in <cite>quoter.examples`</cite></p>
 <p>These are intended to be run from any directory once the package has been installed, and will write results to an <cite>ouput/</cite> directory relative to this one.</p>
 <p>After running simulations, summary statistics can be processed using scripts inside <cite>quoter.examples.processing</cite></p>
 </section>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
@@ -294,66 +450,31 @@ link existed at any time).</p>
 </section>
 
 
+           </div>
           </div>
-          
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, jsm8989.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="#">quoter</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2023, jsm8989.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

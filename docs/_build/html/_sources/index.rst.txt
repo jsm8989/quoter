@@ -28,11 +28,11 @@ real_networks.read_networks module
 .. automodule:: quoter.real_networks.read_networks
    :members:
 
-CrossEntropy module
+CrossEntropyLocal module
 -------------------
 This should not be needed, but is included as a local solution in case of issues with installing the remote package.
 
-.. automodule:: quoter.CrossEntropy
+.. automodule:: quoter.CrossEntropyLocal
    :members:
 
 Examples using the quoter-model package
