@@ -8,6 +8,13 @@ import matplotlib.pyplot as plt
 from itertools import product
 from pathlib import Path
 
+"""NOTE
+In the simulations we only (currently) use unweighted networks.
+Some of these example networks contain edge weights and could be an interesting modification to the quoter model,
+to consider weighted quote probabilites (or, once a node has decided to quote, it preferentially chooses
+predecessors which are more closely connected)
+"""
+
 
 def get_giant_component(G):
     """
@@ -64,7 +71,9 @@ networks_folder = str(Path(__file__).parent) + "/NETWORKS"
 
 def read_adolescent():
     """
-    Read adolescent_health file and return networkx graph. This file is used to determine the health of the network and should contain a list of tuples ( node_id node_name ) where node_id is the node id of the node that is connected to the node with the same node_name.
+    Read adolescent_health file and return networkx graph.
+    This file is used to determine the health of the network and should contain a list of tuples ( node_id node_name )
+    where node_id is the node id of the node that is connected to the node with the same node_name.
 
 
     Returns:
@@ -75,7 +84,7 @@ def read_adolescent():
     with open(file, "r") as f:
         skip = [next(f) for _ in range(2)]  # skip a line
         for line in f:
-            e = tuple(int(x) for x in line.rstrip().split()[:2])
+            e = tuple(int(x) for x in line.rstrip().split()[:2])  # ignore weights
             elist.append(e)
 
     G = nx.Graph()
@@ -95,7 +104,7 @@ def read_arxiv_CondMat():
     elist = []
     with open(file, "r") as f:
         for line in f:
-            e = tuple(int(x) for x in line.rstrip().split()[:2])
+            e = tuple(int(x) for x in line.rstrip().split()[:2])  # ignore weights
             elist.append(e)
 
     G = nx.Graph()

@@ -3,7 +3,7 @@
 
 from numba import jit, prange
 import numpy as np
-from ProcessEntropyPreprocessing import tweet_to_hash_array
+from quoter.ProcessEntropyPreprocessing import tweet_to_hash_array
 
 
 @jit(nopython=True)
@@ -14,6 +14,7 @@ def find_lambda_jit(target, source):
     Returns the length of that subsequence + 1.
     i.e. returns the length of the shortest subsequence starting at 0
     that has not previously appeared.
+
     Args:
         target: NumPy array, perferable of type int.
         source: NumPy array, perferable of type int.
@@ -50,8 +51,7 @@ def get_all_lambdas(target, source, relative_pos, lambdas):
     Finds all the the longest subsequences of the target,
     that are contained in the sequence of the source,
     with the source cutoff at the location set in relative_pos.
-    See function find_lambda_jit for description of
-        Lambda_i(target|source)
+    See function find_lambda_jit for description of Lambda_i(target|source)
     Args:
         target: Array of ints, usually corresponding to hashed words.
         source: Arry of ints, usually corresponding to hashed words.
@@ -84,9 +84,9 @@ def timeseries_cross_entropy(
     This is described mathematically in [1] as,
     T = target
     S = source
-    $$
+    
     \hat{h}_{ \times}(T | S)=\frac{N_{T} \log _{2} N_{S}}{\sum_{i=1}^{N_{T}} \Lambda_{i}(T | S)}
-    $$
+    
     Args:
         time_tweets_target: A list of tuples with (time, tweet_content).
             This is the stream of new information that we can testing the ability to encode.

@@ -7,8 +7,9 @@ from ProcessEntropy.CrossEntropyPythonOnly import (
     timeseries_cross_entropy,
 )  # remote package; might have install dependency issues. If so use the following:
 
-# from CrossEntropy import timeseries_cross_entropy
+# from CrossEntropyLocal import timeseries_cross_entropy
 from typing import Iterable, Union, Tuple, List
+import pickle
 
 
 def words_to_tweets(words: Iterable, times: Iterable):
@@ -35,7 +36,7 @@ def write_all_data(
     outfile: str,
     SBM: bool = False,
     verbose: bool = False,
-    swap_edges_lower_hx: bool = False,
+    swap_quote_direction_lower_hx: bool = False,
     skip_edges: bool = False,
     skip_nodes: bool = False,
     skip_graph: bool = False,
@@ -96,14 +97,10 @@ def write_all_data(
     tri_list, alter_degs, ego_degs = [], [], []
     swap_list = []
 
-    if verbose:
-        print("initialised for writing")
-
     # compute edge data
     if verbose:
-        print(f"Calculating cross-entropies etc for edge_sample of length: {len(edge_sample)}")
+        print(f"Calculating for edge_sample of length: {len(edge_sample)}")
     for e in edge_sample:
-        
         #
         # compute cross entropies. e[0] = alter, e[1] = ego
         time_tweets_target = words_to_tweets(
@@ -115,34 +112,35 @@ def write_all_data(
         hx = timeseries_cross_entropy(
             time_tweets_target, time_tweets_source, please_sanitize=False
         )
-        if swap_edges_lower_hx:
+        if swap_quote_direction_lower_hx:
+            outfile.append("_sqd")
             hx_original = hx
             hx_swapped = timeseries_cross_entropy(
                 time_tweets_source, time_tweets_target, please_sanitize=False
             )
-            #print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
+            # print(f"For this edge, original hx = {hx_original}, swapped hx = {hx_swapped}")
             # TODO: how often to keep the new hx ie what to do now?
             hx = min(hx_original, hx_swapped)
-            if (hx_swapped < hx_original): 
+            if hx_swapped < hx_original:
                 swap_list.append(1)
             else:
                 swap_list.append(0)
-        else: # to deal with case where swap_edges_lower_hx=False
+        else:
             swap_list.append(0)
-        
+
         hx_list.append(hx)
         alter_list.append(e[0])
         ego_list.append(e[1])
 
         #
-        # also record quote probability
+        # also record quote probability -- in this case it is the chance,
+        # if the ego decides to quote in a given timestep, that it will quote from this particular alter.
+        # it is NOT the q we initialised the quoter model with
         try:
-            qp_list.append(
-                1 / len(list(G.predecessors(e[1])))
-            )  # TODO: double check why defined this way
+            qp_list.append(1 / len(list(G.predecessors(e[1]))))
         except:
             if verbose:
-                print("no predecessors for this node, assigning qp=0")
+                print(f"no predecessors for this node {e[1]}=> nothing to quote from => qp=0")
             qp_list.append(0)
 
         #
@@ -180,12 +178,12 @@ def write_all_data(
                     tri_list[i],
                     alter_degs[i],
                     ego_degs[i],
-                    swap_list[i]
+                    swap_list[i],
                 )
                 f.write("%i %i %0.8f %0.8f %i %i %i %i %i\n" % edge_data_tuple)
 
     if not skip_graph:
-        # write graph data
+        # write graph data - TODO: embed calculated attributes in pickled graph object
         if verbose:
             print(f"Writing graph data to {outdir}graph-{outfile}")
         with open(f"{outdir}graph-{outfile}", "w") as f:
@@ -197,11 +195,11 @@ def write_all_data(
             dens = nedges / (nnodes * (nnodes - 1) / 2)
             indegs = list(dict(G.in_degree(G.nodes())).values())
             outdegs = list(dict(G.out_degree(G.nodes())).values())
-            ccs = sorted(nx.connected_components(H), key=len, reverse=True)
+            ccs = nx.connected_components(H)
 
-            comm_dict = {x: 0 for x in A}
-            comm_dict.update({x: 1 for x in B})
-            modularity = get_modularity(H, comm_dict)
+            community_dict = {x: 0 for x in A}
+            community_dict.update({x: 1 for x in B})
+            modularity = get_modularity(H, community_dict)
 
             graph_data_tuple: Tuple = (
                 nnodes,
@@ -215,8 +213,8 @@ def write_all_data(
                 nx.transitivity(H),
                 nx.average_clustering(H),
                 nx.degree_assortativity_coefficient(H),
-                len(ccs),
-                len(ccs[0]),
+                len([ccs]),
+                len(max(ccs, key=len)),
                 modularity,
             )  # note avg_in == avg_out, so we only need to record one
 
@@ -231,6 +229,9 @@ def write_all_data(
                 "%i %i %0.8f %0.8f %i %i %i %i %0.8f %0.8f %0.8f %i %i %0.6f"
                 % graph_data_tuple
             )
+        with open(f"{outdir}graph-{outfile[:-3]}pkl", "wb") as f_pickle:
+            # note this is not robust to people using output files with a file extension of length != 3
+            pickle.dump(G, f_pickle)
 
     if not skip_nodes:
         # write node data
@@ -239,12 +240,11 @@ def write_all_data(
         with open(f"{outdir}node-{outfile}", "w") as f:
             f.write("node indegree outdegree C h\n")  # header
             for node in G.nodes():
+                # NOTE: source and target are the same, so just returns the true entropy rate of the solo text
                 time_tweets_target = words_to_tweets(
                     G.nodes[node]["words"], G.nodes[node]["times"]
                 )
-                time_tweets_source = words_to_tweets(
-                    G.nodes[node]["words"], G.nodes[node]["times"]
-                )
+                time_tweets_source = time_tweets_target
                 h = timeseries_cross_entropy(
                     time_tweets_target, time_tweets_source, please_sanitize=False
                 )
@@ -263,27 +263,23 @@ def get_modularity(G, community_dict):
     :returns: (float) The modularity of `G` given `community_dict`
     """
 
-    Q = 0
-    A = nx.to_scipy_sparse_array(G).astype(float)
+    graph_array = nx.to_scipy_sparse_array(G).astype(float)
 
     if type(G) == nx.Graph:
         # for undirected graphs, in and out treated as the same thing
         out_degree = in_degree = dict(nx.degree(G))
         M = 2.0 * (G.number_of_edges())
-        print("Calculating modularity for undirected graph")
     elif type(G) == nx.DiGraph:
         in_degree = dict(G.in_degree())
         out_degree = dict(G.out_degree())
         M = 1.0 * G.number_of_edges()
-        print("Calculating modularity for directed graph")
     else:
-        print("Invalid graph type")
-        raise TypeError
+        raise TypeError("Invalid graph type")
 
     nodes = list(G)
     Q = np.sum(
         [
-            A[i, j] - in_degree[nodes[i]] * out_degree[nodes[j]] / M
+            graph_array[i, j] - in_degree[nodes[i]] * out_degree[nodes[j]] / M
             for i, j in itertools.product(range(len(nodes)), range(len(nodes)))
             if community_dict[nodes[i]] == community_dict[nodes[j]]
         ]
@@ -346,6 +342,7 @@ def quoter_model_sim(
     verbose: bool = False,  # TODO: cleaner implementation with logging module. This is more for testing
     SBM_graph: bool = False,
     poisson_lambda: Union[float, int] = 3,
+    startWords=20,
 ):
     """Simulate the quoter model on a graph G. Nodes take turns generating content according to two
     mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
@@ -372,7 +369,7 @@ def quoter_model_sim(
 
     Returns:
         G, once the simulation has been run, to pass to some other writing/calculation function
-    
+
     """
 
     if verbose:
@@ -395,7 +392,6 @@ def quoter_model_sim(
                 G.remove_edges_from([(nbr, node) for nbr in nbrs_rmv])
 
     # create initial tweet for each user
-    startWords = 20
     for node in G.nodes():
         newWords = np.random.choice(
             vocab, size=startWords, replace=True, p=weights
@@ -405,6 +401,8 @@ def quoter_model_sim(
 
     if verbose:
         print("Initial vocab created; starting simulation")
+
+    verbose_node = 1
 
     # simulate quoter model
     for timestep_ in range(1, timesteps * nx.number_of_nodes(G)):
@@ -431,18 +429,30 @@ def quoter_model_sim(
             copy_pos_end = min(numWords_friend - 1, copy_pos_start + tweetLength)
             newWords = words_friend[copy_pos_start:copy_pos_end]
 
+            if verbose and (node == verbose_node):
+                print(
+                    f"quoted words [{copy_pos_start}:{copy_pos_end}] from node {user_copied}!"
+                )
+
         else:  # new content
+            if verbose and (node == verbose_node):
+                print("New content")
             newWords = np.random.choice(
                 vocab, size=tweetLength, replace=True, p=weights
             ).tolist()
 
         G.nodes[node]["words"].extend(newWords)
         G.nodes[node]["times"].extend([timestep_] * len(newWords))
+        # if verbose:
+        #     print(timestep_)
+        #     print(f"G.nodes[verbose_node][words] = {G.nodes[verbose_node]['words']}")
+        #     print(f"G.nodes[verbose_node][times] = {G.nodes[verbose_node]['times']}")
+        #     input("Are you ready for the next timestep: ")
 
     # save data
     if write_data is not None:
         if verbose:
             print("writing data")
-        write_data(G, outdir, outfile, SBM_graph, verbose)
+        write_data(G, outdir, outfile, SBM_graph, verbose=verbose)
 
     return G
