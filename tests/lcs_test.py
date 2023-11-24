@@ -248,6 +248,13 @@ if __name__=="__main__":
     Python Only: 260.3832244873047
     LSCFinder: 224.34911823272705
 
+    for N=500, T=100:
+    Python Only: 15.421194791793823
+    LSCFinder: 10.91908597946167
+
+    Note however that T=1000 is typically chosen to ensure the entropy estimator converges
+    (even though it is by far the limiting factor in calculations)
+
     """
 
     if network_type == "BA":
