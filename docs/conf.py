@@ -8,13 +8,14 @@
 
 # added manually for autodoc imports
 import sys
+import os
 
-sys.path.append("../../src")
+sys.path.insert(0, os.path.abspath("../../src"))
 
 project = "quoter"
 copyright = "2023, jsm8989"
 author = "jsm8989"
-release = "0.0"
+release = "0.0"  # should be synced with what's stated in pyproject.toml
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -33,6 +34,6 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-#html_theme = "alabaster"
+# html_theme = "alabaster"
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
