@@ -1,5 +1,5 @@
 # Quoter Model
-This repository is a packaged version of code using to simulate the *quoter model* as a model for social information flow [1]. The model was further explored and this code was further developed by Tyson Pond [2,3].
+This repository is a packaged version of code using the *quoter model* as a model for social information flow [1]. The model was further explored and this code was further developed by Tyson Pond [2,3].
 
 The quoter model offers an idealistic mechanism for how people communicate written information in online social contexts (i.e. tweets on Twitter or posts on Facebook). The model runs on a social network, where each node (user) takes turns generating a sequence of words by one of two mechanisms: 
 + (i) copying a segment of a random neighbor's past text with probability $q$ 
@@ -31,7 +31,7 @@ See the examples for ideas on experiments to run, parameters to vary in simulati
 ## Example networks
 Inside [src/quoter/real_networks](src/quoter/real_networks) are many examples of real networks, along with a module for parsing them into an appropriate format, that can be used to run simulations on. 
 
-These have been compiled from different sources and are intended only as a starting point; other networks could be found, for example, at the online [network repository](https://networkrepository.com/index.php).
+These have been compiled from different sources and are intended only as a starting point; other networks could be found, for example, at the online [network repository](https://networkrepository.com/index.php) or [ICON](https://icon.colorado.edu/#!/).
 
 An example usage of the real networks is calculating their so-called *edge clustering coefficient* in [examples/edge_clustering.py](src/quoter/examples/edge_clustering.py). Example simulations for different parameters of ER, BA, WS, SBM networks are also found in the [examples directory](src/quoter/examples/), which is initialised as a module and can therefore be called in scripts.
 
