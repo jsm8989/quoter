@@ -32,8 +32,7 @@ CrossEntropyLocal module
 ------------------------
 This should not be needed, but is included as a local solution in case of issues with installing the remote package.
 
-.. automodule:: quoter.CrossEntropyLocal
-   :members:
+Due to install issues, it is easier to consult the `ProcessEntropy` package here for documentation. (for now)
 
 Examples using the quoter-model package
 ---------------------------------------
