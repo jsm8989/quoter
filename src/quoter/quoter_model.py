@@ -7,7 +7,7 @@ from ProcessEntropy.CrossEntropyPythonOnly import (
     timeseries_cross_entropy,
 )  # remote package; might have install dependency issues. If so use the following:
 
-# from CrossEntropy import timeseries_cross_entropy
+# from CrossEntropyLocal import timeseries_cross_entropy
 from typing import Iterable, Union, Tuple, List
 import pickle
 
@@ -134,12 +134,13 @@ def write_all_data(
 
         #
         # also record quote probability -- in this case it is the chance,
-        # if the ego decides to quote in a given timestep, that it will quote from this particular alter
+        # if the ego decides to quote in a given timestep, that it will quote from this particular alter.
+        # it is NOT the q we initialised the quoter model with
         try:
             qp_list.append(1 / len(list(G.predecessors(e[1]))))
         except:
             if verbose:
-                print("no predecessors for this node => nothing to quote from => qp=0")
+                print(f"no predecessors for this node {e[1]}=> nothing to quote from => qp=0")
             qp_list.append(0)
 
         #
@@ -452,6 +453,6 @@ def quoter_model_sim(
     if write_data is not None:
         if verbose:
             print("writing data")
-        write_data(G, outdir, outfile, SBM_graph, verbose=False)
+        write_data(G, outdir, outfile, SBM_graph, verbose=verbose)
 
     return G
