@@ -11,24 +11,31 @@ import pandas as pd
 
 
 if __name__ == "__main__":
-    network_type = "BA"
+    network_type = "ER"
     N = 50
     q_list = [
         0.5,
     ]
-    k_list = [3]
-    T = 1000
+    k_list = [5]
+    T = 100
     trials_list = list(range(1))
     outdir = "./output/simple_swap/"
 
-    G0 = nx.DiGraph(nx.barabasi_albert_graph(N, int(k_list[0] / 2)))
+    if network_type == "BA":
+        G0 = nx.barabasi_albert_graph(N, int(k_list[0] / 2))
+    elif network_type == "ER":
+        G0 = nx.erdos_renyi_graph(N, k_list[0] / (N - 1))
+    else:  # default to small networks
+        p = k_list[0]  # TODO: double check original difference here
+        G0 = nx.watts_strogatz_graph(n=N, k=k_list[0], p=p)
+        network_type="WS"
 
-    fig1 = plt.figure("original graph")
-    nx.draw_networkx(G0)
-    # plt.show()
+    G0 = nx.DiGraph(G0)
+
+    
 
     trial = trials_list[0]
-    outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k_list[0], q_list[0], T, trial)
+    outfile = "%s_N%i_k%i_q%0.4f_T%i_sim%i.txt" % (network_type, N, k_list[0], q_list[0], T, trial)
     # watch; this will always start at trial 0
 
     G_post_sim = qm.quoter_model_sim(
@@ -54,10 +61,14 @@ if __name__ == "__main__":
     )  # might take a long time to calculate, and TODO: NEEDS CHECKING. Should overwrite into saved graph file
     print(f"global entropy rate for trial {trial} = {global_entropy_rate:0.4f}")
 
+    fig1 = plt.figure(f"original graph of entropy {global_entropy_rate:0.4f}")
+    nx.draw_networkx(G0)
+    # plt.show()
+
     # to avoid saving different filenames, will in this case use trial number as index for how many pairs of edges have attempted to be swapped.
     # while str(input("Do you want to continue? (n): ")) != "n":
     for _ in range(100):
-        outfile = "N%i_k%i_q%0.4f_T%i_sim%i.txt" % (N, k_list[0], q_list[0], T, trial)
+        outfile = "%s_N%i_k%i_q%0.4f_T%i_sim%i.txt" % (network_type, N, k_list[0], q_list[0], T, trial)
 
         if not os.path.isfile(f"{outdir}edge-{outfile}"):
             # random edge swapping step
@@ -102,6 +113,8 @@ if __name__ == "__main__":
 
     exit(0)
 
+    run_sim = False
+    process_results = False
     if run_sim:
         params_init = itertools.product(q_list, k_list, trials_list)
         params = [P for i, P in enumerate(params_init)]
@@ -173,7 +186,7 @@ if __name__ == "__main__":
                     outdir,
                     outfile,
                     verbose=True,
-                    swap_edges_lower_hx=True,
+                    swap_quote_direction_lower_hx=True,
                 )
             else:
                 print(
