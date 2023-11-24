@@ -3,11 +3,12 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 import itertools
-from ProcessEntropy.CrossEntropyPythonOnly import (
-    timeseries_cross_entropy,
-)  # remote package; might have install dependency issues. If so use the following:
 
-# from CrossEntropyLocal import timeseries_cross_entropy
+# from ProcessEntropy.CrossEntropyPythonOnly import (
+#     timeseries_cross_entropy,
+# )  # remote package; might have install dependency issues. If so use the following:
+
+from quoter.CrossEntropyLocal import timeseries_cross_entropy
 from typing import Iterable, Union, Tuple, List
 import pickle
 
@@ -140,7 +141,9 @@ def write_all_data(
             qp_list.append(1 / len(list(G.predecessors(e[1]))))
         except:
             if verbose:
-                print(f"no predecessors for this node {e[1]}=> nothing to quote from => qp=0")
+                print(
+                    f"no predecessors for this node {e[1]}=> nothing to quote from => qp=0"
+                )
             qp_list.append(0)
 
         #
