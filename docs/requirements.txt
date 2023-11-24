@@ -1,4 +1,4 @@
 sphinx
 sphinx_rtd_theme
 quoter-model
---no-dependencies ProcessEntropy
+#--no-dependencies ProcessEntropy
