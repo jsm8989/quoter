@@ -12,11 +12,12 @@ import pandas as pd
 
 if __name__ == "__main__":
     network_type = "ER"
-    N = 50
+    entropy_change_promoted = "raise" # or "decrease"
+    N = 500
     q_list = [
         0.5,
     ]
-    k_list = [5]
+    k_list = [300]
     T = 100
     trials_list = list(range(1))
     outdir = "./output/simple_swap/"
@@ -35,7 +36,7 @@ if __name__ == "__main__":
     
 
     trial = trials_list[0]
-    outfile = "%s_N%i_k%i_q%0.4f_T%i_sim%i.txt" % (network_type, N, k_list[0], q_list[0], T, trial)
+    outfile = "%s_N%i_k%i_q%0.4f_T%i_sim%i.txt" % (network_type+entropy_change_promoted, N, k_list[0], q_list[0], T, trial)
     # watch; this will always start at trial 0
 
     G_post_sim = qm.quoter_model_sim(
@@ -61,6 +62,8 @@ if __name__ == "__main__":
     )  # might take a long time to calculate, and TODO: NEEDS CHECKING. Should overwrite into saved graph file
     print(f"global entropy rate for trial {trial} = {global_entropy_rate:0.4f}")
 
+
+    # TODO: get more quantitative comparison eg hx distributions, degree distributions, connectivity/clustering etc
     fig1 = plt.figure(f"original graph of entropy {global_entropy_rate:0.4f}")
     nx.draw_networkx(G0)
     # plt.show()
@@ -68,7 +71,7 @@ if __name__ == "__main__":
     # to avoid saving different filenames, will in this case use trial number as index for how many pairs of edges have attempted to be swapped.
     # while str(input("Do you want to continue? (n): ")) != "n":
     for _ in range(100):
-        outfile = "%s_N%i_k%i_q%0.4f_T%i_sim%i.txt" % (network_type, N, k_list[0], q_list[0], T, trial)
+        outfile = "%s_N%i_k%i_q%0.4f_T%i_sim%i.txt" % (network_type+entropy_change_promoted, N, k_list[0], q_list[0], T, trial)
 
         if not os.path.isfile(f"{outdir}edge-{outfile}"):
             # random edge swapping step
@@ -97,7 +100,7 @@ if __name__ == "__main__":
             # fig1 = plt.figure(f"previous graph of entropy {global_entropy_rate}")
             # nx.draw_networkx(G0)
 
-            if new_global_entropy < global_entropy_rate:
+            if (new_global_entropy < global_entropy_rate and entropy_change_promoted=="decrease") or (new_global_entropy > global_entropy_rate and entropy_change_promoted=="raise"):
                 G0 = potential_new_G
                 global_entropy_rate = new_global_entropy
                 # could output the swapped edge here

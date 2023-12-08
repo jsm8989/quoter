@@ -3,6 +3,9 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 import itertools
+from ProcessEntropy.CrossEntropy import (
+    timeseries_cross_entropy,
+)  # remote package; might have install dependency issues. If so use the following:
 
 # from ProcessEntropy.CrossEntropyPythonOnly import (
 #     timeseries_cross_entropy,
