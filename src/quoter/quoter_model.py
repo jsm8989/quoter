@@ -46,14 +46,27 @@ def write_all_data(
     skip_graph: bool = False,
 ):
     """Compute and write data from quoter model simulations.
-    TODO: This feels like it should be split up more.
+    TODO: feels like it should be split up more.
     Also make sure the outdir exists or create it if needed.
 
-
-    Args:
-        G (nx.Graph): _description_
-        outdir (str): _description_
-        outfile (str): _description_
+    :param G: _description_
+    :type G: nx.Graph
+    :param outdir: _description_
+    :type outdir: str
+    :param outfile: _description_
+    :type outfile: str
+    :param SBM: _description_, defaults to False
+    :type SBM: bool, optional
+    :param verbose: _description_, defaults to False
+    :type verbose: bool, optional
+    :param swap_quote_direction_lower_hx: _description_, defaults to False
+    :type swap_quote_direction_lower_hx: bool, optional
+    :param skip_edges: _description_, defaults to False
+    :type skip_edges: bool, optional
+    :param skip_nodes: _description_, defaults to False
+    :type skip_nodes: bool, optional
+    :param skip_graph: _description_, defaults to False
+    :type skip_graph: bool, optional
     """
 
     # graph skeleton for calculating clustering, transitivity, ASPL, etc.
