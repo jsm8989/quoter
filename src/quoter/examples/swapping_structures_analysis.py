@@ -13,12 +13,13 @@ import pandas as pd
 if __name__ == "__main__":
     network_type = "ER"
     entropy_change_promoted = "raise" # or "decrease"
+    swapping_mech = nx.double_edge_swap # or nx.directed_edge_swap
     N = 500
     q_list = [
         0.5,
     ]
-    k_list = [300]
-    T = 100
+    k_list = [30]
+    T = 10
     trials_list = list(range(1))
     outdir = "./output/simple_swap/"
 
@@ -66,7 +67,7 @@ if __name__ == "__main__":
     # TODO: get more quantitative comparison eg hx distributions, degree distributions, connectivity/clustering etc
     fig1 = plt.figure(f"original graph of entropy {global_entropy_rate:0.4f}")
     nx.draw_networkx(G0)
-    # plt.show()
+    #plt.show()
 
     # to avoid saving different filenames, will in this case use trial number as index for how many pairs of edges have attempted to be swapped.
     # while str(input("Do you want to continue? (n): ")) != "n":
@@ -74,8 +75,9 @@ if __name__ == "__main__":
         outfile = "%s_N%i_k%i_q%0.4f_T%i_sim%i.txt" % (network_type+entropy_change_promoted, N, k_list[0], q_list[0], T, trial)
 
         if not os.path.isfile(f"{outdir}edge-{outfile}"):
-            # random edge swapping step
-            potential_new_G = nx.double_edge_swap(G0.to_undirected()).to_directed()
+            # random edge swapping step; other possible mechanisms
+
+            potential_new_G = nx.double_edge_swap(G0.to_undirected()).to_directed() # or directed_edge_swap(G0).to_directed() ; can't get to work
             potential_new_G_post_sim = qm.quoter_model_sim(
                 potential_new_G,
                 quote_prob=q_list[0],
