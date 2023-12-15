@@ -270,15 +270,19 @@ def write_all_data(
                 f.write("%i %i %i %0.8f %0.8f\n" % (node, indeg, outdeg, C, h))
 
 
-def get_modularity(G, community_dict):
+def get_modularity(G: Union[nx.Graph, nx.DiGraph], community_dict: dict) -> float:
     """
-    Calculate the modularity. Edge weights are ignored. From https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py
+    Returns the modularity of a graph. The modularity of a graph is the sum of the adjacency matrix of the nodes in the community_dict that is multiplied by the in-degree and out-degree of the nodes in the community_dict to get the modularity.
+    Edge weights are ignored. From https://github.com/zhiyzuo/python-modularity-maximization/blob/master/modularity_maximization/utils.py
 
-    :param G: NetworkX graph to be analysed
-    :param community_dict: A dict to store the membership of each node. Key is node and value is community index
-    :returns: (float) The modularity of `G` given `community_dict`
+    :param G: A NetworkX graph or DiGraph
+    :type G: Union[nx.Graph, nx.DiGraph]
+    :param community_dict: A dictionary to store the membership of each node. Key is node and value is community index
+    :type community_dict: dict
+    :raises TypeError: if G is given as neither of the valid types
+    :return: The modularity of the graph given the community_dict
+    :rtype: float
     """
-
     graph_array = nx.to_scipy_sparse_array(G).astype(float)
 
     if type(G) == nx.Graph:
@@ -358,8 +362,12 @@ def quoter_model_sim(
     verbose: bool = False,  # TODO: cleaner implementation with logging module. This is more for testing
     SBM_graph: bool = False,
     poisson_lambda: Union[float, int] = 3,
-    startWords=20,
-):
+    startWords: int = 20,
+) -> nx.Graph:
+    # TODO: add args from other previous experiments, such as
+    #     lambda (quote length > 0) - from q-lambda [added as poisson_lambda]
+    #     alpha_alter, alpha_ego - from theory_link
+    #     and potentially others
     """Simulate the quoter model on a graph G. Nodes take turns generating content according to two
     mechanisms: (i) creating new content from a specified vocabulary distribution, (ii) quoting
     from a neighbor's past text.
@@ -368,26 +376,30 @@ def quoter_model_sim(
     flow of written information. Chaos: An Interdisciplinary Journal of Nonlinear Science, 28(7),
     075304.
 
-    Args:
-        G (nx.Graph): Directed graph to simulate quoter model on
-        quote_prob (float): Quote probability q as defined in [1]
-        timesteps (int): Number of time-steps to simulate for. timesteps=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have 'tweeted' ~1000 times
-        outdir (string): Name of directory for data to be stored in
-        outfile (string): Name of file for this simulation
-        write_data (function): Can specify what data to compute & write.
-        dunbar (int or None): If int, limit in-degree to dunbar's number
-        verbose: <temp> giving useful output during testing
 
-    TODO: add args from other previous experiments, such as
-        lambda (quote length > 0) - from q-lambda [added as poisson_lambda]
-        alpha_alter, alpha_ego - from theory_link
-        and potentially others
-
-    Returns:
-        G, once the simulation has been run, to pass to some other writing/calculation function
-
+    :param G: Directed graph to simulate quoter model on
+    :type G: nx.Graph
+    :param quote_prob: Quote probability q as defined in [1]
+    :type quote_prob: float
+    :param timesteps: Number of time-steps to simulate for. timesteps=1000 really means 1000*nx.number_of_nodes(G), i.e. each node will have 'tweeted' ~1000 times
+    :type timesteps: int
+    :param outdir: Name of directory for data to be stored in, defaults to "./"
+    :type outdir: str, optional
+    :param outfile: Name of file for this simulation, defaults to "test_output.txt"
+    :type outfile: str, optional
+    :param write_data: Function specifying what data to compute & write post-simulation, defaults to write_all_data
+    :type write_data: _type_, optional
+    :param dunbar: If int, limit in-degree to dunbar's number, defaults to None
+    :type dunbar: Union[int, None], optional
+    :param verbose: <temp> giving useful output during testing, defaults to False
+    :type verbose: bool, optional
+    :param poisson_lambda: _description_, defaults to 3
+    :type poisson_lambda: Union[float, int], optional
+    :param startWords: _description_, defaults to 20
+    :type startWords: int, optional
+    :return: G, once the simulation has been run, to pass to some other writing/calculation function
+    :rtype: nx.Graph
     """
-
     if verbose:
         # TODO would be useful to add summary statistics of provided networks in documentation
         print(f"G has {len(G.nodes())} nodes and {len(G.edges())} edges")
